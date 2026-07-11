@@ -801,24 +801,11 @@ class Component extends DCLogic {
   _materialsList = null;
   _persistTimer = null;
   _lastRenderedFingerprint = null;
-  _persistSkip = 0;
-  _layoutDragPatch = null;
-  _layoutDragRaf = 0;
 
   componentDidMount() {
     const saved = this._readSavedState();
     const orig = this.setState.bind(this);
-    this.setState = (update, cb) => orig(update, () => {
-      if (this._persistSkip <= 0) this._persistState();
-      if (cb) cb();
-    });
-    this.setStateLive = (update, cb) => {
-      this._persistSkip++;
-      orig(update, () => {
-        this._persistSkip--;
-        if (cb) cb();
-      });
-    };
+    this.setState = (update, cb) => orig(update, () => { this._persistState(); if (cb) cb(); });
     if (saved) this.setState(saved, () => {
       if (this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
       if (this.isEmbroidery() && saved.patternImg && (!saved.threadColors || !saved.threadColors.length || !saved.backgroundRemoved)) {
@@ -997,25 +984,9 @@ class Component extends DCLogic {
   setLayoutField(field, raw, commit) {
     const n = Number(raw);
     if (Number.isNaN(n)) return;
-    if (commit) {
-      if (this._layoutDragRaf) {
-        cancelAnimationFrame(this._layoutDragRaf);
-        this._layoutDragRaf = 0;
-      }
-      const patch = Object.assign({}, this._layoutDragPatch || {}, { [field]: n });
-      this._layoutDragPatch = null;
-      this.setState(Object.assign({}, patch, { renderImg: null }));
-      return;
-    }
-    if (!this._layoutDragPatch) this._layoutDragPatch = {};
-    this._layoutDragPatch[field] = n;
-    if (this._layoutDragRaf) return;
-    this._layoutDragRaf = requestAnimationFrame(() => {
-      this._layoutDragRaf = 0;
-      const patch = this._layoutDragPatch;
-      if (!patch) return;
-      this.setStateLive(patch);
-    });
+    const patch = { [field]: n };
+    if (commit) patch.renderImg = null;
+    this.setState(patch);
   }
   setRepeatMode(mode) { this.setState({ repeatMode: mode, renderImg: null }); }
   setPlacement(mode) { this.setState({ placement: mode, renderImg: null }); }
