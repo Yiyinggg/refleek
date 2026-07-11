@@ -171,19 +171,18 @@ html {
   padding-top: clamp(1.875rem, 5vw, 4.5rem);
   padding-bottom: clamp(1.25rem, 3vw, 2.5rem);
   overflow: hidden;
+  isolation: isolate;
 }
 
-.landing__hero::before {
-  content: "";
+.landing__hero-bg {
   position: absolute;
   inset: 0;
   left: 50%;
   width: 100vw;
+  height: 100%;
   transform: translateX(-50%);
-  background-image: var(--hero-bg);
-  background-size: cover;
-  background-position: 72% center;
-  background-repeat: no-repeat;
+  object-fit: cover;
+  object-position: 68% center;
   z-index: 0;
   pointer-events: none;
 }
@@ -194,21 +193,22 @@ html {
   inset: 0;
   left: 50%;
   width: 100vw;
+  height: 100%;
   transform: translateX(-50%);
   background: linear-gradient(
     to right,
-    rgba(244, 241, 234, 0.94) 0%,
-    rgba(244, 241, 234, 0.82) 32%,
-    rgba(244, 241, 234, 0.35) 58%,
-    transparent 78%
+    rgba(244, 241, 234, 0.88) 0%,
+    rgba(244, 241, 234, 0.55) 28%,
+    rgba(244, 241, 234, 0.12) 52%,
+    transparent 68%
   );
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
 }
 
-.landing__hero > * {
+.landing__hero > *:not(.landing__hero-bg) {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;

@@ -38,11 +38,14 @@ export function LandingPage() {
         </a>
       </header>
 
-      <section
-        id="top"
-        className="landing__section landing__hero"
-        style={{ "--hero-bg": `url(${HERO_BG})` } as React.CSSProperties}
-      >
+      <section id="top" className="landing__section landing__hero">
+        <img
+          src={HERO_BG}
+          alt=""
+          className="landing__hero-bg"
+          aria-hidden="true"
+          decoding="async"
+        />
         <div className="landing__issue-bar">
           <span>Circular Design — to — Production</span>
           <span>Issue Nº01 · Deadstock Edition</span>
