@@ -285,7 +285,7 @@
 
           <!-- AI pattern studio -->
           <div style="margin-top:32px;border-top:1.5px solid #0F0F0E;padding-top:18px">
-            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:14px">◆ AI Pattern Studio · {{ patternModeLabel }}</div>
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:14px">◆ AI Motif Studio · {{ patternModeLabel }}</div>
 
             <div style="display:flex;flex-wrap:wrap;gap:6px;background:rgba(15,15,14,.06);border-radius:999px;padding:5px;margin-bottom:18px;max-width:520px">
               <sc-for list="{{ patternInputTabs }}" as="tab" hint-placeholder-count="3">
@@ -295,8 +295,8 @@
 
             <sc-if value="{{ patternInputPrompt }}" hint-placeholder-val="{{ false }}">
             <div style="margin-bottom:16px">
-              <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Describe your pattern</label>
-              <textarea value="{{ patternPromptText }}" onChange="{{ applyPatternPrompt }}" placeholder="e.g. tonal botanical repeat in sage green, Art Deco geometry, hand-drawn stripe…" style="display:block;width:100%;min-height:88px;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:12px 14px;font-family:'Archivo',sans-serif;font-size:13px;line-height:1.55;color:#0F0F0E;outline:none;resize:vertical"></textarea>
+              <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Describe your motif</label>
+              <textarea value="{{ patternPromptText }}" onChange="{{ applyPatternPrompt }}" placeholder="e.g. a single perched owl, Art Deco sunburst emblem, one botanical sprig…" style="display:block;width:100%;min-height:88px;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:12px 14px;font-family:'Archivo',sans-serif;font-size:13px;line-height:1.55;color:#0F0F0E;outline:none;resize:vertical"></textarea>
             </div>
             </sc-if>
 
@@ -399,7 +399,7 @@
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº06</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Placement.</h1>
-          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Adjust repeat, scale, and motif position — preview updates live →</p>
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Place one motif, then tile or scale it — preview updates live →</p>
 
           <div style="border-top:1px solid rgba(15,15,14,.16);padding-top:20px;display:flex;flex-direction:column;gap:22px">
 
@@ -675,10 +675,10 @@
             <!-- Pattern artwork — always the topmost layer on the product preview -->
             <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
               <sc-if value="{{ patternOverlaySingle }}" hint-placeholder-val="{{ false }}">
-              <img src="{{ patternOverlaySrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:contain;object-position:{{ patternOverlayPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none;image-rendering:auto" />
+              <img src="{{ patternOverlaySrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:contain;object-position:{{ patternOverlayPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }};pointer-events:none;image-rendering:auto" />
               </sc-if>
               <sc-if value="{{ patternOverlayRepeat }}" hint-placeholder-val="{{ false }}">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;pointer-events:none;opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})" preserveAspectRatio="none">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;pointer-events:none;opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }}" preserveAspectRatio="none">
                 <defs>
                   <pattern id="{{ patternTileId }}" patternUnits="objectBoundingBox" width="{{ patternTileW }}" height="{{ patternTileH }}">
                     <image href="{{ patternOverlaySrc }}" width="1" height="1" preserveAspectRatio="xMidYMid slice" />
@@ -765,7 +765,7 @@ class Component extends DCLogic {
     patchworkMode: 'grid',
     techniques: ['patchwork', 'cut-sew', 'embroidery'],
     pattern: 'embroidery',
-    repeatMode: 'brick',
+    repeatMode: 'single',
     placement: 'center',
     layoutScale: 100,
     layoutRotate: 0,
@@ -1398,19 +1398,33 @@ class Component extends DCLogic {
   buildPatternPrompt() {
     const s = this.state;
     const cur = this.curMaterial();
-    const base = s.style + ' style motif for a ' + s.product.toLowerCase() + ' made from ' +
+    const base = s.style + ' style for a ' + s.product.toLowerCase() + ' made from ' +
       cur.name.toLowerCase() + ' (' + (cur.stream === 'new' ? 'unfinished deadstock' : 'upcycled reclaimed fabric') + ')';
     const mode = this.surfaceMode();
+    const motifSpec =
+      'Generate exactly ONE isolated motif centred on a square canvas with at least 25% empty margin on every side. ' +
+      'Show a single graphic instance only — NOT a pattern sheet, NOT multiple copies, NOT an all-over repeat layout, ' +
+      'NOT a collage of variants, NOT a filled tile with many elements. One emblem/mark that can be placed once or tiled in layout software. ';
     let finish = '';
-    if (mode === 'print') finish = 'Seamless repeating textile print pattern, ' + base + ', flat 2D artwork, balanced repeat, production-ready for digital fabric printing, high resolution 1024 pixels, plain background, no mockup, no text.';
-    else if (mode === 'laser') finish = 'Single-colour monochrome line-art motif for laser etching on fabric, ' + base + ', tone-on-tone, clean bold linework, high contrast dark lines on plain light background, flat 2D, no shading, no text.';
-    else finish = 'Flat vector illustration artwork (source art for embroidery production, NOT an embroidered photo), ' + base + ', pure 2D graphic design with maximum 4 solid flat colour fills, crisp closed shapes like a logo or screen-print colour separation, NOT embroidered, NOT stitched, NO thread texture, NO stitch lines, NO satin stitch, NO needlework, NO 3D relief, NO fabric weave, NO gradients, NO shading, NO photographic texture, plain pure white background with no shadows, production-ready digitizing source art, high resolution 1024 pixels, sharp edges, no text.';
+    if (mode === 'print') {
+      finish = motifSpec + 'Single flat 2D print motif tile, ' + base +
+        ', clean edges, production-ready for digital fabric printing, high resolution 1024 pixels, plain solid background, no mockup, no text.';
+    } else if (mode === 'laser') {
+      finish = motifSpec + 'Single-colour monochrome line-art motif for laser etching on fabric, ' + base +
+        ', tone-on-tone, clean bold linework, high contrast dark lines on plain light background, flat 2D, no shading, no text.';
+    } else {
+      finish = motifSpec + 'Flat vector illustration motif (source art for embroidery production, NOT an embroidered photo), ' + base +
+        ', pure 2D graphic design with maximum 4 solid flat colour fills, crisp closed shapes like a logo or screen-print colour separation, ' +
+        'NOT embroidered, NOT stitched, NO thread texture, NO stitch lines, plain pure white background with no shadows, ' +
+        'production-ready digitizing source art, high resolution 1024 pixels, sharp edges, no text.';
+    }
 
     if (s.patternInputMode === 'prompt' && s.patternPromptText.trim()) {
-      return finish + ' User brief: ' + s.patternPromptText.trim() + '.';
+      return finish + ' User brief: ' + s.patternPromptText.trim() + '. Interpret the brief as ONE single motif, not a full pattern.';
     }
     if (s.patternInputMode === 'upload' && s.patternUploadImg) {
-      return 'Create production-ready flat illustration artwork inspired by the attached reference image. ' + finish + ' Preserve the visual language of the reference while adapting it as clean 2D source art for ' + mode + ' on ' + cur.name.toLowerCase() + '. Do NOT render as stitched embroidery.';
+      return 'Extract or adapt ONE single isolated motif from the attached reference image. ' + finish +
+        ' Pick the strongest single element from the reference — do NOT reproduce the full repeat sheet. Do NOT render as stitched embroidery.';
     }
     return finish;
   }
@@ -2387,7 +2401,10 @@ class Component extends DCLogic {
       : s.placement === 'border' ? 'center'
       : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
     const layoutScaleFactor = s.layoutScale / 100;
-    const layoutRotate = s.layoutRotate + 'deg';
+    const layoutRotate = s.layoutRotate;
+    const motifScaleFactor = s.motifScale / 100;
+    const motifRotate = s.motifRotate;
+    const patternOverlayTransform = 'rotate(' + layoutRotate + 'deg) scale(' + layoutScaleFactor + ') rotate(' + motifRotate + 'deg) scale(' + motifScaleFactor + ')';
     const isEmbroidery = this.isEmbroidery();
 
     const PATTERN_TABS = [['preset', 'Preset tiles'], ['prompt', 'Text prompt'], ['upload', 'Upload image']];
@@ -2397,12 +2414,16 @@ class Component extends DCLogic {
         bg: on ? '#FBFAF6' : 'transparent', fg: on ? ink : 'rgba(15,15,14,.55)' };
     });
     const patternPromptHint = s.patternInputMode === 'prompt'
-      ? (s.patternPromptText.trim() ? 'AI will generate artwork from your brief + material constraints.' : 'Describe the pattern you want — AI adapts it to your material and surface finish.')
+      ? (s.patternPromptText.trim()
+        ? 'AI generates one isolated motif from your brief — tile or place it in Layout.'
+        : 'Describe a single motif (one emblem, one bird, one mark) — not a full repeat sheet.')
       : s.patternInputMode === 'upload'
-        ? (s.patternUploadImg ? 'AI will create a production-ready pattern inspired by your reference.' : 'Upload a sketch, photo, or swatch — AI turns it into printable/etchable artwork.')
+        ? (s.patternUploadImg
+          ? 'AI extracts one motif from your reference — not the full pattern sheet.'
+          : 'Upload a reference — AI isolates one printable/etchable motif.')
         : (this.isEmbroidery()
-          ? 'AI generates a flat vector illustration (not stitched embroidery). Max 4 solid fills — separate thread colours in the next node.'
-          : 'Pick a surface style above, or switch to text prompt / upload for custom artwork.');
+          ? 'AI generates one flat vector motif (not stitched). Max 4 solid fills — separate thread colours in Colours.'
+          : 'Generates one isolated motif — pick text prompt or upload for custom artwork.');
 
     const threadColorRows = (s.threadColors || []).map((tc, i) => ({
       label: tc.label, hex: tc.hex,
@@ -2439,8 +2460,8 @@ class Component extends DCLogic {
       patternUploadHas: !!s.patternUploadImg,
       patternPromptHint,
       patternResultNote: isEmbroidery
-        ? 'Flat illustration source art — not stitched yet. Colours node separates thread plates; Render shows it embroidered on the product.'
-        : 'Generated artwork — carried into the AI render and embedded in the tech pack PDF.',
+        ? 'Single motif source art — not stitched yet. Colours separates thread plates; Layout places it on the product.'
+        : 'One isolated motif — use Layout to place, scale, rotate, or tile it on the product.',
       repeatModes, placementModes, showPlacement: s.repeatMode === 'single',
       layoutSliders, motifSliders,
       showAiBadge: s.source === 'ai',
@@ -2466,7 +2487,7 @@ class Component extends DCLogic {
       surfaceRule,
       techNote: s.techNote, techNoteShow: !!s.techNote,
       generatePattern: () => this.generatePattern(),
-      patternBtnLabel: s.patternBusy ? 'Generating…' : (s.patternImg ? 'Regenerate artwork' : 'Generate artwork'),
+      patternBtnLabel: s.patternBusy ? 'Generating…' : (s.patternImg ? 'Regenerate motif' : 'Generate motif'),
       patternPrompt: this.buildPatternPrompt(),
       patternImg: previewArt || '', patternPreviewImg: previewArt || '', patternHas: !!previewArt,
       patternErr: s.patternErr, patternErrShow: !!s.patternErr,
@@ -2497,7 +2518,7 @@ class Component extends DCLogic {
       toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams,
       previewAspect, previewBg, previewImg, previewSize,
       patternOverlayShow, patternOverlaySingle, patternOverlayRepeat,
-      patternOverlaySrc, patternOverlayBlend, patternOverlayPos,
+      patternOverlaySrc, patternOverlayBlend, patternOverlayPos, patternOverlayTransform,
       patternTileId, patternTileW, patternTileH,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,

@@ -144,13 +144,21 @@ function mockImage(prompt, mode) {
   const c1 = laser ? '#5a4b32' : 'hsl(' + hue + ',38%,42%)';
   const c2 = laser ? '#d7cbb2' : emb ? '#ffffff' : 'hsl(' + ((hue + 40) % 360) + ',30%,72%)';
   const c3 = emb ? 'hsl(' + ((hue + 80) % 360) + ',45%,55%)' : c1;
+  const singleMotif = /ONE isolated motif|single motif|one emblem/i.test(prompt);
   let motifs = '';
-  for (let i = 0; i < 9; i++) {
-    const x = 90 + (i % 3) * 160, y = 90 + Math.floor(i / 3) * 160;
-    const r = 28 + ((h >> (i % 8)) % 26);
+  if (singleMotif) {
+    const r = 72 + (h % 40);
     motifs += emb
-      ? '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + (i % 2 ? c1 : c3) + '"/>'
-      : '<rect x="' + (x - r) + '" y="' + (y - r) + '" width="' + r * 2 + '" height="' + r * 2 + '" fill="none" stroke="' + c1 + '" stroke-width="' + (laser ? 3 : 8) + '" transform="rotate(' + ((h + i * 37) % 90) + ' ' + x + ' ' + y + ')"/>';
+      ? '<circle cx="256" cy="256" r="' + r + '" fill="' + c1 + '"/><circle cx="256" cy="256" r="' + Math.round(r * 0.55) + '" fill="' + c3 + '"/>'
+      : '<rect x="' + (256 - r) + '" y="' + (256 - r) + '" width="' + r * 2 + '" height="' + r * 2 + '" fill="none" stroke="' + c1 + '" stroke-width="' + (laser ? 4 : 10) + '" transform="rotate(' + (h % 90) + ' 256 256)"/>';
+  } else {
+    for (let i = 0; i < 9; i++) {
+      const x = 90 + (i % 3) * 160, y = 90 + Math.floor(i / 3) * 160;
+      const r = 28 + ((h >> (i % 8)) % 26);
+      motifs += emb
+        ? '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + (i % 2 ? c1 : c3) + '"/>'
+        : '<rect x="' + (x - r) + '" y="' + (y - r) + '" width="' + r * 2 + '" height="' + r * 2 + '" fill="none" stroke="' + c1 + '" stroke-width="' + (laser ? 3 : 8) + '" transform="rotate(' + ((h + i * 37) % 90) + ' ' + x + ' ' + y + ')"/>';
+    }
   }
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">' +
