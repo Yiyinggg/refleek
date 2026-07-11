@@ -11,6 +11,7 @@ import {
 } from "../selectors";
 import { layoutLabelFor } from "../labels";
 import type { Catalog, WorkflowState } from "../types";
+import { PatternOverlay } from "./PatternOverlay";
 
 function Swatch({ slug }: { slug: string }) {
   const swatch = swatchFor(slug);
@@ -42,7 +43,11 @@ export function LivePreview({
   const quantity = parseQuantity(state.brief);
 
   const stage = state.renderImg ? (
-    <img src={state.renderImg} alt="Generated product render" style={{ animation: "swap .4s ease both" }} />
+    <img
+      src={state.renderImg}
+      alt="Generated product render"
+      style={{ animation: "swap .4s ease both" }}
+    />
   ) : isMix ? (
     <div
       className="preview__patch"
@@ -54,7 +59,13 @@ export function LivePreview({
       {mix.map((m) => (
         <div
           key={m.slug}
-          style={{ position: "relative", aspectRatio: "1 / 1", borderRadius: state.patchworkMode === "organic" ? "40% 60% 55% 45%" : 0, overflow: "hidden" }}
+          style={{
+            position: "relative",
+            aspectRatio: "1 / 1",
+            borderRadius:
+              state.patchworkMode === "organic" ? "40% 60% 55% 45%" : 0,
+            overflow: "hidden",
+          }}
         >
           <Swatch slug={m.slug} />
         </div>
@@ -63,13 +74,7 @@ export function LivePreview({
   ) : (
     <div className="preview__patch">
       {material ? <Swatch slug={material.slug} /> : null}
-      {state.patternImg ? (
-        <img
-          src={state.patternImg}
-          alt="Generated pattern artwork"
-          style={{ position: "absolute", inset: 0, mixBlendMode: "multiply", opacity: 0.92 }}
-        />
-      ) : null}
+      <PatternOverlay state={state} />
     </div>
   );
 
