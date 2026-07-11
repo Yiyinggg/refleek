@@ -25,6 +25,9 @@
   ::-webkit-scrollbar-track{background:transparent}
   @keyframes rf-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   @keyframes rf-swap{from{opacity:0}to{opacity:1}}
+  .rf-range{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:999px;background:rgba(15,15,14,.14);outline:none;margin:10px 0 0}
+  .rf-range::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#E8452A;border:2px solid #F4F1EA;box-shadow:0 0 0 1px rgba(15,15,14,.12);cursor:pointer}
+  .rf-range::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#E8452A;border:2px solid #F4F1EA;box-shadow:0 0 0 1px rgba(15,15,14,.12);cursor:pointer}
   @media print{
     header,.rf-no-print{display:none!important}
     body{background:#fff}
@@ -89,13 +92,50 @@
           </div>
 
           <div style="margin-top:28px">
-            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:14px">Or pick a product</div>
-            <div style="display:flex;flex-wrap:wrap;gap:9px">
-              <sc-for list="{{ productChips }}" as="c" hint-placeholder-count="8">
-                <button onClick="{{ c.onClick }}" style="padding:9px 16px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};border-radius:999px;font-size:12.5px;font-weight:500;transition:all .18s">{{ c.name }}</button>
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:12px">Or source unfinished fabric</div>
+            <p style="font-family:'Space Mono',monospace;font-size:11px;line-height:1.6;color:rgba(15,15,14,.5);margin:0 0 14px;max-width:52ch">New deadstock rolls and reclaimed panel lots — use as raw input or cut to your product spec.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px">
+              <sc-for list="{{ unfinishedFabricOptions }}" as="uf" hint-placeholder-count="3">
+                <button onClick="{{ uf.onClick }}" style="padding:9px 16px;border:1px solid {{ uf.bd }};background:{{ uf.bg }};color:{{ uf.fg }};border-radius:999px;font-size:12.5px;font-weight:500;transition:all .18s">{{ uf.name }}</button>
               </sc-for>
             </div>
+
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:18px">Or pick a product</div>
+            <sc-for list="{{ productCategories }}" as="cat" hint-placeholder-count="2">
+              <div style="margin-bottom:22px">
+                <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(15,15,14,.38);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(15,15,14,.1)">{{ cat.label }}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:9px">
+                  <sc-for list="{{ cat.items }}" as="c" hint-placeholder-count="4">
+                    <button onClick="{{ c.onClick }}" style="padding:9px 16px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};border-radius:999px;font-size:12.5px;font-weight:500;transition:all .18s">{{ c.name }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
           </div>
+
+          <sc-if value="{{ showSizeControls }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;border-top:1px solid rgba(15,15,14,.16);padding-top:20px">
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:6px">Dimensions</div>
+            <p style="font-family:'Space Mono',monospace;font-size:11px;line-height:1.6;color:rgba(15,15,14,.5);margin:0 0 16px">Home textiles are cut to your size — preview updates live on the right.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:360px">
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Width (cm)</label>
+                <input type="number" min="30" max="400" value="{{ productWidth }}" onChange="{{ applyProductWidth }}" style="display:block;width:100%;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:10px 12px;font-family:'Bodoni Moda',serif;font-size:20px;color:#0F0F0E;outline:none" />
+              </div>
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Height (cm)</label>
+                <input type="number" min="30" max="400" value="{{ productHeight }}" onChange="{{ applyProductHeight }}" style="display:block;width:100%;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:10px 12px;font-family:'Bodoni Moda',serif;font-size:20px;color:#0F0F0E;outline:none" />
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ showFixedSize }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;border-top:1px solid rgba(15,15,14,.16);padding-top:20px">
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:6px">Dimensions</div>
+            <p style="font-family:'Space Mono',monospace;font-size:11px;line-height:1.6;color:rgba(15,15,14,.5);margin:0">Fixed size for this accessory — <span style="color:#0F0F0E">{{ effectiveDims }}</span></p>
+          </div>
+          </sc-if>
         </section>
         </sc-if>
 
@@ -166,6 +206,15 @@
             <button onClick="{{ applyAiPicks }}" style="padding:9px 16px;border:1px solid #0F0F0E;background:transparent;color:#0F0F0E;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">Apply AI picks →</button>
           </div>
 
+          <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.06em;line-height:1.6;color:rgba(15,15,14,.55);border-left:2px solid rgba(15,15,14,.25);padding-left:12px">{{ surfaceRule }}</div>
+
+          <sc-if value="{{ techNoteShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:14px;border:1px solid {{ accent }};background:rgba(232,69,42,.07);padding:13px 16px">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:{{ accent }};white-space:nowrap;padding-top:1px">✕ NOT AVAILABLE</span>
+            <p style="margin:0;font-size:12px;line-height:1.55">{{ techNote }}</p>
+          </div>
+          </sc-if>
+
           <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:24px">
             <sc-for list="{{ techList }}" as="t" hint-placeholder-count="9">
               <button onClick="{{ t.onToggle }}" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-size:12.5px;font-weight:500;transition:all .18s">
@@ -198,6 +247,60 @@
               </button>
             </sc-for>
           </div>
+
+          <!-- AI pattern studio -->
+          <div style="margin-top:32px;border-top:1.5px solid #0F0F0E;padding-top:18px">
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:14px">◆ AI Pattern Studio · {{ patternModeLabel }}</div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:6px;background:rgba(15,15,14,.06);border-radius:999px;padding:5px;margin-bottom:18px;max-width:520px">
+              <sc-for list="{{ patternInputTabs }}" as="tab" hint-placeholder-count="3">
+                <button onClick="{{ tab.onClick }}" style="padding:8px 14px;border:none;border-radius:999px;background:{{ tab.bg }};color:{{ tab.fg }};font-size:12px;font-weight:500;transition:all .18s;white-space:nowrap">{{ tab.name }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ patternInputPrompt }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:16px">
+              <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Describe your pattern</label>
+              <textarea value="{{ patternPromptText }}" onChange="{{ applyPatternPrompt }}" placeholder="e.g. tonal botanical repeat in sage green, Art Deco geometry, hand-drawn stripe…" style="display:block;width:100%;min-height:88px;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:12px 14px;font-family:'Archivo',sans-serif;font-size:13px;line-height:1.55;color:#0F0F0E;outline:none;resize:vertical"></textarea>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ patternInputUpload }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:16px">
+              <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Upload your reference image</label>
+              <div style="margin-top:10px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+                <label style="display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px dashed rgba(15,15,14,.35);background:#FBFAF6;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+                  Choose image
+                  <input type="file" accept="image/*" onChange="{{ onPatternUpload }}" style="display:none" />
+                </label>
+                <sc-if value="{{ patternUploadHas }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ patternUploadImg }}" style="width:56px;height:56px;object-fit:cover;border:1px solid rgba(15,15,14,.2)" />
+                  <span style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(15,15,14,.5)">Reference loaded — AI will adapt it to your material &amp; finish.</span>
+                </sc-if>
+              </div>
+            </div>
+            </sc-if>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+              <p style="margin:0;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.65;color:rgba(15,15,14,.5);max-width:70ch;flex:1">{{ patternPromptHint }}</p>
+              <button onClick="{{ generatePattern }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:11px 18px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;flex:none">{{ patternBtnLabel }} <span style="color:{{ accent }}">◆</span></button>
+            </div>
+
+            <sc-if value="{{ patternBusyShow }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;border:1px dashed rgba(15,15,14,.3);padding:26px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.5)">Generating artwork…</div>
+            </sc-if>
+
+            <sc-if value="{{ patternErrShow }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;border:1px solid {{ accent }};background:rgba(232,69,42,.07);padding:13px 16px;font-size:12px;line-height:1.5"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:{{ accent }}">✕ ERROR — </span>{{ patternErr }}</div>
+            </sc-if>
+
+            <sc-if value="{{ patternHas }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+              <img src="{{ patternImg }}" style="width:min(100%,300px);border:1.5px solid #0F0F0E;background:#fff;display:block" />
+              <div style="flex:1;min-width:180px;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.7;color:rgba(15,15,14,.6)">Generated artwork — carried into the AI render and embedded in the tech pack PDF.</div>
+            </div>
+            </sc-if>
+          </div>
         </section>
         </sc-if>
 
@@ -206,18 +309,63 @@
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº05</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Placement.</h1>
-          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Watch the preview update as you choose →</p>
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Adjust repeat, scale, and motif position — preview updates live →</p>
 
-          <div style="display:flex;flex-direction:column;border-top:1px solid rgba(15,15,14,.16)">
-            <sc-for list="{{ layoutList }}" as="l" hint-placeholder-count="4">
-              <button onClick="{{ l.onSelect }}" style="display:flex;align-items:baseline;gap:14px;text-align:left;background:{{ l.bg }};border:none;border-bottom:1px solid rgba(15,15,14,.16);padding:17px 14px;transition:background .18s">
-                <span style="font-family:'Space Mono',monospace;font-size:11px;color:{{ l.dot }}">{{ l.mark }}</span>
-                <span style="flex:1">
-                  <span style="display:block;font-family:'Bodoni Moda',serif;font-weight:600;font-size:21px;color:{{ l.fg }}">{{ l.name }}</span>
-                  <span style="display:block;font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.5);margin-top:3px">{{ l.desc }}</span>
-                </span>
-              </button>
+          <div style="border-top:1px solid rgba(15,15,14,.16);padding-top:20px;display:flex;flex-direction:column;gap:22px">
+
+            <!-- Repeat -->
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:10px">Repeat</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;background:rgba(15,15,14,.06);border-radius:999px;padding:5px">
+                <sc-for list="{{ repeatModes }}" as="r" hint-placeholder-count="5">
+                  <button onClick="{{ r.onSelect }}" style="padding:8px 14px;border:none;border-radius:999px;background:{{ r.bg }};color:{{ r.fg }};font-size:12px;font-weight:500;transition:all .18s;white-space:nowrap">{{ r.name }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <!-- Placement (single mode) -->
+            <sc-if value="{{ showPlacement }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:10px">Placement</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ placementModes }}" as="p" hint-placeholder-count="3">
+                  <button onClick="{{ p.onSelect }}" style="padding:8px 14px;border:1px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.fg }};font-size:12px;font-weight:500;border-radius:999px;transition:all .18s">{{ p.name }}</button>
+                </sc-for>
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- Global scale / rotate -->
+            <sc-for list="{{ layoutSliders }}" as="sl" hint-placeholder-count="2">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                  <span style="font-size:13px;font-weight:500">{{ sl.label }}</span>
+                  <span style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.55)">{{ sl.val }}</span>
+                </div>
+                <input type="range" class="rf-range" min="{{ sl.min }}" max="{{ sl.max }}" value="{{ sl.value }}" onChange="{{ sl.onChange }}" style="background:linear-gradient(to right,{{ accent }} {{ sl.pct }}%,rgba(15,15,14,.14) {{ sl.pct }}%)" />
+              </div>
             </sc-for>
+
+            <!-- Linked motifs -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+                <span style="font-size:13px;font-weight:600">Linked motifs</span>
+                <span style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.45)">1</span>
+              </div>
+              <div style="background:#FBFAF6;border:1px solid rgba(15,15,14,.12);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:16px">
+                <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(15,15,14,.4)">motif</span>
+                <sc-for list="{{ motifSliders }}" as="sl" hint-placeholder-count="4">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                      <span style="font-size:12.5px;font-weight:500">{{ sl.label }}</span>
+                      <span style="font-family:'Space Mono',monospace;font-size:10.5px;color:rgba(15,15,14,.5)">{{ sl.val }}</span>
+                    </div>
+                    <input type="range" class="rf-range" min="{{ sl.min }}" max="{{ sl.max }}" value="{{ sl.value }}" onChange="{{ sl.onChange }}" style="background:linear-gradient(to right,{{ accent }} {{ sl.pct }}%,rgba(15,15,14,.14) {{ sl.pct }}%)" />
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
           </div>
         </section>
         </sc-if>
@@ -227,7 +375,7 @@
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Render — Nº06</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Preview<br><span style="font-style:italic;font-weight:500">ready.</span></h1>
-          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 24px;max-width:44ch">The render on the right reflects every choice. Confirm the spec, or step back to adjust.</p>
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 24px;max-width:52ch">AI renders your full workflow — product, dimensions, material, techniques, pattern, and layout — as a photorealistic preview on the right.</p>
 
           <div style="display:flex;flex-direction:column;border-top:1px solid rgba(15,15,14,.16)">
             <sc-for list="{{ summaryRows }}" as="r" hint-placeholder-count="7">
@@ -237,6 +385,24 @@
               </div>
             </sc-for>
           </div>
+
+          <!-- AI render -->
+          <div style="margin-top:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <button onClick="{{ generateRender }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:12px 20px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase">{{ renderBtnLabel }} <span style="color:{{ accent }}">◆</span></button>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(15,15,14,.5)">Uses your generated artwork + material + layout.</span>
+          </div>
+
+          <sc-if value="{{ renderBusyShow }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;border:1px dashed rgba(15,15,14,.3);padding:26px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.5)">Rendering product…</div>
+          </sc-if>
+
+          <sc-if value="{{ renderErrShow }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;border:1px solid {{ accent }};background:rgba(232,69,42,.07);padding:13px 16px;font-size:12px;line-height:1.5"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:{{ accent }}">✕ ERROR — </span>{{ renderErr }}</div>
+          </sc-if>
+
+          <sc-if value="{{ renderHas }}" hint-placeholder-val="{{ false }}">
+          <img src="{{ renderImg }}" style="width:min(100%,420px);border:1.5px solid #0F0F0E;margin-top:18px;display:block" />
+          </sc-if>
         </section>
         </sc-if>
 
@@ -317,9 +483,24 @@
 
       <div style="flex:1;overflow-y:auto;padding:clamp(22px,3vw,42px) clamp(18px,2.6vw,34px)">
 
+        <!-- AI render preview (replaces CSS mockup once generated) -->
+        <sc-if value="{{ previewHasRender }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
+          <div style="position:relative;width:min(100%,420px)">
+            <img src="{{ renderImg }}" style="width:100%;display:block;box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both" />
+            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">◆ AI render · {{ previewCaption }}</span>
+          </div>
+        </div>
+        </sc-if>
+
         <!-- fabric mockup -->
+        <sc-if value="{{ previewNoRender }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;align-items:center;justify-content:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
-          <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both">
+          <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both;overflow:hidden">
+
+            <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.82;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})"></div>
+            </sc-if>
 
             <!-- TOTE preview -->
             <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
@@ -361,6 +542,15 @@
             <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ previewCaption }}</span>
           </div>
         </div>
+        </sc-if>
+
+        <!-- generated artwork chip -->
+        <sc-if value="{{ patternHas }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:12px;align-items:center;background:#FBFAF6;border:1px solid rgba(15,15,14,.16);padding:10px 12px;margin-bottom:14px">
+          <img src="{{ patternImg }}" style="width:44px;height:44px;object-fit:cover;border:1px solid rgba(15,15,14,.2);display:block" />
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(15,15,14,.6)">AI artwork · {{ patternModeLabel }}</div>
+        </div>
+        </sc-if>
 
         <!-- circular badge -->
         <div style="background:#0F0F0E;color:#F4F1EA;padding:15px 18px;margin-bottom:14px">
@@ -405,35 +595,160 @@ class Component extends DCLogic {
     node: 1,
     brief: 'I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.',
     product: 'Tote bag',
+    productWidth: 38,
+    productHeight: 42,
     source: 'reclaimed',
     material: 'denim',
     techniques: ['patchwork', 'cut-sew', 'embroidery'],
     pattern: 'placement',
-    layout: 'center',
+    repeatMode: 'brick',
+    placement: 'center',
+    layoutScale: 100,
+    layoutRotate: 0,
+    motifScale: 100,
+    motifRotate: 0,
+    motifOffsetX: 0,
+    motifOffsetY: 0,
     style: 'workwear',
+    techNote: '',
+    patternImg: null,
+    patternPromptText: '',
+    patternInputMode: 'preset',
+    patternUploadImg: null,
+    patternBusy: false,
+    patternErr: '',
+    renderImg: null,
+    renderBusy: false,
+    renderErr: '',
   };
 
+  // Surface-finish rules by material stream:
+  //   unfinished deadstock  → embroidery, digital print, laser etching
+  //   upcycled reclaimed    → embroidery, laser etching (no print)
+  SURFACE_TECH = ['embroidery', 'print', 'laser'];
+  allowedSurface(stream) {
+    return stream === 'new' ? ['embroidery', 'print', 'laser'] : ['embroidery', 'laser'];
+  }
+  PRINT_BLOCK_REASON = 'Digital print is not available on upcycled fabric — reclaimed panels carry surface irregularity and existing washes, so print colour cannot be controlled. Use laser etching or embroidery instead.';
+
+  PRODUCT_CATEGORIES = [
+    { id: 'home-textiles', label: 'Home Textiles', products: ['Tablecloth', 'Cushion cover', 'Curtain', 'Apron'] },
+    { id: 'garments-accessories', label: 'Garments / Accessories', products: ['Tote bag', 'Scarf', 'Pouch', 'Bandana'] },
+  ];
+
+  UNFINISHED_FABRIC = ['Fabric roll', 'Panel lot', 'Material bundle'];
+
   PRODUCT_SPECS = {
-    'Tote bag':      { dims: '38 × 42cm', fabricUse: '4 panels/bag', costPer: 12, previewMode: 'tote' },
-    'Tablecloth':    { dims: '150 × 220cm', fabricUse: '38m of 42m', costPer: 16, previewMode: 'flat' },
-    'Apron':         { dims: '70 × 90cm', fabricUse: '1.2m/apron', costPer: 10, previewMode: 'flat' },
-    'Scarf':         { dims: '60 × 180cm', fabricUse: '1.2m/band', costPer: 8, previewMode: 'scarf' },
-    'Cushion cover': { dims: '45 × 45cm', fabricUse: '0.6m/cover', costPer: 9, previewMode: 'flat' },
-    'Curtain':       { dims: '140 × 240cm', fabricUse: '3.5m/panel', costPer: 14, previewMode: 'flat' },
-    'Pouch':         { dims: '25 × 18cm', fabricUse: '0.3m/pouch', costPer: 6, previewMode: 'scarf' },
-    'Bandana':       { dims: '55 × 55cm', fabricUse: '0.4m/bandana', costPer: 5, previewMode: 'scarf' },
+    'Tote bag':      { defaultWidth: 38, defaultHeight: 42, fabricUse: '4 panels/bag', costPer: 12, previewMode: 'tote', category: 'garments-accessories', fixedSize: true },
+    'Tablecloth':    { defaultWidth: 150, defaultHeight: 220, fabricUse: '38m of 42m', costPer: 16, previewMode: 'flat', category: 'home-textiles', fixedSize: false },
+    'Apron':         { defaultWidth: 70, defaultHeight: 90, fabricUse: '1.2m/apron', costPer: 10, previewMode: 'flat', category: 'home-textiles', fixedSize: false },
+    'Scarf':         { defaultWidth: 60, defaultHeight: 180, fabricUse: '1.2m/band', costPer: 8, previewMode: 'scarf', category: 'garments-accessories', fixedSize: true },
+    'Cushion cover': { defaultWidth: 45, defaultHeight: 45, fabricUse: '0.6m/cover', costPer: 9, previewMode: 'flat', category: 'home-textiles', fixedSize: false },
+    'Curtain':       { defaultWidth: 140, defaultHeight: 240, fabricUse: '3.5m/panel', costPer: 14, previewMode: 'flat', category: 'home-textiles', fixedSize: false },
+    'Pouch':         { defaultWidth: 25, defaultHeight: 18, fabricUse: '0.3m/pouch', costPer: 6, previewMode: 'scarf', category: 'garments-accessories', fixedSize: true },
+    'Bandana':       { defaultWidth: 55, defaultHeight: 55, fabricUse: '0.4m/bandana', costPer: 5, previewMode: 'scarf', category: 'garments-accessories', fixedSize: true },
+    'Fabric roll':   { defaultWidth: 150, defaultHeight: 42, fabricUse: '42m roll', costPer: 4, previewMode: 'flat', category: 'unfinished-material', fixedSize: true, dimsLabel: '150cm width · 42m roll' },
+    'Panel lot':     { defaultWidth: 45, defaultHeight: 60, fabricUse: '120 panels', costPer: 3, previewMode: 'flat', category: 'unfinished-material', fixedSize: true, dimsLabel: '45 × 60cm avg' },
+    'Material bundle': { defaultWidth: 100, defaultHeight: 100, fabricUse: '25kg bundle', costPer: 2, previewMode: 'flat', category: 'unfinished-material', fixedSize: true, dimsLabel: 'Mixed lot' },
   };
 
   ACC() { return this.props.accent || '#E8452A'; }
 
-  go(n) { this.setState({ node: Math.max(1, Math.min(8, n)) }); }
+  productSpec(name) {
+    return this.PRODUCT_SPECS[name || this.state.product] || this.PRODUCT_SPECS['Tote bag'];
+  }
+
+  effectiveDims(state) {
+    const s = state || this.state;
+    const spec = this.productSpec(s.product);
+    if (spec.dimsLabel) return spec.dimsLabel;
+    const w = Math.max(30, Math.min(400, Number(s.productWidth) || spec.defaultWidth));
+    const h = Math.max(30, Math.min(400, Number(s.productHeight) || spec.defaultHeight));
+    return w + ' × ' + h + 'cm';
+  }
+
+  selectProduct(name) {
+    const spec = this.productSpec(name);
+    const upd = {
+      product: name,
+      productWidth: spec.defaultWidth,
+      productHeight: spec.defaultHeight,
+      renderImg: null,
+    };
+    if (spec.category === 'unfinished-material') {
+      upd.source = name === 'Fabric roll' ? 'deadstock' : 'reclaimed';
+    }
+    this.setState(upd);
+  }
+
+  selectUnfinishedFabric(name) {
+    const spec = this.productSpec(name);
+    this.setState({
+      product: name,
+      productWidth: spec.defaultWidth,
+      productHeight: spec.defaultHeight,
+      source: name === 'Fabric roll' ? 'deadstock' : 'reclaimed',
+      renderImg: null,
+    });
+  }
+
+  setProductDimension(field, raw) {
+    const n = Math.max(30, Math.min(400, Number(raw) || 30));
+    this.setState({ [field]: n, renderImg: null });
+  }
+
+  setPatternInputMode(mode) {
+    this.setState({ patternInputMode: mode, patternErr: '' });
+  }
+
+  applyPatternPrompt(e) {
+    this.setState({ patternPromptText: e.target.value, patternErr: '' });
+  }
+
+  onPatternUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => this.setState({ patternUploadImg: reader.result, patternInputMode: 'upload', patternErr: '' });
+    reader.readAsDataURL(file);
+  }
+
+  go(n) { this.setState({ node: Math.max(1, Math.min(8, n)), techNote: '' }); }
   next() { this.state.node === 8 ? this.go(1) : this.go(this.state.node + 1); }
   back() { this.go(this.state.node - 1); }
+  setLayoutField(field, raw) {
+    const n = Number(raw);
+    this.setState({ [field]: n, renderImg: null });
+  }
+  setRepeatMode(mode) { this.setState({ repeatMode: mode, renderImg: null }); }
+  setPlacement(mode) { this.setState({ placement: mode, renderImg: null }); }
+  layoutLabel() {
+    const s = this.state;
+    const REPEAT = { grid: 'Grid repeat', 'half-drop': 'Half drop', brick: 'Brick repeat', mirror: 'Mirror repeat', single: 'Single' };
+    if (s.repeatMode === 'single') {
+      const PLACE = { corner: 'Corner', center: 'Centre', border: 'Border' };
+      return (PLACE[s.placement] || 'Centre') + ' · single';
+    }
+    return REPEAT[s.repeatMode] || 'Grid repeat';
+  }
   toggleTech(id) {
     const t = this.state.techniques.slice();
     const i = t.indexOf(id);
     if (i >= 0) t.splice(i, 1); else t.push(id);
     this.setState({ techniques: t });
+  }
+  curMaterial() {
+    const all = this.MATERIALS();
+    return all.find(m => m.id === this.state.material) || all[0];
+  }
+  selectMaterial(id) {
+    const m = this.MATERIALS().find(x => x.id === id) || {};
+    const upd = { material: id, techNote: '', patternImg: null, renderImg: null, patternErr: '', renderErr: '' };
+    if (m.stream === 'reclaimed' && this.state.techniques.indexOf('print') >= 0) {
+      upd.techniques = this.state.techniques.filter(t => t !== 'print');
+      upd.techNote = this.PRINT_BLOCK_REASON;
+    }
+    this.setState(upd);
   }
 
   parseBrief(brief) {
@@ -454,14 +769,15 @@ class Component extends DCLogic {
     if (product === 'Tote bag' || p.wantsPatchwork) {
       return {
         materialId: 'denim',
-        techniques: ['patchwork', 'cut-sew', 'embroidery'],
+        techniques: ['patchwork', 'cut-sew', 'laser', 'embroidery'],
         pattern: 'placement',
-        layout: 'center',
+        repeatMode: 'single',
+        placement: 'center',
         source: 'reclaimed',
         materialReason: 'Reclaimed denim panel lot — deconstructed unresellable jeans and jackets. 120 usable panels at Fleek-linked sorting centre, Pakistan. Best for patchwork totes and accessories.',
-        techniqueReason: 'Patchwork + reinforced stitching + optional embroidery label. Denim panels vary in shade and size, so patchwork turns inconsistency into a design feature.',
+        techniqueReason: 'Patchwork + reinforced stitching, laser-etched tonal motif + optional embroidery label. Denim panels vary in shade and size, so patchwork turns inconsistency into a design feature.',
         patternReason: 'Modular workwear patchwork — 4-panel front, 4-panel back, reinforced handle tabs.',
-        avoidNote: 'Avoid all-over print — panel colour variation may make printing inconsistent.',
+        avoidNote: 'Digital print is not available on upcycled fabric — surface irregularity and existing washes make print colour uncontrollable; laser etching gives the tonal mark instead.',
       };
     }
     if (product === 'Tablecloth' || p.wantsMinimal) {
@@ -469,12 +785,13 @@ class Component extends DCLogic {
         materialId: 'linen',
         techniques: ['cut-sew', 'embroidery', 'edge-finishing'],
         pattern: 'tonal-logo',
-        layout: 'corner',
+        repeatMode: 'single',
+        placement: 'corner',
         source: 'deadstock',
         materialReason: 'New deadstock linen blend — 42m available from Pakistan fabric supplier. Holds a crisp hemmed edge; ideal for hospitality textiles.',
         techniqueReason: 'Cut-and-sew with one tonal embroidery mark. Linen holds a crisp hemmed edge; a single recessive detail keeps it minimal.',
         patternReason: 'Tonal logo — single corner mark, bottom-right placement.',
-        avoidNote: 'Skip all-over print — the roll is one dye lot, so surface work is unnecessary.',
+        avoidNote: 'Digital print is available on this unfinished deadstock, but a single tonal mark keeps the hospitality look minimal.',
       };
     }
     if (product === 'Scarf' || product === 'Bandana' || product === 'Pouch') {
@@ -482,7 +799,8 @@ class Component extends DCLogic {
         materialId: 'shirt',
         techniques: ['cut-sew', 'edge-finishing'],
         pattern: 'none',
-        layout: 'border',
+        repeatMode: 'single',
+        placement: 'border',
         source: 'reclaimed',
         materialReason: 'Shirt cotton bundle — reclaimed panels from Fleek India sorting centre. Panel-based construction suits scarves and accessories.',
         techniqueReason: 'Cut-and-sew with edge finishing. Panel-based layout; edge finishing is the primary technique.',
@@ -495,7 +813,8 @@ class Component extends DCLogic {
         materialId: 'knit',
         techniques: ['patchwork', 'quilting', 'applique'],
         pattern: 'placement',
-        layout: 'center',
+        repeatMode: 'single',
+        placement: 'center',
         source: 'reclaimed',
         materialReason: 'Knit bundle — sorted reclaimed knit from Fleek Pakistan. Soft texture suits patchwork cushions.',
         techniqueReason: 'Patchwork + quilting. Mixed knit panels create tactile, one-of-one cushion covers.',
@@ -503,11 +822,54 @@ class Component extends DCLogic {
         avoidNote: 'Avoid tight fitted construction — knit panels have variable stretch.',
       };
     }
+    if (product === 'Fabric roll') {
+      return {
+        materialId: 'linen',
+        techniques: ['cut-sew', 'edge-finishing'],
+        pattern: 'none',
+        repeatMode: 'single',
+        placement: 'border',
+        source: 'deadstock',
+        materialReason: 'New deadstock linen blend roll — 42m available from Pakistan supplier. Unfinished greige stock ready for cutting or resale.',
+        techniqueReason: 'Minimal processing — cut to length, edge finishing optional. Roll stays usable as raw input.',
+        patternReason: 'No surface treatment — material sold as-is or cut to spec.',
+        avoidNote: 'Skip complex construction — this is a material sourcing path, not a finished product.',
+      };
+    }
+    if (product === 'Panel lot') {
+      return {
+        materialId: 'denim',
+        techniques: ['cut-sew', 'patchwork'],
+        pattern: 'none',
+        repeatMode: 'grid',
+        placement: 'center',
+        source: 'reclaimed',
+        materialReason: 'Reclaimed denim panel lot — 120 usable panels from Fleek Pakistan sorting centre. Ready for patchwork or further cutting.',
+        techniqueReason: 'Panel-based layout. Sort and grade panels before downstream production.',
+        patternReason: 'Mixed panel lot — shade and size variation expected.',
+        avoidNote: 'Not a finished product — panels need further design and assembly.',
+      };
+    }
+    if (product === 'Material bundle') {
+      return {
+        materialId: 'knit',
+        techniques: ['cut-sew', 'mixed-media'],
+        pattern: 'none',
+        repeatMode: 'grid',
+        placement: 'center',
+        source: 'reclaimed',
+        materialReason: 'Mixed reclaimed material bundle — sorted knit and woven panels from Fleek India. Bulk lot for upcycling studios.',
+        techniqueReason: 'Sort and allocate by panel type. Mixed-media handling for irregular lots.',
+        patternReason: 'Unsorted bundle — material grade varies across the lot.',
+        avoidNote: 'Requires sorting before production — not pre-cut to product spec.',
+      };
+    }
     return {
       materialId: 'twill',
       techniques: ['cut-sew', 'edge-finishing'],
       pattern: 'none',
-      layout: 'corner',
+      repeatMode: 'single',
+      placement: 'corner',
       source: 'deadstock',
       materialReason: 'Cotton twill deadstock — versatile new fabric from India. Suitable for aprons, totes, and workwear panels.',
       techniqueReason: 'Cut-and-sew with edge finishing. Straightforward construction for semi-flat products.',
@@ -526,8 +888,16 @@ class Component extends DCLogic {
     else if (/apron/i.test(brief)) updates.product = 'Apron';
     else if (/curtain/i.test(brief)) updates.product = 'Curtain';
     else if (/cushion/i.test(brief)) updates.product = 'Cushion cover';
+    else if (/fabric roll|deadstock roll|roll of fabric/i.test(brief)) updates.product = 'Fabric roll';
+    else if (/panel lot|panel/i.test(brief)) updates.product = 'Panel lot';
+    else if (/material bundle|bundle/i.test(brief)) updates.product = 'Material bundle';
     if (p.wantsReclaimed) updates.source = 'reclaimed';
     if (p.wantsDeadstock) updates.source = 'deadstock';
+    if (updates.product) {
+      const spec = this.productSpec(updates.product);
+      updates.productWidth = spec.defaultWidth;
+      updates.productHeight = spec.defaultHeight;
+    }
     this.setState(updates);
   }
 
@@ -537,8 +907,10 @@ class Component extends DCLogic {
       material: rec.materialId,
       techniques: rec.techniques.slice(),
       pattern: rec.pattern,
-      layout: rec.layout,
+      repeatMode: rec.repeatMode,
+      placement: rec.placement,
       source: rec.source,
+      techNote: '', patternImg: null, renderImg: null, patternErr: '', renderErr: '',
     });
   }
 
@@ -546,23 +918,233 @@ class Component extends DCLogic {
     if (preset === 'totes') {
       this.setState({
         brief: 'I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.',
-        product: 'Tote bag', source: 'reclaimed', material: 'denim',
+        product: 'Tote bag', productWidth: 38, productHeight: 42, source: 'reclaimed', material: 'denim',
         techniques: ['patchwork', 'cut-sew', 'embroidery'],
-        pattern: 'placement', layout: 'center', style: 'workwear',
+        pattern: 'placement', repeatMode: 'single', placement: 'center', style: 'workwear',
       });
     } else {
       this.setState({
         brief: 'I want to make 15 minimal tablecloths for a restaurant using circular materials. Budget under £300.',
-        product: 'Tablecloth', source: 'deadstock', material: 'linen',
+        product: 'Tablecloth', productWidth: 150, productHeight: 220, source: 'deadstock', material: 'linen',
         techniques: ['cut-sew', 'embroidery', 'edge-finishing'],
-        pattern: 'tonal-logo', layout: 'corner', style: 'minimal',
+        pattern: 'tonal-logo', repeatMode: 'single', placement: 'corner', style: 'minimal',
       });
     }
   }
 
-  exportPdf() { window.print(); }
+  // ---------- AI generation (OpenRouter via /api/generate) ----------
 
-  getConstructionNotes(product, techniques, pattern, layout) {
+  API() { return (location.protocol === 'file:' ? 'http://localhost:3000' : '') + '/api/generate'; }
+
+  // Which surface finish drives the artwork: honour selection, fall back to what the material allows.
+  surfaceMode() {
+    const ok = this.allowedSurface(this.curMaterial().stream);
+    const pick = ['print', 'laser', 'embroidery'].find(id =>
+      this.state.techniques.indexOf(id) >= 0 && ok.indexOf(id) >= 0);
+    return pick || (ok.indexOf('print') >= 0 ? 'print' : 'laser');
+  }
+
+  buildPatternPrompt() {
+    const s = this.state;
+    const cur = this.curMaterial();
+    const base = s.style + ' style motif for a ' + s.product.toLowerCase() + ' made from ' +
+      cur.name.toLowerCase() + ' (' + (cur.stream === 'new' ? 'unfinished deadstock' : 'upcycled reclaimed fabric') + ')';
+    const mode = this.surfaceMode();
+    let finish = '';
+    if (mode === 'print') finish = 'Seamless repeating textile print pattern, ' + base + ', flat 2D artwork, balanced repeat, production-ready for digital fabric printing, plain background, no mockup, no text.';
+    else if (mode === 'laser') finish = 'Single-colour monochrome line-art motif for laser etching on fabric, ' + base + ', tone-on-tone, clean bold linework, high contrast dark lines on plain light background, flat 2D, no shading, no text.';
+    else finish = 'Embroidery motif artwork, maximum 4 thread colours, ' + base + ', flat 2D stitch-style illustration, visible thread texture, plain background, no text.';
+
+    if (s.patternInputMode === 'prompt' && s.patternPromptText.trim()) {
+      return finish + ' User brief: ' + s.patternPromptText.trim() + '.';
+    }
+    if (s.patternInputMode === 'upload' && s.patternUploadImg) {
+      return 'Create production-ready textile artwork inspired by the attached reference image. ' + finish + ' Preserve the visual language of the reference while adapting it for ' + mode + ' on ' + cur.name.toLowerCase() + '.';
+    }
+    return finish;
+  }
+
+  buildRenderPrompt() {
+    const s = this.state;
+    const cur = this.curMaterial();
+    const spec = this.productSpec(s.product);
+    const dims = this.effectiveDims(s);
+    const mode = this.surfaceMode();
+    const PAT = [['none', 'No pattern'], ['tonal-logo', 'Tonal logo'], ['placement', 'Placement print'], ['embroidery', 'Embroidery motif']];
+    const patName = (PAT.find(p => p[0] === s.pattern) || PAT[1])[1];
+    const TECH = [['cut-sew', 'Cut & sew'], ['embroidery', 'Embroidery'], ['laser', 'Laser etching'],
+      ['print', 'Digital print'], ['edge-finishing', 'Edge finishing'], ['applique', 'Appliqué'],
+      ['patchwork', 'Patchwork'], ['quilting', 'Quilting'], ['visible-mending', 'Visible mending']];
+    const techStr = TECH.filter(t => s.techniques.indexOf(t[0]) >= 0).map(t => t[1]).join(', ') || 'cut and sew';
+    const finish = mode === 'print' ? 'digitally printed pattern'
+      : mode === 'laser' ? 'laser-etched tone-on-tone motif' : 'embroidered motif';
+    const REPEAT = {
+      grid: 'as a seamless grid repeat',
+      'half-drop': 'as a half-drop repeat (columns offset by half tile height)',
+      brick: 'as a brick repeat (rows offset by half tile width)',
+      mirror: 'as a mirror repeat (reflected across tile boundaries)',
+      single: 'as a single placement',
+    };
+    const PLACE = { corner: 'in the bottom-right corner', center: 'centred', border: 'as an inset border' };
+    let lay = s.repeatMode === 'single'
+      ? (PLACE[s.placement] || 'centred')
+      : (REPEAT[s.repeatMode] || 'as a grid repeat');
+    let p = 'Photorealistic studio product photo of a ' + s.product.toLowerCase() + ' (' + dims + ') made from ' + cur.name.toLowerCase() +
+      (cur.stream === 'reclaimed' ? ', visibly assembled from reclaimed panels with subtle shade variation. ' : ', clean unfinished deadstock fabric. ');
+    p += 'Construction techniques: ' + techStr + '. Surface pattern style: ' + patName + '. ';
+    if (this.state.patternImg) p += 'Apply the attached artwork onto the product as a ' + finish + ', placed ' + lay + '. ';
+    else p += 'Finish: ' + finish + ', placed ' + lay + '. ';
+    p += 'Layout scale ' + s.layoutScale + '%, layout rotation ' + s.layoutRotate + '°. ';
+    p += 'Motif scale ' + s.motifScale + '%, motif rotation ' + s.motifRotate + '°, offset X ' + s.motifOffsetX + '%, offset Y ' + s.motifOffsetY + '%. ';
+    p += 'Warm paper-beige background, soft shadow, front view, no text, no watermark, no people.';
+    return p;
+  }
+
+  async callGenerate(payload) {
+    const r = await fetch(this.API(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.image) throw new Error(j.error || ('Generation failed (HTTP ' + r.status + ')'));
+    return j.image;
+  }
+
+  async generatePattern() {
+    if (this.state.patternBusy) return;
+    if (this.state.patternInputMode === 'prompt' && !this.state.patternPromptText.trim()) {
+      this.setState({ patternErr: 'Enter a text prompt describing your pattern.' });
+      return;
+    }
+    if (this.state.patternInputMode === 'upload' && !this.state.patternUploadImg) {
+      this.setState({ patternErr: 'Upload a reference image first.' });
+      return;
+    }
+    this.setState({ patternBusy: true, patternErr: '' });
+    try {
+      const payload = { mode: 'pattern', prompt: this.buildPatternPrompt() };
+      if (this.state.patternInputMode === 'upload' && this.state.patternUploadImg) {
+        payload.image = this.state.patternUploadImg;
+      }
+      const img = await this.callGenerate(payload);
+      this.setState({ patternImg: img, patternBusy: false, renderImg: null });
+    } catch (e) {
+      this.setState({ patternErr: String(e.message || e), patternBusy: false });
+    }
+  }
+
+  async generateRender() {
+    if (this.state.renderBusy) return;
+    this.setState({ renderBusy: true, renderErr: '' });
+    try {
+      const payload = { mode: 'render', prompt: this.buildRenderPrompt() };
+      if (this.state.patternImg) payload.image = this.state.patternImg;
+      const img = await this.callGenerate(payload);
+      this.setState({ renderImg: img, renderBusy: false });
+    } catch (e) {
+      this.setState({ renderErr: String(e.message || e), renderBusy: false });
+    }
+  }
+
+  // ---------- Tech pack PDF (jsPDF, images embedded) ----------
+
+  exportPdf() {
+    const load = () => new Promise((ok, err) => {
+      if (window.jspdf) return ok();
+      const sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      sc.onload = ok; sc.onerror = err;
+      document.head.appendChild(sc);
+    });
+    load().then(() => this.buildPdf()).catch(() => window.print());
+  }
+
+  // Rasterise any data URL (incl. SVG mocks) to PNG so jsPDF can embed it.
+  toPng(dataUrl) {
+    return new Promise((ok, err) => {
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth || 512;
+        c.height = img.naturalHeight || 512;
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        ok({ url: c.toDataURL('image/png'), w: c.width, h: c.height });
+      };
+      img.onerror = err;
+      img.src = dataUrl;
+    });
+  }
+
+  async buildPdf() {
+    const { jsPDF } = window.jspdf;
+    const v = this.renderVals();
+    const s = this.state;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const M = 18, W = 210 - M * 2;
+    let y = 22;
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(22); doc.setTextColor(20);
+    doc.text('ReFleek', M, y);
+    doc.setFont('courier', 'normal'); doc.setFontSize(9); doc.setTextColor(90);
+    doc.text('TECH PACK TP-001 · ' + new Date().toISOString().slice(0, 10), 210 - M, y, { align: 'right' });
+    y += 4; doc.setDrawColor(20); doc.setLineWidth(0.6); doc.line(M, y, 210 - M, y); y += 8;
+
+    doc.setFontSize(8);
+    v.techPackRows.forEach((r) => {
+      doc.setFont('courier', 'normal'); doc.setTextColor(120);
+      doc.text(String(r.k).toUpperCase(), M, y);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(20);
+      doc.text(String(r.v), 210 - M, y, { align: 'right' });
+      doc.setFontSize(8);
+      y += 6.5;
+    });
+    y += 1; doc.setDrawColor(160); doc.setLineWidth(0.2); doc.line(M, y, 210 - M, y); y += 7;
+
+    const block = (label, text) => {
+      doc.setFont('courier', 'normal'); doc.setFontSize(8); doc.setTextColor(120);
+      doc.text(label, M, y); y += 4.5;
+      doc.setTextColor(30);
+      doc.splitTextToSize(text, W).forEach((line) => { doc.text(line, M, y); y += 4.2; });
+      y += 3.5;
+    };
+    block('SURFACE FINISH RULE', v.surfaceRule);
+    block('CONSTRUCTION NOTES', v.constructionNotes);
+
+    const imgs = [];
+    if (s.patternImg) imgs.push(['ARTWORK', s.patternImg]);
+    if (s.renderImg) imgs.push(['AI RENDER', s.renderImg]);
+    if (imgs.length) {
+      let x = M, rowH = 0;
+      for (const [label, url] of imgs) {
+        try {
+          const p = await this.toPng(url);
+          const w = 62, h = Math.min(w * (p.h / p.w), 72);
+          doc.setFont('courier', 'normal'); doc.setFontSize(8); doc.setTextColor(120);
+          doc.text(label, x, y);
+          doc.addImage(p.url, 'PNG', x, y + 2, w, h);
+          rowH = Math.max(rowH, h);
+          x += w + 10;
+        } catch (e) { /* skip unembeddable image */ }
+      }
+      y += rowH + 10;
+    }
+
+    if (y > 250) { doc.addPage(); y = 22; }
+    doc.setFont('courier', 'normal'); doc.setFontSize(8); doc.setTextColor(120);
+    doc.text('PRODUCER', M, y); y += 5;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(20);
+    doc.text(v.producer.name + ' — ' + v.producer.loc, M, y); y += 5.5;
+    doc.setFont('courier', 'normal'); doc.setFontSize(8); doc.setTextColor(30);
+    doc.splitTextToSize('Capabilities: ' + v.producer.caps + '. MOQ ' + v.producer.moq + ' pcs · Lead time ' + v.producer.lead + '. ' + v.producer.why, W)
+      .forEach((line) => { doc.text(line, M, y); y += 4.2; });
+
+    doc.setTextColor(150); doc.setFontSize(7.5);
+    doc.text('Circular by default — ReFleek · ' + v.circularLabel, M, 287);
+    doc.save('ReFleek-TechPack-TP001.pdf');
+  }
+
+  getConstructionNotes(product, techniques, pattern, repeatMode, placement) {
     const has = (id) => techniques.indexOf(id) >= 0;
     if (product === 'Tote bag' && has('patchwork')) {
       return '4-panel front, 4-panel back, reinforced handle tabs. Reclaimed cotton webbing or deadstock canvas handles. Optional embroidered ReFleek mark on front pocket. Reinforced stitching at stress points.';
@@ -576,10 +1158,22 @@ class Component extends DCLogic {
     if (product === 'Cushion cover') {
       return 'Patchwork front panel, solid back. Concealed zip closure. Quilting optional on front panel. 1cm seam allowance throughout.';
     }
-    if (has('patchwork')) {
-      return 'Modular patchwork construction. Panel layout per tech pack. Reinforced stitching at panel joins. ' + (layout === 'center' ? 'Centred motif placement.' : 'Corner motif placement.');
+    if (product === 'Fabric roll') {
+      return 'Material supplied as deadstock roll. Optional cut-to-length service. Edge finishing available on request. No garment construction — raw input for downstream production.';
     }
-    return 'Cut-and-sew construction per spec. Edge finishing on all exposed seams. Pattern: ' + pattern + ', layout: ' + layout + '.';
+    if (product === 'Panel lot') {
+      return 'Reclaimed panels sorted by size and shade grade. Panel dimensions vary; spec sheet lists average 45×60cm. Ready for patchwork, appliqué, or further cutting.';
+    }
+    if (product === 'Material bundle') {
+      return 'Mixed reclaimed lot — knit and woven panels bundled by weight. Requires in-house sorting before use. Suitable for upcycling studios and small-batch makers.';
+    }
+    if (has('patchwork')) {
+      const layNote = repeatMode === 'single'
+        ? (placement === 'center' ? 'Centred motif placement.' : 'Corner motif placement.')
+        : repeatMode + ' repeat layout.';
+      return 'Modular patchwork construction. Panel layout per tech pack. Reinforced stitching at panel joins. ' + layNote;
+    }
+    return 'Cut-and-sew construction per spec. Edge finishing on all exposed seams. Pattern: ' + pattern + ', layout: ' + this.layoutLabel() + '.';
   }
 
   MATERIALS() {
@@ -617,8 +1211,12 @@ class Component extends DCLogic {
     const rec = this.getRecommendations(s);
     const parsed = this.parseBrief(s.brief);
     const qty = parsed.quantity;
-    const spec = this.PRODUCT_SPECS[s.product] || this.PRODUCT_SPECS['Tote bag'];
+    const spec = this.productSpec(s.product);
     const previewMode = spec.previewMode;
+    const dims = this.effectiveDims(s);
+    const isHomeTextile = spec.category === 'home-textiles';
+    const isAccessory = spec.category === 'garments-accessories';
+    const isUnfinished = spec.category === 'unfinished-material';
 
     const NODES = ['Product', 'Material', 'Technique', 'Pattern', 'Layout', 'Render', 'Tech Pack', 'Producer'];
     const navItems = NODES.map((name, i) => {
@@ -633,10 +1231,18 @@ class Component extends DCLogic {
       };
     });
 
-    const PRODUCTS = ['Tote bag', 'Tablecloth', 'Apron', 'Scarf', 'Cushion cover', 'Curtain', 'Pouch', 'Bandana'];
-    const productChips = PRODUCTS.map(p => {
+    const chipFor = (p) => {
       const on = s.product === p;
-      return { name: p, onClick: () => this.setState({ product: p }),
+      return { name: p, onClick: () => this.selectProduct(p),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    };
+    const productCategories = this.PRODUCT_CATEGORIES.map(cat => ({
+      label: cat.label,
+      items: cat.products.map(chipFor),
+    }));
+    const unfinishedFabricOptions = this.UNFINISHED_FABRIC.map(name => {
+      const on = s.product === name;
+      return { name, onClick: () => this.selectUnfinishedFabric(name),
         bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
     });
 
@@ -662,23 +1268,34 @@ class Component extends DCLogic {
     const materialsList = filt.map(m => {
       const sel = s.material === m.id;
       const recommended = m.id === rec.materialId;
-      return { ...m, recommended, onSelect: () => this.setState({ material: m.id }),
+      return { ...m, recommended, onSelect: () => this.selectMaterial(m.id),
         selBd: sel ? ink : (recommended ? accent : 'rgba(15,15,14,.14)'),
         selShadow: sel ? '0 0 0 1px ' + ink : (recommended ? '0 0 0 1px ' + accent : 'none'),
         tickBg: sel ? accent : 'transparent', tickBd: sel ? accent : 'rgba(15,15,14,.3)' };
     });
 
+    const cur = all.find(m => m.id === s.material) || all[0];
+    const surfaceOk = this.allowedSurface(cur.stream);
     const recTechIds = rec.techniques;
-    const TECH = [['cut-sew', 'Cut & sew', true], ['embroidery', 'Embroidery', true], ['edge-finishing', 'Edge finishing', true],
-      ['print', 'Print', false], ['applique', 'Appliqué', false], ['patchwork', 'Patchwork', false],
-      ['quilting', 'Quilting', false], ['visible-mending', 'Visible mending', false], ['mixed-media', 'Mixed media', false]];
+    const TECH = [['cut-sew', 'Cut & sew'], ['embroidery', 'Embroidery'], ['laser', 'Laser etching'],
+      ['print', 'Digital print'], ['edge-finishing', 'Edge finishing'], ['applique', 'Appliqué'],
+      ['patchwork', 'Patchwork'], ['quilting', 'Quilting'], ['visible-mending', 'Visible mending']];
     const techList = TECH.map(([id, name]) => {
-      const on = s.techniques.indexOf(id) >= 0;
-      const isRec = recTechIds.indexOf(id) >= 0;
-      return { name, rec: isRec, onToggle: () => this.toggleTech(id),
-        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)',
+      const locked = this.SURFACE_TECH.indexOf(id) >= 0 && surfaceOk.indexOf(id) < 0;
+      const on = !locked && s.techniques.indexOf(id) >= 0;
+      const isRec = !locked && recTechIds.indexOf(id) >= 0;
+      return { name: locked ? name + ' ✕' : name, rec: isRec,
+        onToggle: locked
+          ? () => this.setState({ techNote: this.PRINT_BLOCK_REASON })
+          : () => this.toggleTech(id),
+        bg: on ? ink : 'transparent',
+        fg: locked ? 'rgba(15,15,14,.28)' : (on ? paper : ink),
+        bd: locked ? 'rgba(15,15,14,.12)' : (on ? ink : 'rgba(15,15,14,.25)'),
         recBg: on ? accent : 'rgba(15,15,14,.1)', recFg: on ? paper : 'rgba(15,15,14,.6)' };
     });
+    const surfaceRule = cur.stream === 'new'
+      ? 'Unfinished deadstock — surface finishes: Embroidery · Digital print · Laser etching.'
+      : 'Upcycled reclaimed fabric — surface finishes: Embroidery · Laser etching. Digital print not supported.';
 
     const PAT = [['none', 'No pattern', 'Raw linen, hemmed'], ['tonal-logo', 'Tonal logo', 'Single corner mark'],
       ['placement', 'Placement print', 'Centred motif'], ['embroidery', 'Embroidery motif', 'Stitched monogram']];
@@ -689,36 +1306,59 @@ class Component extends DCLogic {
         showCorner: id === 'tonal-logo', showCenter: id === 'placement', showStitch: id === 'embroidery' };
     });
 
-    const LAY = [['corner', 'Corner', 'Bottom-right tonal mark'], ['center', 'Centre', 'Single central motif'],
-      ['border', 'Border', 'Inset frame line'], ['repeat', 'Repeat', 'Tiled grid marks']];
-    const layoutList = LAY.map(([id, name, desc]) => {
-      const sel = s.layout === id;
-      return { name, desc, mark: sel ? '●' : '○', onSelect: () => this.setState({ layout: id }),
-        bg: sel ? 'rgba(15,15,14,.05)' : 'transparent', fg: ink, dot: sel ? accent : 'rgba(15,15,14,.4)' };
+    const REPEAT = [['grid', 'Grid'], ['half-drop', 'Half drop'], ['brick', 'Brick'], ['mirror', 'Mirror'], ['single', 'Single']];
+    const repeatModes = REPEAT.map(([id, name]) => {
+      const on = s.repeatMode === id;
+      return { name, onSelect: () => this.setRepeatMode(id),
+        bg: on ? '#FBFAF6' : 'transparent', fg: on ? ink : 'rgba(15,15,14,.55)' };
     });
+    const PLACE = [['corner', 'Corner'], ['center', 'Centre'], ['border', 'Border']];
+    const placementModes = PLACE.map(([id, name]) => {
+      const on = s.placement === id;
+      return { name, onSelect: () => this.setPlacement(id),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    });
+    const sliderPct = (val, min, max) => Math.round(((val - min) / (max - min)) * 100);
+    const mkSlider = (label, field, min, max, fmt) => ({
+      label, min, max, value: s[field],
+      val: fmt(s[field]),
+      pct: sliderPct(s[field], min, max) + '%',
+      onChange: (e) => this.setLayoutField(field, e.target.value),
+    });
+    const layoutSliders = [
+      mkSlider('Scale', 'layoutScale', 50, 200, v => v + '%'),
+      mkSlider('Rotate', 'layoutRotate', -180, 180, v => v + '°'),
+    ];
+    const motifSliders = [
+      mkSlider('Scale', 'motifScale', 50, 200, v => v + '%'),
+      mkSlider('Rotate', 'motifRotate', -180, 180, v => v + '°'),
+      mkSlider('Offset X', 'motifOffsetX', -50, 50, v => v + '%'),
+      mkSlider('Offset Y', 'motifOffsetY', -50, 50, v => v + '%'),
+    ];
 
-    const cur = all.find(m => m.id === s.material) || all[0];
     const patName = (PAT.find(p => p[0] === s.pattern) || PAT[1])[1];
-    const layName = (LAY.find(l => l[0] === s.layout) || LAY[0])[1];
+    const layName = this.layoutLabel();
     const onTech = TECH.filter(t => s.techniques.indexOf(t[0]) >= 0).map(t => t[1]);
     const techStr = onTech.length ? onTech.join(' · ') : '—';
 
     const costLow = qty * spec.costPer;
     const costHigh = Math.round(qty * spec.costPer * 1.2);
     const leadTime = cur.stream === 'reclaimed' ? '7–10 days' : '5–8 days';
-    const constructionNotes = this.getConstructionNotes(s.product, s.techniques, s.pattern, s.layout);
+    const constructionNotes = this.getConstructionNotes(s.product, s.techniques, s.pattern, s.repeatMode, s.placement);
 
     const summaryRows = [
       { k: 'Product', v: s.product }, { k: 'Quantity', v: qty + ' pieces' },
+      { k: 'Dimensions', v: dims },
       { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
-      { k: 'Technique', v: techStr }, { k: 'Pattern', v: patName }, { k: 'Layout', v: layName },
+      { k: 'Technique', v: techStr }, { k: 'Pattern', v: patName },
+      { k: 'Layout', v: layName + ' · ' + s.layoutScale + '%' },
     ];
     const circularLabel = cur.name + ' — ' + (cur.stream === 'new' ? 'new deadstock' : 'reclaimed secondhand');
 
     const techPackRows = [
       { k: 'Product', v: s.product }, { k: 'Quantity', v: qty + ' pcs' },
       { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
-      { k: 'Dimensions', v: spec.dims }, { k: 'Fabric use', v: spec.fabricUse },
+      { k: 'Dimensions', v: dims }, { k: 'Fabric use', v: spec.fabricUse },
       { k: 'Technique', v: techStr }, { k: 'Pattern / Layout', v: patName + ' · ' + layName },
       { k: 'Est. cost', v: '£' + costLow + '–' + costHigh }, { k: 'Lead time', v: leadTime },
     ];
@@ -741,17 +1381,64 @@ class Component extends DCLogic {
       : [{ v: spec.fabricUse.split(' ')[0], k: 'Deadstock fabric used' }, { v: String(qty), k: productLabel },
          { v: '4m', k: 'Leftover → napkins' }, { v: '0m', k: 'New fabric ordered' }];
 
-    const previewAspect = previewMode === 'tote' ? '3/4' : '5/4';
+    const w = Math.max(30, Math.min(400, Number(s.productWidth) || spec.defaultWidth));
+    const h = Math.max(30, Math.min(400, Number(s.productHeight) || spec.defaultHeight));
+    const previewAspect = previewMode === 'tote' ? '3/4' : Math.max(0.4, Math.min(2.5, w / h)).toFixed(3).replace(/\.?0+$/, '') + '/1';
     const previewBg = previewMode === 'tote' ? '#E7E3D9' : cur.swBg;
     const previewImg = previewMode === 'tote' ? 'none' : cur.swImg;
     const previewSize = previewMode === 'tote' ? 'auto' : cur.swSize;
+    const tilePx = Math.round(36 * s.motifScale / 100 * s.layoutScale / 100);
+    const patternOverlayShow = !!s.patternImg && !s.renderImg;
+    const patternOverlayImg = s.patternImg ? 'url("' + s.patternImg + '")' : 'none';
+    const patternOverlayRepeat = s.repeatMode === 'single' ? 'no-repeat' : 'repeat';
+    const patternOverlaySize = s.repeatMode === 'single'
+      ? (Math.round(34 * s.motifScale / 100) + '% auto')
+      : (tilePx + 'px ' + (s.repeatMode === 'half-drop' ? Math.round(tilePx * 0.5) + 'px' : tilePx + 'px'));
+    const patternOverlayPos = s.repeatMode === 'single'
+      ? (s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
+        : s.placement === 'border' ? 'center'
+        : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)')
+      : (s.motifOffsetX + '% ' + s.motifOffsetY + '%');
+    const layoutScaleFactor = s.layoutScale / 100;
+    const layoutRotate = s.layoutRotate + 'deg';
+
+    const PATTERN_TABS = [['preset', 'Preset tiles'], ['prompt', 'Text prompt'], ['upload', 'Upload image']];
+    const patternInputTabs = PATTERN_TABS.map(([id, name]) => {
+      const on = s.patternInputMode === id;
+      return { name, onClick: () => this.setPatternInputMode(id),
+        bg: on ? '#FBFAF6' : 'transparent', fg: on ? ink : 'rgba(15,15,14,.55)' };
+    });
+    const patternPromptHint = s.patternInputMode === 'prompt'
+      ? (s.patternPromptText.trim() ? 'AI will generate artwork from your brief + material constraints.' : 'Describe the pattern you want — AI adapts it to your material and surface finish.')
+      : s.patternInputMode === 'upload'
+        ? (s.patternUploadImg ? 'AI will create a production-ready pattern inspired by your reference.' : 'Upload a sketch, photo, or swatch — AI turns it into printable/etchable artwork.')
+        : 'Pick a surface style above, or switch to text prompt / upload for custom artwork.';
 
     return {
-      accent, navItems, nodeKey: 'node-' + s.node, previewKey: s.product + s.material + s.layout + previewMode,
+      accent, navItems, nodeKey: 'node-' + s.node,
+      previewKey: s.product + s.material + s.repeatMode + s.placement + s.layoutScale + s.motifScale + previewMode + w + 'x' + h,
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
-      productChips, demoPresets, sourceTabs, materialsList, techList, patternTiles, layoutList,
+      productCategories, unfinishedFabricOptions, demoPresets,
+      showSizeControls: isHomeTextile,
+      showFixedSize: isAccessory || isUnfinished,
+      productWidth: w, productHeight: h,
+      applyProductWidth: (e) => this.setProductDimension('productWidth', e.target.value),
+      applyProductHeight: (e) => this.setProductDimension('productHeight', e.target.value),
+      effectiveDims: dims,
+      sourceTabs, materialsList, techList, patternTiles,
+      patternInputTabs,
+      patternInputPrompt: s.patternInputMode === 'prompt',
+      patternInputUpload: s.patternInputMode === 'upload',
+      patternPromptText: s.patternPromptText,
+      applyPatternPrompt: (e) => this.applyPatternPrompt(e),
+      onPatternUpload: (e) => this.onPatternUpload(e),
+      patternUploadImg: s.patternUploadImg || '',
+      patternUploadHas: !!s.patternUploadImg,
+      patternPromptHint,
+      repeatModes, placementModes, showPlacement: s.repeatMode === 'single',
+      layoutSliders, motifSliders,
       showAiBadge: s.source === 'ai',
       aiMaterialReason: rec.materialReason,
       aiTechniqueCopy: rec.techniqueReason,
@@ -759,13 +1446,33 @@ class Component extends DCLogic {
       applyAiPicks: () => this.applyAiPicks(),
       exportPdf: () => this.exportPdf(),
       constructionNotes,
-      dCorner: s.layout === 'corner', dCenter: s.layout === 'center', dBorder: s.layout === 'border', dRepeat: s.layout === 'repeat',
+      surfaceRule,
+      techNote: s.techNote, techNoteShow: !!s.techNote,
+      generatePattern: () => this.generatePattern(),
+      patternBtnLabel: s.patternBusy ? 'Generating…' : (s.patternImg ? 'Regenerate artwork' : 'Generate artwork'),
+      patternPrompt: this.buildPatternPrompt(),
+      patternImg: s.patternImg || '', patternHas: !!s.patternImg,
+      patternErr: s.patternErr, patternErrShow: !!s.patternErr,
+      patternBusyShow: s.patternBusy,
+      patternModeLabel: ({ print: 'Digital print', laser: 'Laser etching', embroidery: 'Embroidery' })[this.surfaceMode()],
+      generateRender: () => this.generateRender(),
+      renderBtnLabel: s.renderBusy ? 'Rendering…' : (s.renderImg ? 'Re-render' : 'Generate AI render'),
+      renderImg: s.renderImg || '', renderHas: !!s.renderImg,
+      renderErr: s.renderErr, renderErrShow: !!s.renderErr,
+      renderBusyShow: s.renderBusy,
+      previewHasRender: !!s.renderImg, previewNoRender: !s.renderImg,
+      dCorner: s.repeatMode === 'single' && s.placement === 'corner',
+      dCenter: s.repeatMode === 'single' && s.placement === 'center',
+      dBorder: s.repeatMode === 'single' && s.placement === 'border',
+      dRepeat: s.repeatMode !== 'single',
       previewTote: previewMode === 'tote',
       previewFlat: previewMode === 'flat',
       previewScarf: previewMode === 'scarf',
       previewAspect, previewBg, previewImg, previewSize,
+      patternOverlayShow, patternOverlayImg, patternOverlaySize, patternOverlayRepeat, patternOverlayPos,
+      layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
-      previewCaption: s.product + ' · ' + spec.dims + ' · ' + cur.name,
+      previewCaption: s.product + ' · ' + dims + ' · ' + cur.name,
       summaryRows, circularLabel, techPackRows,
       producer, altProducers, impactRows, showImpact,
       next: () => this.next(), back: () => this.back(),
