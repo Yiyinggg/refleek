@@ -94,12 +94,6 @@
             <input value="{{ brief }}" onChange="{{ applyBrief }}" style="display:block;width:100%;margin-top:12px;border:none;background:transparent;outline:none;font-family:'Newsreader',serif;font-weight:500;font-size:clamp(20px,2.4vw,28px);line-height:1.3;color:#0F0F0E" />
           </div>
 
-          <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:9px">
-            <sc-for list="{{ demoPresets }}" as="dp" hint-placeholder-count="2">
-              <button onClick="{{ dp.onClick }}" style="padding:9px 16px;border:1px solid {{ dp.bd }};background:{{ dp.bg }};color:{{ dp.fg }};font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;transition:all .18s">{{ dp.name }}</button>
-            </sc-for>
-          </div>
-
           <div style="margin-top:28px">
             <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:12px">Or source unfinished fabric</div>
             <p style="font-family:'Space Mono',monospace;font-size:11px;line-height:1.6;color:rgba(15,15,14,.5);margin:0 0 14px;max-width:52ch">New deadstock rolls and reclaimed panel lots — use as raw input or cut to your product spec.</p>
@@ -678,7 +672,11 @@
               <img src="{{ patternOverlaySrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:contain;object-position:{{ patternOverlayPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }};pointer-events:none;image-rendering:auto" />
               </sc-if>
               <sc-if value="{{ patternOverlayRepeat }}" hint-placeholder-val="{{ false }}">
-              <img src="{{ patternOverlayRepeatSrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:cover;object-position:{{ patternOverlayRepeatPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayRepeatTransform }};pointer-events:none;image-rendering:auto" />
+              <div style="position:absolute;inset:0;z-index:50;overflow:hidden;pointer-events:none">
+                <div style="position:absolute;left:50%;top:50%;width:320%;height:320%;transform-origin:center center;transform:translate(-50%,-50%) translate({{ motifOffsetX }}%, {{ motifOffsetY }}%) {{ patternOverlayTransform }};will-change:transform">
+                  <img src="{{ patternOverlayRepeatSrc }}" alt="" class="rf-pattern-layer" style="display:block;width:100%;height:100%;object-fit:cover;opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};pointer-events:none;image-rendering:auto" />
+                </div>
+              </div>
               </sc-if>
             </sc-if>
 
@@ -821,7 +819,7 @@ class Component extends DCLogic {
   }
 
   componentDidUpdate() {
-    const watch = ['patternImg', 'embroiderySolidImg', 'backgroundRemoved', 'repeatMode', 'motifScale', 'layoutScale', 'motifOffsetX', 'motifOffsetY'];
+    const watch = ['patternImg', 'embroiderySolidImg', 'backgroundRemoved', 'repeatMode'];
     const prev = this._repeatWatchSnap || {};
     const cur = {};
     watch.forEach((k) => { cur[k] = this.state[k]; });
@@ -1321,24 +1319,6 @@ class Component extends DCLogic {
     });
   }
 
-  loadPreset(preset) {
-    if (preset === 'totes') {
-      this.setState({
-        brief: 'I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.',
-        product: 'Tote bag', productWidth: 38, productHeight: 42, source: 'reclaimed', material: 'denim',
-        techniques: ['patchwork', 'cut-sew', 'embroidery'],
-        pattern: 'embroidery', repeatMode: 'single', placement: 'center', style: 'workwear',
-      });
-    } else {
-      this.setState({
-        brief: 'I want to make 15 minimal tablecloths for a restaurant using circular materials. Budget under £300.',
-        product: 'Tablecloth', productWidth: 150, productHeight: 220, source: 'deadstock', material: 'linen',
-        techniques: ['cut-sew', 'embroidery', 'edge-finishing'],
-        pattern: 'tonal-logo', repeatMode: 'single', placement: 'corner', style: 'minimal',
-      });
-    }
-  }
-
   // ---------- AI generation (OpenRouter via /api/generate + /api/preview) ----------
 
   API() {
@@ -1811,8 +1791,7 @@ class Component extends DCLogic {
     const s = this.state;
     const art = this.artworkForPreview();
     if (!art || s.repeatMode === 'single') return '';
-    const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
-    return s.repeatMode + '|' + tilePx + '|' + s.motifOffsetX + '|' + s.motifOffsetY + '|' + art.length + '|' + art.slice(-48);
+    return s.repeatMode + '|' + art.length + '|' + art.slice(-48);
   }
 
   scheduleRepeatTile() {
@@ -1830,12 +1809,12 @@ class Component extends DCLogic {
     const gen = ++this._repeatTileGen;
     const s = this.state;
     const art = this.artworkForPreview();
-    const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
+    const tilePx = 150;
     const img = new Image();
     img.onload = () => {
       if (gen !== this._repeatTileGen) return;
-      const cols = 6;
-      const rows = 8;
+      const cols = 10;
+      const rows = 12;
       const w = cols * tilePx;
       const h = rows * tilePx;
       const canvas = document.createElement('canvas');
@@ -2249,13 +2228,6 @@ class Component extends DCLogic {
         bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
     });
 
-    const demoPresets = [
-      { name: 'Vintage totes', onClick: () => this.loadPreset('totes'),
-        bg: ink, fg: paper, bd: ink },
-      { name: 'Restaurant linens', onClick: () => this.loadPreset('linens'),
-        bg: 'transparent', fg: ink, bd: 'rgba(15,15,14,.25)' },
-    ];
-
     const SRC = [['deadstock', 'New deadstock'], ['reclaimed', 'Reclaimed'], ['mix', 'Mix both'], ['ai', 'AI recommend']];
     const sourceTabs = SRC.map(([id, name]) => {
       const on = s.source === id;
@@ -2466,7 +2438,6 @@ class Component extends DCLogic {
     const patternOverlaySrc = previewArt || '';
     const patternOverlayBlend = previewArtSolid ? 'normal' : 'multiply';
     const patternOverlayRepeatSrc = this._repeatTileUrl || previewArt || '';
-    const patternOverlayRepeatPos = 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
     const patternOverlayPos = s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
       : s.placement === 'border' ? 'center'
       : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
@@ -2475,7 +2446,6 @@ class Component extends DCLogic {
     const motifScaleFactor = s.motifScale / 100;
     const motifRotate = s.motifRotate;
     const patternOverlayTransform = 'rotate(' + layoutRotate + 'deg) scale(' + layoutScaleFactor + ') rotate(' + motifRotate + 'deg) scale(' + motifScaleFactor + ')';
-    const patternOverlayRepeatTransform = 'rotate(' + layoutRotate + 'deg) rotate(' + motifRotate + 'deg)';
     const isEmbroidery = this.isEmbroidery();
 
     const PATTERN_TABS = [['preset', 'Preset tiles'], ['prompt', 'Text prompt'], ['upload', 'Upload image']];
@@ -2504,11 +2474,11 @@ class Component extends DCLogic {
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
       apiMockShow: !!s.apiMock,
-      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + previewMode + w + 'x' + h + patchSeed + (previewArt ? (previewArtSolid ? '|solid' : '|raw') : '') + (this._repeatTileKey ? '|r' + this._repeatTileKey.length : ''),
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + previewMode + w + 'x' + h + patchSeed + (previewArt ? (previewArtSolid ? '|solid' : '|raw') : ''),
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8, n9: s.node === 9,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
-      productCategories, unfinishedFabricOptions, demoPresets,
+      productCategories, unfinishedFabricOptions,
       showSizeControls: isHomeTextile,
       showFixedSize: isAccessory || isUnfinished,
       productWidth: w, productHeight: h,
@@ -2589,8 +2559,9 @@ class Component extends DCLogic {
       toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams,
       previewAspect, previewBg, previewImg, previewSize,
       patternOverlayShow, patternOverlaySingle, patternOverlayRepeat,
-      patternOverlaySrc, patternOverlayBlend, patternOverlayPos, patternOverlayTransform, patternOverlayRepeatTransform,
-      patternOverlayRepeatSrc, patternOverlayRepeatPos,
+      patternOverlaySrc, patternOverlayBlend, patternOverlayPos, patternOverlayTransform,
+      patternOverlayRepeatSrc,
+      motifOffsetX: s.motifOffsetX, motifOffsetY: s.motifOffsetY,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
       previewCaption: s.product + ' · ' + dims + ' · ' + materialLabel,
