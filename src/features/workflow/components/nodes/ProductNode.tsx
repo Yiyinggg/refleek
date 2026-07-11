@@ -48,6 +48,7 @@ interface DbMatch {
   readonly seller: string;
   readonly productSlug: string | null;
   readonly source: SourceFilter | null;
+  readonly materialSlug: string | null;
   readonly score: number;
   readonly matchedTokens: number;
 }
@@ -221,7 +222,70 @@ function inferSource(row: DbRow): SourceFilter | null {
   return null;
 }
 
-function scoreMatches(entries: readonly DbEntry[], brief: string): DbMatch[] {
+function materialTokens(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((token) => token.length > 2);
+}
+
+function inferMaterialSlug(
+  row: DbRow,
+  catalogMaterials: readonly {
+    slug: string;
+    name: string;
+    bestFor: readonly string[];
+  }[],
+): string | null {
+  const hay = [
+    row.material_or_fibre,
+    row.composition,
+    row.title,
+    row.search_keywords,
+    row.searchable_text,
+    row.style_features,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const hayTokens = new Set(materialTokens(hay));
+
+  let bestSlug: string | null = null;
+  let bestScore = 0;
+
+  for (const material of catalogMaterials) {
+    const keywords = new Set<string>([
+      ...materialTokens(material.slug),
+      ...materialTokens(material.name),
+      ...material.bestFor.flatMap((item) => materialTokens(item)),
+    ]);
+
+    let score = 0;
+    for (const token of keywords) {
+      if (hayTokens.has(token)) {
+        score += token.length > 4 ? 2 : 1;
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestSlug = material.slug;
+    }
+  }
+
+  return bestScore >= 2 ? bestSlug : null;
+}
+
+function scoreMatches(
+  entries: readonly DbEntry[],
+  brief: string,
+  catalogMaterials: readonly {
+    slug: string;
+    name: string;
+    bestFor: readonly string[];
+  }[],
+): DbMatch[] {
   const tokens = tokenize(brief);
   if (tokens.length === 0) {
     return [];
@@ -277,6 +341,7 @@ function scoreMatches(entries: readonly DbEntry[], brief: string): DbMatch[] {
         seller: row.source_seller ?? row.source_platform ?? "Unknown source",
         productSlug: inferProductSlug(row),
         source: inferSource(row),
+        materialSlug: inferMaterialSlug(row, catalogMaterials),
         score,
         matchedTokens,
       } satisfies DbMatch;
@@ -347,8 +412,17 @@ export function ProductNode({ catalog, state, dispatch }: NodeProps) {
   }, []);
 
   const dbMatches = useMemo(
-    () => scoreMatches(dbEntries, state.brief),
-    [dbEntries, state.brief],
+    () =>
+      scoreMatches(
+        dbEntries,
+        state.brief,
+        catalog.materials.map((material) => ({
+          slug: material.slug,
+          name: material.name,
+          bestFor: material.bestFor,
+        })),
+      ),
+    [catalog.materials, dbEntries, state.brief],
   );
   const dbSearched = tokenize(state.brief).length > 0;
 
@@ -359,6 +433,9 @@ export function ProductNode({ catalog, state, dispatch }: NodeProps) {
     }
     if (match.source) {
       dispatch({ type: "setSource", source: match.source });
+    }
+    if (match.materialSlug) {
+      dispatch({ type: "selectMaterial", slug: match.materialSlug });
     }
   }
 
@@ -430,6 +507,11 @@ export function ProductNode({ catalog, state, dispatch }: NodeProps) {
                     ? `Maps to product: ${match.productSlug}`
                     : "No direct ReFleek product mapping"}
                 </span>
+                {match.materialSlug ? (
+                  <span>{`Maps to material: ${match.materialSlug}`}</span>
+                ) : (
+                  <span>No direct material mapping</span>
+                )}
               </button>
             ))}
           </div>

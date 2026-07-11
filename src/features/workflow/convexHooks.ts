@@ -1,6 +1,7 @@
 import { useAction, useQuery } from "convex/react";
 import type { FunctionArgs, FunctionReturnType } from "convex/server";
 import { api } from "../../../convex/_generated/api";
+import { materialsFromLocalJson } from "./localMaterials";
 import { parseQuantity } from "./selectors";
 import type { Catalog, WorkflowState } from "./types";
 
@@ -10,9 +11,17 @@ export type ProductionResult = FunctionReturnType<
 export type Recommendation = FunctionReturnType<typeof api.recommend.hybrid>;
 
 type RecommendArgs = FunctionArgs<typeof api.recommend.hybrid>;
+const LOCAL_JSON_MATERIALS = materialsFromLocalJson();
 
 export function useCatalog(): Catalog | undefined {
-  return useQuery(api.catalog.list);
+  const catalog = useQuery(api.catalog.list);
+  if (!catalog) {
+    return undefined;
+  }
+  return {
+    ...catalog,
+    materials: LOCAL_JSON_MATERIALS,
+  };
 }
 
 /**
