@@ -1,5 +1,5 @@
 // Vercel serverless function — proxies image generation to OpenRouter.
-// The OPENROUTER_API_KEY env var stays server-side; the browser only talks to /api/generate.
+// The API key stays server-side; the browser only talks to /api/generate.
 // Without a key it returns a deterministic mock image so the workflow can be demoed offline.
 
 const MODELS = [
@@ -12,6 +12,14 @@ const MAX_IMAGE_CHARS = 3 * 1024 * 1024;
 const RATE_WINDOW_MS = 60 * 1000;
 const RATE_MAX = 12;
 const rateHits = new Map();
+
+function readApiKey() {
+  return (
+    process.env.OPENROUTER_API_KEY ??
+    process.env.OPEN_AI_API ??
+    process.env.OPENAI_API_KEY
+  );
+}
 
 function corsOrigin(req) {
   const origin = req.headers.origin;
@@ -54,7 +62,7 @@ module.exports = async (req, res) => {
     return res.status(413).json({ error: 'Image payload too large — compress before upload (max ~3 MB)' });
   }
 
-  const key = process.env.OPENROUTER_API_KEY;
+  const key = readApiKey();
   if (!key) {
     return res.status(200).json({ image: mockImage(prompt, mode), model: 'mock', mock: true });
   }
@@ -163,6 +171,6 @@ function mockImage(prompt, mode) {
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">' +
     '<rect width="512" height="512" fill="' + c2 + '"/>' + motifs +
-    '<text x="256" y="492" font-family="monospace" font-size="20" fill="' + c1 + '" text-anchor="middle">MOCK ' + (mode || 'pattern').toUpperCase() + ' — set OPENROUTER_API_KEY</text></svg>';
+    '<text x="256" y="492" font-family="monospace" font-size="20" fill="' + c1 + '" text-anchor="middle">MOCK ' + (mode || 'pattern').toUpperCase() + ' — set API key</text></svg>';
   return 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64');
 }

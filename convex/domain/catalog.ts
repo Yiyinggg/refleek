@@ -7,6 +7,102 @@ import type {
   Product,
   Technique,
 } from "./types";
+import materialsSource from "../../data/materials.json";
+
+interface SourceSpec {
+  readonly k?: string;
+  readonly v?: string;
+}
+
+interface SourceMaterial {
+  readonly id?: string;
+  readonly stream?: string;
+  readonly sourceLabel?: string;
+  readonly name?: string;
+  readonly specs?: readonly SourceSpec[];
+  readonly best?: string;
+}
+
+interface SourceMaterialsFile {
+  readonly deadstock?: readonly SourceMaterial[];
+  readonly reclaimed?: readonly SourceMaterial[];
+}
+
+function toSlug(value: string, fallback: string): string {
+  const normalized = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return normalized.length > 0 ? normalized : fallback;
+}
+
+function streamFrom(source: string | undefined): MaterialStream {
+  return source?.toLowerCase() === "reclaimed" ? "reclaimed" : "deadstock";
+}
+
+function specValue(
+  specs: readonly SourceSpec[] | undefined,
+  keys: readonly string[],
+): string | undefined {
+  if (!specs) {
+    return undefined;
+  }
+  for (const spec of specs) {
+    const key = (spec.k ?? "").toLowerCase();
+    if (keys.some((item) => key === item)) {
+      const value = spec.v?.trim();
+      if (value) {
+        return value;
+      }
+    }
+  }
+  return undefined;
+}
+
+function bestForList(best: string | undefined): string[] {
+  const raw = (best ?? "")
+    .replace(/^best for\s*/i, "")
+    .replace(/\.$/, "")
+    .trim();
+  if (raw.length === 0) {
+    return ["general use"];
+  }
+  return raw
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter((item) => item.length > 0)
+    .slice(0, 6);
+}
+
+function materialsFromJson(): Material[] {
+  const source = materialsSource as SourceMaterialsFile;
+  const rows = [...(source.deadstock ?? []), ...(source.reclaimed ?? [])];
+  const seen = new Set<string>();
+  const materials: Material[] = [];
+
+  for (const [index, row] of rows.entries()) {
+    const fallbackSlug = `material-${(index + 1).toString()}`;
+    const slug = toSlug(row.id ?? row.name ?? fallbackSlug, fallbackSlug);
+    if (seen.has(slug)) {
+      continue;
+    }
+    seen.add(slug);
+
+    materials.push({
+      slug,
+      stream: streamFrom(row.stream),
+      sourceLabel: row.sourceLabel?.trim() ?? "Unknown source",
+      name: row.name?.trim() ?? "Unnamed material",
+      available: specValue(row.specs, ["available", "quantity"]) ?? "Unknown",
+      width: specValue(row.specs, ["width", "panel", "type"]) ?? "Unknown",
+      color: specValue(row.specs, ["colour", "color"]) ?? "Mixed",
+      bestFor: bestForList(row.best),
+      order: materials.length + 1,
+    });
+  }
+
+  return materials;
+}
 
 export const PRODUCTS: readonly Product[] = [
   {
@@ -143,207 +239,11 @@ export const PRODUCTS: readonly Product[] = [
   },
 ];
 
-export const MATERIALS: readonly Material[] = [
-  {
-    slug: "linen",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · Pakistan",
-    name: "Natural Linen Blend",
-    available: "42m",
-    width: "150cm",
-    color: "Natural beige",
-    bestFor: ["tablecloths", "napkins", "aprons", "cushion covers"],
-    order: 1,
-  },
-  {
-    slug: "twill",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · India",
-    name: "Cotton Twill",
-    available: "60m",
-    width: "160cm",
-    color: "Charcoal",
-    bestFor: ["aprons", "totes", "workwear panels", "cushion covers"],
-    order: 2,
-  },
-  {
-    slug: "denim",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek Pakistan",
-    name: "Denim Panel Lot",
-    available: "120 panels",
-    width: "45×60cm",
-    color: "Mixed indigo",
-    bestFor: ["patchwork totes", "cushions", "jackets", "appliqué"],
-    order: 3,
-  },
-  {
-    slug: "shirt",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek India",
-    name: "Shirt Cotton Bundle",
-    available: "80 panels",
-    width: "40×55cm",
-    color: "Blue stripe",
-    bestFor: ["patchwork shirts", "linings", "scarves", "accessories"],
-    order: 4,
-  },
-  {
-    slug: "knit",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek Pakistan",
-    name: "Knit Bundle",
-    available: "25kg",
-    width: "Sorted knit",
-    color: "Mixed neutral",
-    bestFor: ["patchwork cushions", "soft accessories", "appliqué"],
-    order: 5,
-  },
-  {
-    slug: "hemp",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · Turkey",
-    name: "Hemp Canvas Roll",
-    available: "38m",
-    width: "140cm",
-    color: "Natural oat",
-    bestFor: ["totes", "aprons", "upholstery panels", "heavy-duty accessories"],
-    order: 6,
-  },
-  {
-    slug: "poplin",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · Portugal",
-    name: "Organic Cotton Poplin",
-    available: "55m",
-    width: "150cm",
-    color: "Off-white",
-    bestFor: ["shirts", "linings", "bandanas", "lightweight home textiles"],
-    order: 7,
-  },
-  {
-    slug: "chambray",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · Vietnam",
-    name: "Chambray Shirting",
-    available: "48m",
-    width: "145cm",
-    color: "Light indigo",
-    bestFor: ["shirts", "scarves", "casual aprons", "relaxed home textiles"],
-    order: 8,
-  },
-  {
-    slug: "velvet",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · Italy",
-    name: "Cotton Velvet Remnant",
-    available: "22m",
-    width: "135cm",
-    color: "Deep burgundy",
-    bestFor: ["cushion covers", "curtains", "pouches", "luxury accessories"],
-    order: 9,
-  },
-  {
-    slug: "canvas",
-    stream: "deadstock",
-    sourceLabel: "New Deadstock · UK",
-    name: "Recycled Cotton Canvas",
-    available: "70m",
-    width: "155cm",
-    color: "Unbleached natural",
-    bestFor: ["tote bags", "workwear", "heavy aprons", "structured accessories"],
-    order: 10,
-  },
-  {
-    slug: "corduroy",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek India",
-    name: "Corduroy Panel Lot",
-    available: "95 panels",
-    width: "42×58cm",
-    color: "Mixed earth",
-    bestFor: ["patchwork jackets", "bags", "cushion panels", "warm accessories"],
-    order: 11,
-  },
-  {
-    slug: "fleece",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek Pakistan",
-    name: "Fleece Panel Lot",
-    available: "60 panels",
-    width: "38×50cm",
-    color: "Mixed grey",
-    bestFor: ["warm linings", "pouches", "soft accessories", "patchwork throws"],
-    order: 12,
-  },
-  {
-    slug: "wool",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek UK",
-    name: "Wool Flannel Bundle",
-    available: "18kg",
-    width: "Sorted flannel",
-    color: "Mixed plaid",
-    bestFor: ["scarves", "warm accessories", "patchwork throws", "lining panels"],
-    order: 13,
-  },
-  {
-    slug: "sari",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek India",
-    name: "Sari Silk Bundle",
-    available: "40 panels",
-    width: "90×120cm",
-    color: "Mixed jewel",
-    bestFor: [
-      "scarves",
-      "bandanas",
-      "decorative cushions",
-      "statement accessories",
-    ],
-    order: 14,
-  },
-  {
-    slug: "terry",
-    stream: "reclaimed",
-    sourceLabel: "Reclaimed · Fleek UK",
-    name: "Terry Cloth Bundle",
-    available: "30kg",
-    width: "Sorted terry",
-    color: "Mixed pastel",
-    bestFor: [
-      "towels",
-      "spa textiles",
-      "bath accessories",
-      "absorbent home goods",
-    ],
-    order: 15,
-  },
-];
+export const MATERIALS: readonly Material[] = materialsFromJson();
 
-export const MATERIAL_SLUGS = [
-  "linen",
-  "twill",
-  "denim",
-  "shirt",
-  "knit",
-  "hemp",
-  "poplin",
-  "chambray",
-  "velvet",
-  "canvas",
-  "corduroy",
-  "fleece",
-  "wool",
-  "sari",
-  "terry",
-] as const;
-
-// The AI enum and this catalog must stay in lockstep; this assignment fails to
-// type-check if either list gains or loses a slug.
-const _materialSlugParity: readonly (typeof MATERIAL_SLUGS)[number][] =
-  MATERIALS.map((material) => material.slug as (typeof MATERIAL_SLUGS)[number]);
-void _materialSlugParity;
+export const MATERIAL_SLUGS: readonly string[] = MATERIALS.map(
+  (material) => material.slug,
+);
 
 const TECHNIQUE_ROWS: readonly [
   string,

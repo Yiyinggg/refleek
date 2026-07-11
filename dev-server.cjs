@@ -1,5 +1,6 @@
 // Local dev server mirroring the Vercel setup:
-//   OPENROUTER_API_KEY=sk-or-... node dev-server.cjs
+//   OPENROUTER_API_KEY=... node dev-server.cjs
+//   OPEN_AI_API=... node dev-server.cjs
 // Serves static files from the repo root and routes /api/generate + /api/preview.
 // Without the env var the API answers with mock images.
 
@@ -8,6 +9,45 @@ const fs = require('fs');
 const path = require('path');
 const generate = require('./api/generate.js');
 const preview = require('./api/preview.js');
+
+function loadEnvFile(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return;
+  }
+  const content = fs.readFileSync(filePath, 'utf8');
+  for (const line of content.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) {
+      continue;
+    }
+    const match = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(.*)$/.exec(trimmed);
+    if (!match) {
+      continue;
+    }
+    const key = match[1];
+    let value = match[2] || '';
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadEnvFile(path.join(__dirname, '.env'));
+loadEnvFile(path.join(__dirname, '.env.local'));
+
+function hasApiKey() {
+  return Boolean(
+    process.env.OPENROUTER_API_KEY ||
+      process.env.OPEN_AI_API ||
+      process.env.OPENAI_API_KEY,
+  );
+}
 
 const PORT = process.env.PORT || 3939;
 const ROOT = __dirname;
@@ -53,5 +93,11 @@ http.createServer((req, res) => {
   res.setHeader('Content-Type', MIME[path.extname(file)] || 'application/octet-stream');
   fs.createReadStream(file).pipe(res);
 }).listen(PORT, () => {
-  console.log('ReFleek dev server → http://localhost:' + PORT + (process.env.OPENROUTER_API_KEY ? ' (live OpenRouter)' : ' (MOCK mode — set OPENROUTER_API_KEY for real generation)'));
+  console.log(
+    'ReFleek dev server → http://localhost:' +
+      PORT +
+      (hasApiKey()
+        ? ' (live OpenRouter)'
+        : ' (MOCK mode — set OPENROUTER_API_KEY or OPEN_AI_API for real generation)'),
+  );
 });

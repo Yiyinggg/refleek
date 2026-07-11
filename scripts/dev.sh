@@ -19,6 +19,15 @@ if ! command -v tmux >/dev/null 2>&1; then
   exit 1
 fi
 
+# /api/generate proxy must own 3939 for Vite's /api proxy.
+if command -v lsof >/dev/null 2>&1; then
+  pids="$(lsof -tiTCP:3939 -sTCP:LISTEN || true)"
+  if [[ -n "$pids" ]]; then
+    echo "Freeing port 3939 (stale local server): $pids"
+    kill $pids 2>/dev/null || true
+  fi
+fi
+
 # Start clean so re-running never stacks duplicate panes.
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 

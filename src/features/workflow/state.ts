@@ -28,6 +28,9 @@ export const STYLE_OPTIONS = [
   "geometric",
 ] as const;
 
+export const LEGACY_DEFAULT_BRIEF =
+  "I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.";
+
 export const PRINT_BLOCK_REASON =
   "Digital print is not available on upcycled fabric — reclaimed panels carry surface irregularity and existing washes, so print colour cannot be controlled. Use laser etching or embroidery instead.";
 
@@ -128,8 +131,7 @@ const BASE_STATE: Omit<
   "productSlug" | "productWidth" | "productHeight" | "materialSlug"
 > = {
   node: 1,
-  brief:
-    "I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.",
+  brief: "",
   source: "reclaimed",
   materialMix: [],
   mixNote: "",
