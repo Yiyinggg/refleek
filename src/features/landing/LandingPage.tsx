@@ -8,7 +8,6 @@ import {
   PROBLEM_STATS,
   PRODUCTS,
   SOLUTION_FLOW,
-  SWATCH_STRIP,
   WORKFLOW_CHAIN,
 } from "./landingData";
 import { ImageSlot } from "./ImageSlot";
@@ -87,36 +86,17 @@ export function LandingPage() {
             </div>
           </div>
         </div>
-
-        <div className="landing__swatch-strip">
-          {SWATCH_STRIP.map((w) => (
-            <div
-              key={w.name}
-              className="landing__swatch"
-              style={{
-                background: w.bg,
-                backgroundImage: w.img,
-                backgroundSize: w.size,
-              }}
-            >
-              <span
-                className="landing__swatch-label"
-                style={{ color: w.label }}
-              >
-                {w.name}
-              </span>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section id="problem" className="landing__section landing__section--sand">
-        <p className="landing__section-label">The problem — Nº01</p>
         <div className="landing__split">
-          <h2 className="landing__section-title">
-            Deadstock fabric and unresellable garments hold{" "}
-            <em>real material value</em> — but no route to production.
-          </h2>
+          <div className="landing__section-intro">
+            <p className="landing__section-label">The problem — Nº01</p>
+            <h2 className="landing__section-title">
+              Deadstock fabric and unresellable garments hold{" "}
+              <em>real material value</em> — but no route to production.
+            </h2>
+          </div>
           <div>
             <p className="landing__body">
               Fleek already moves secondhand fashion through global resale. But
@@ -141,13 +121,15 @@ export function LandingPage() {
       </section>
 
       <section id="solution" className="landing__section">
-        <p className="landing__section-label landing__section-label--accent">
-          The solution — Nº02
-        </p>
-        <h2 className="landing__section-title landing__section-title--wide">
-          A structured design-to-production workflow,{" "}
-          <em>circular by default.</em>
-        </h2>
+        <div className="landing__section-intro">
+          <p className="landing__section-label landing__section-label--accent">
+            The solution — Nº02
+          </p>
+          <h2 className="landing__section-title landing__section-title--wide">
+            A structured design-to-production workflow,{" "}
+            <em>circular by default.</em>
+          </h2>
+        </div>
         <p className="landing__body landing__body--wide">
           Most AI design tools start with a blank canvas. ReFleek starts with
           real material constraints — what you want to make, what circular stock
@@ -174,17 +156,19 @@ export function LandingPage() {
         id="features"
         className="landing__section landing__section--dark"
       >
-        <div className="landing__features-head">
-          <p className="landing__section-label landing__section-label--accent">
-            Core features — Nº03
-          </p>
+        <div className="landing__section-header">
+          <div className="landing__section-intro">
+            <p className="landing__section-label landing__section-label--accent">
+              Core features — Nº03
+            </p>
+            <h2 className="landing__section-title landing__section-title--dark">
+              Eight guided nodes, <em>brief to factory.</em>
+            </h2>
+          </div>
           <p className="landing__features-sub">
             A node workflow, not a chatbot
           </p>
         </div>
-        <h2 className="landing__section-title landing__section-title--dark">
-          Eight guided nodes, <em>brief to factory.</em>
-        </h2>
         <div className="landing__feature-grid">
           {FEATURES.map((f) => (
             <div key={f.n} className="landing__feature-card">
@@ -200,13 +184,15 @@ export function LandingPage() {
       </section>
 
       <section id="ecosystem" className="landing__section">
-        <p className="landing__section-label landing__section-label--accent">
-          The ecosystem — Nº04
-        </p>
         <div className="landing__split landing__split--ecosystem">
-          <h2 className="landing__section-title">
-            How ReFleek connects <em>material to maker.</em>
-          </h2>
+          <div className="landing__section-intro">
+            <p className="landing__section-label landing__section-label--accent">
+              The ecosystem — Nº04
+            </p>
+            <h2 className="landing__section-title">
+              How ReFleek connects <em>material to maker.</em>
+            </h2>
+          </div>
           <p className="landing__body">
             Two circular sources feed one material pool. ReFleek turns that pool
             into designs and tech packs, then routes production to Fleek-linked
@@ -324,17 +310,19 @@ export function LandingPage() {
         id="products"
         className="landing__section landing__section--sand"
       >
-        <div className="landing__features-head">
-          <p className="landing__section-label landing__section-label--accent">
-            Made with ReFleek — Nº05
-          </p>
+        <div className="landing__section-header">
+          <div className="landing__section-intro">
+            <p className="landing__section-label landing__section-label--accent">
+              Made with ReFleek — Nº05
+            </p>
+            <h2 className="landing__section-title">
+              Real products from <em>circular stock.</em>
+            </h2>
+          </div>
           <p className="landing__products-hint">
             Drop your renders onto any tile ↓
           </p>
         </div>
-        <h2 className="landing__section-title">
-          Real products from <em>circular stock.</em>
-        </h2>
         <div className="landing__product-grid">
           {PRODUCTS.map((p) => (
             <article key={p.slotId} className="landing__product">
@@ -379,13 +367,15 @@ export function LandingPage() {
           ))}
         </div>
 
-        <p className="landing__section-label landing__section-label--accent">
-          Final pitch
-        </p>
-        <p className="landing__final-pitch">
-          ReFleek turns material that would sit unused or fail resale into{" "}
-          <em>manufacturable small-batch products.</em>
-        </p>
+        <div className="landing__section-intro">
+          <p className="landing__section-label landing__section-label--accent">
+            Final pitch
+          </p>
+          <p className="landing__final-pitch">
+            ReFleek turns material that would sit unused or fail resale into{" "}
+            <em>manufacturable small-batch products.</em>
+          </p>
+        </div>
         <div className="landing__cta-row">
           <a href={WORKFLOW_PATH} className="landing__cta landing__cta--light">
             Start a workflow <CtaArrow />

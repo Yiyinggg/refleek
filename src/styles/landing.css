@@ -276,33 +276,6 @@ html {
   max-width: 40ch;
 }
 
-.landing__swatch-strip {
-  margin-top: clamp(1.625rem, 3.5vw, 3rem);
-  border: 1.5px solid var(--ink);
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.landing__swatch {
-  position: relative;
-  height: clamp(4rem, 7vw, 6.5rem);
-  border-right: 1px solid rgba(15, 15, 14, 0.28);
-}
-
-.landing__swatch:last-child {
-  border-right: none;
-}
-
-.landing__swatch-label {
-  position: absolute;
-  left: 0.625rem;
-  bottom: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.53125rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .landing__section-label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
@@ -316,18 +289,34 @@ html {
   color: var(--coral);
 }
 
+.landing__section-intro {
+  display: grid;
+  gap: clamp(0.875rem, 1.5vw, 1.125rem);
+}
+
+.landing__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.landing__section-header .landing__section-intro {
+  flex: 1 1 auto;
+  min-width: min(100%, 18rem);
+}
+
 .landing__split {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 4rem);
-  margin-top: 1.375rem;
   align-items: start;
 }
 
 .landing__split--ecosystem {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: end;
-  margin-top: 1.125rem;
 }
 
 .landing__section-title {
@@ -348,7 +337,6 @@ html {
   font-size: clamp(2.125rem, 5.4vw, 4.625rem);
   line-height: 0.96;
   letter-spacing: -0.025em;
-  margin-top: 1.125rem;
   max-width: 16ch;
 }
 
@@ -356,7 +344,7 @@ html {
   font-weight: 700;
   font-size: clamp(2rem, 4.6vw, 4rem);
   line-height: 0.98;
-  margin: 1rem 0 clamp(1.875rem, 4vw, 3.375rem);
+  margin: 0 0 clamp(1.875rem, 4vw, 3.375rem);
   max-width: 18ch;
   color: var(--paper);
 }
@@ -476,14 +464,6 @@ html {
   font-weight: 500;
   font-size: clamp(1.375rem, 3vw, 2.375rem);
   letter-spacing: -0.01em;
-}
-
-.landing__features-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .landing__features-sub {
@@ -907,7 +887,7 @@ html {
   font-size: clamp(1.75rem, 3.8vw, 3.375rem);
   line-height: 1.08;
   letter-spacing: -0.02em;
-  margin: 1.25rem 0 0;
+  margin: 0;
   max-width: 22ch;
   color: var(--paper);
 }
@@ -980,10 +960,6 @@ html {
 
   .landing__stat-grid {
     grid-template-columns: 1fr;
-  }
-
-  .landing__swatch-strip {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 

@@ -18,44 +18,6 @@ export const NAV_LINKS = [
   { href: "#products", label: "Products" },
 ] as const;
 
-export const SWATCH_STRIP = [
-  {
-    name: "Deadstock linen",
-    bg: "#D7CBB2",
-    img: "repeating-linear-gradient(0deg,rgba(255,255,255,.4) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.28) 0 1px,transparent 1px 3px)",
-    size: "auto",
-    label: "rgba(15,15,14,.6)",
-  },
-  {
-    name: "Reclaimed denim",
-    bg: "#3C4E67",
-    img: "repeating-linear-gradient(45deg,rgba(255,255,255,.09) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.18) 0 1px,transparent 1px 4px)",
-    size: "auto",
-    label: "rgba(244,241,234,.85)",
-  },
-  {
-    name: "Cotton twill",
-    bg: "#3B3B39",
-    img: "repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 2px,transparent 2px 5px)",
-    size: "auto",
-    label: "rgba(244,241,234,.85)",
-  },
-  {
-    name: "Shirt cotton",
-    bg: "#E8EDF2",
-    img: "repeating-linear-gradient(90deg,#4E6E9E 0 6px,#E8EDF2 6px 14px)",
-    size: "auto",
-    label: "rgba(15,15,14,.7)",
-  },
-  {
-    name: "Reclaimed knit",
-    bg: "#B9B2A6",
-    img: "radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.6px)",
-    size: "6px 6px",
-    label: "rgba(15,15,14,.6)",
-  },
-] as const;
-
 export const PROBLEM_STATS = [
   {
     v: "Not all",
