@@ -20,8 +20,8 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(2.6rem, 7vw, 4.4rem);
-  line-height: 0.82;
-  letter-spacing: -0.04em;
+  line-height: 0.9;
+  letter-spacing: -0.025em;
 }
 
 .masthead__mark span {

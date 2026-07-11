@@ -12,8 +12,8 @@
   --coral: #e8452a;
   --fabric: #d7cbb2;
 
-  /* Type roles: Bodoni display, Archivo body, Space Mono for data + labels. */
-  --font-display: "Bodoni Moda", serif;
+  /* Type roles: Newsreader display, Archivo body, Space Mono for data + labels. */
+  --font-display: "Newsreader", serif;
   --font-body: "Archivo", system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 

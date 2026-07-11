@@ -39,7 +39,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        app: resolve(import.meta.dirname, "index.html"),
+        landing: resolve(import.meta.dirname, "index.html"),
+        studio: resolve(import.meta.dirname, "studio/index.html"),
         legacy: resolve(import.meta.dirname, "UI/ReFleek.dc.html"),
       },
     },
