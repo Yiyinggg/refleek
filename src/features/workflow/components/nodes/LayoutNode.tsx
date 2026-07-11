@@ -22,7 +22,13 @@ const LAYOUT_SLIDERS: SliderSpec[] = [
 
 const MOTIF_SLIDERS: SliderSpec[] = [
   { field: "motifScale", label: "Motif scale", min: 50, max: 200, unit: "%" },
-  { field: "motifRotate", label: "Motif rotate", min: -180, max: 180, unit: "°" },
+  {
+    field: "motifRotate",
+    label: "Motif rotate",
+    min: -180,
+    max: 180,
+    unit: "°",
+  },
   { field: "motifOffsetX", label: "Offset X", min: -50, max: 50, unit: "%" },
   { field: "motifOffsetY", label: "Offset Y", min: -50, max: 50, unit: "%" },
 ];
@@ -53,9 +59,9 @@ export function LayoutNode({ catalog, state, dispatch }: NodeProps) {
               type="button"
               className="chip"
               aria-pressed={state.repeatMode === layout.slug}
-              onClick={() =>
-                { dispatch({ type: "setRepeatMode", slug: layout.slug }); }
-              }
+              onClick={() => {
+                dispatch({ type: "setRepeatMode", slug: layout.slug });
+              }}
             >
               {layout.name}
             </button>
@@ -72,9 +78,9 @@ export function LayoutNode({ catalog, state, dispatch }: NodeProps) {
               type="button"
               className="chip"
               aria-pressed={state.placement === layout.slug}
-              onClick={() =>
-                { dispatch({ type: "setPlacement", slug: layout.slug }); }
-              }
+              onClick={() => {
+                dispatch({ type: "setPlacement", slug: layout.slug });
+              }}
             >
               {layout.name}
             </button>
@@ -116,13 +122,20 @@ function Sliders({
               max={spec.max}
               value={value}
               aria-label={spec.label}
-              onChange={(event) =>
-                { dispatch({
+              onInput={(event) => {
+                dispatch({
                   type: "setLayoutField",
                   field: spec.field,
-                  value: Number(event.target.value),
-                } satisfies WorkflowAction); }
-              }
+                  value: Number(event.currentTarget.value),
+                } satisfies WorkflowAction);
+              }}
+              onChange={(event) => {
+                dispatch({
+                  type: "setLayoutField",
+                  field: spec.field,
+                  value: Number(event.currentTarget.value),
+                } satisfies WorkflowAction);
+              }}
             />
           </div>
         );
