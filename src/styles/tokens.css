@@ -1,0 +1,34 @@
+:root {
+  /* Editorial ReFleek palette — paper, ink, and a single coral accent. */
+  --paper: #f4f1ea;
+  --paper-2: #fbfaf6;
+  --ink: #0f0f0e;
+  --ink-80: rgba(15, 15, 14, 0.8);
+  --ink-60: rgba(15, 15, 14, 0.6);
+  --ink-42: rgba(15, 15, 14, 0.42);
+  --ink-25: rgba(15, 15, 14, 0.25);
+  --ink-12: rgba(15, 15, 14, 0.12);
+  --ink-06: rgba(15, 15, 14, 0.06);
+  --coral: #e8452a;
+  --fabric: #d7cbb2;
+
+  /* Type roles: Bodoni display, Archivo body, Space Mono for data + labels. */
+  --font-display: "Bodoni Moda", serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  --step-label: 0.62rem;
+  --data-label: 0.66rem;
+
+  --space-1: 0.35rem;
+  --space-2: 0.6rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.25rem;
+  --space-6: 3.5rem;
+
+  --rule: 1px solid var(--ink);
+  --hairline: 1px solid var(--ink-12);
+  --tap: 44px;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
