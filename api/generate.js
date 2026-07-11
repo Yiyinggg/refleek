@@ -153,7 +153,7 @@ function mockImage(prompt, mode) {
       : '<rect x="' + (x - r) + '" y="' + (y - r) + '" width="' + r * 2 + '" height="' + r * 2 + '" fill="none" stroke="' + c1 + '" stroke-width="' + (laser ? 3 : 8) + '" transform="rotate(' + ((h + i * 37) % 90) + ' ' + x + ' ' + y + ')"/>';
   }
   const svg =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">' +
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">' +
     '<rect width="512" height="512" fill="' + c2 + '"/>' + motifs +
     '<text x="256" y="492" font-family="monospace" font-size="20" fill="' + c1 + '" text-anchor="middle">MOCK ' + (mode || 'pattern').toUpperCase() + ' — set OPENROUTER_API_KEY</text></svg>';
   return 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64');

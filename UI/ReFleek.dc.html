@@ -329,7 +329,7 @@
 
             <sc-if value="{{ patternHas }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:16px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
-              <img src="{{ patternImg }}" style="width:min(100%,300px);border:1.5px solid #0F0F0E;background:#fff;display:block" />
+              <img src="{{ patternPreviewImg }}" style="width:min(100%,360px);max-height:360px;object-fit:contain;border:1.5px solid #0F0F0E;background:#fff;display:block" />
               <div style="flex:1;min-width:180px;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.7;color:rgba(15,15,14,.6)">{{ patternResultNote }}</div>
             </div>
             </sc-if>
@@ -574,24 +574,13 @@
 
       <div style="flex:1;overflow-y:auto;padding:clamp(22px,3vw,42px) clamp(18px,2.6vw,34px)">
 
-        <!-- AI render preview (replaces CSS mockup once generated) -->
-        <sc-if value="{{ previewHasRender }}" hint-placeholder-val="{{ false }}">
+        <!-- Live preview mockup — always visible; pattern composites on top when artwork exists -->
         <div style="display:flex;flex-direction:column;align-items:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
-          <div style="position:relative;width:min(100%,420px)">
-            <img src="{{ renderImg }}" style="width:100%;display:block;box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both" />
-            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">◆ AI render · {{ previewCaption }}</span>
-          </div>
-        </div>
-        </sc-if>
-
-        <!-- fabric mockup -->
-        <sc-if value="{{ previewNoRender }}" hint-placeholder-val="{{ true }}">
-        <div style="display:flex;align-items:center;justify-content:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
           <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both;overflow:hidden">
 
             <!-- TOTE preview -->
             <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;left:50%;top:6%;transform:translateX(-50%);width:50%;height:22px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:999px 999px 0 0;z-index:3"></div>
+              <div style="position:absolute;left:50%;top:6%;transform:translateX(-50%);width:50%;height:22px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:999px 999px 0 0;z-index:2"></div>
               <sc-if value="{{ previewToteGrid }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:18% 14% 10% 14%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px">
                 <sc-for list="{{ totePatchworkCells }}" as="cell" hint-placeholder-count="4">
@@ -611,8 +600,8 @@
                 </svg>
               </div>
               </sc-if>
-              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15);z-index:3"></span></sc-if>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12);z-index:3"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15);z-index:2"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12);z-index:2"></span></sc-if>
             </sc-if>
 
             <!-- FLAT preview (tablecloth / curtain) -->
@@ -643,10 +632,10 @@
               <div style="position:absolute;right:10px;top:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;left:10px;bottom:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;right:10px;bottom:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
-              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg);z-index:3"></span></sc-if>
-              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
-              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;z-index:3">
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg);z-index:2"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
+              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;z-index:2">
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
@@ -677,20 +666,30 @@
               <sc-if value="{{ previewScarfSingle }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:12% 8%;background:{{ fabricBg }};background-image:{{ fabricImg }};background-size:{{ fabricSize }};border:1px solid rgba(15,15,14,.2)"></div>
               </sc-if>
-              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
             </sc-if>
 
+            <!-- Pattern artwork — always the topmost layer on the product preview -->
             <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
               <sc-if value="{{ patternOverlayImgMode }}" hint-placeholder-val="{{ false }}">
-              <img src="{{ patternOverlaySrc }}" alt="" style="position:absolute;inset:0;z-index:30;width:100%;height:100%;object-fit:{{ patternOverlayFit }};object-position:{{ patternOverlayPos }};opacity:0.88;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none" />
+              <img src="{{ patternOverlaySrc }}" alt="" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:{{ patternOverlayFit }};object-position:{{ patternOverlayPos }};opacity:0.92;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none;image-rendering:auto" />
               </sc-if>
               <sc-if value="{{ patternOverlayBgMode }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;inset:0;z-index:30;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.82;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})"></div>
+              <div style="position:absolute;inset:0;z-index:50;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.9;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none"></div>
               </sc-if>
             </sc-if>
 
-            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ previewCaption }}</span>
+            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45);z-index:51">{{ previewCaption }}</span>
+          </div>
+        </div>
+
+        <!-- AI photorealistic render (optional, shown below live mockup) -->
+        <sc-if value="{{ previewHasRender }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;padding:0 0 clamp(18px,2vw,30px)">
+          <div style="position:relative;width:min(100%,420px)">
+            <img src="{{ renderImg }}" style="width:100%;display:block;box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both" />
+            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">◆ AI render · {{ previewCaption }}</span>
           </div>
         </div>
         </sc-if>
@@ -699,7 +698,7 @@
         <sc-if value="{{ patternHas }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;gap:12px;align-items:center;background:#FBFAF6;border:1px solid rgba(15,15,14,.16);padding:10px 12px;margin-bottom:14px">
           <div style="width:44px;height:44px;flex-shrink:0;border:1px solid rgba(15,15,14,.2);background-color:#f4f1ea;background-image:linear-gradient(45deg,rgba(15,15,14,.09) 25%,transparent 25%,transparent 75%,rgba(15,15,14,.09) 75%),linear-gradient(45deg,rgba(15,15,14,.09) 25%,transparent 25%,transparent 75%,rgba(15,15,14,.09) 75%);background-size:8px 8px;background-position:0 0,4px 4px;overflow:hidden">
-            <img src="{{ patternImg }}" style="width:100%;height:100%;object-fit:contain;display:block" />
+            <img src="{{ patternPreviewImg }}" style="width:100%;height:100%;object-fit:contain;display:block" />
           </div>
           <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(15,15,14,.6)">AI artwork · {{ patternModeLabel }}</div>
         </div>
@@ -1356,9 +1355,9 @@ class Component extends DCLogic {
       cur.name.toLowerCase() + ' (' + (cur.stream === 'new' ? 'unfinished deadstock' : 'upcycled reclaimed fabric') + ')';
     const mode = this.surfaceMode();
     let finish = '';
-    if (mode === 'print') finish = 'Seamless repeating textile print pattern, ' + base + ', flat 2D artwork, balanced repeat, production-ready for digital fabric printing, plain background, no mockup, no text.';
+    if (mode === 'print') finish = 'Seamless repeating textile print pattern, ' + base + ', flat 2D artwork, balanced repeat, production-ready for digital fabric printing, high resolution 1024 pixels, plain background, no mockup, no text.';
     else if (mode === 'laser') finish = 'Single-colour monochrome line-art motif for laser etching on fabric, ' + base + ', tone-on-tone, clean bold linework, high contrast dark lines on plain light background, flat 2D, no shading, no text.';
-    else finish = 'Flat vector illustration artwork (source art for embroidery production, NOT an embroidered photo), ' + base + ', pure 2D graphic design with maximum 4 solid flat colour fills, crisp closed shapes like a logo or screen-print colour separation, NOT embroidered, NOT stitched, NO thread texture, NO stitch lines, NO satin stitch, NO needlework, NO 3D relief, NO fabric weave, NO gradients, NO shading, NO photographic texture, plain pure white background with no shadows, production-ready digitizing source art, no text.';
+    else finish = 'Flat vector illustration artwork (source art for embroidery production, NOT an embroidered photo), ' + base + ', pure 2D graphic design with maximum 4 solid flat colour fills, crisp closed shapes like a logo or screen-print colour separation, NOT embroidered, NOT stitched, NO thread texture, NO stitch lines, NO satin stitch, NO needlework, NO 3D relief, NO fabric weave, NO gradients, NO shading, NO photographic texture, plain pure white background with no shadows, production-ready digitizing source art, high resolution 1024 pixels, sharp edges, no text.';
 
     if (s.patternInputMode === 'prompt' && s.patternPromptText.trim()) {
       return finish + ' User brief: ' + s.patternPromptText.trim() + '.';
@@ -1587,7 +1586,7 @@ class Component extends DCLogic {
   }
 
   async extractColorSeparation(imageUrl) {
-    const MAX = 128;
+    const MAX = 512;
     const img = await this._loadImage(imageUrl);
     const scale = Math.min(1, MAX / Math.max(img.naturalWidth || 1, img.naturalHeight || 1));
     const w = Math.max(1, Math.round((img.naturalWidth || MAX) * scale));
@@ -1641,10 +1640,15 @@ class Component extends DCLogic {
   }
 
   _buildSolidPreview(w, h, indices, threadColors) {
+    const DISPLAY = 512;
+    const scale = Math.max(1, Math.min(DISPLAY / Math.max(w, 1), DISPLAY / Math.max(h, 1)));
+    const dw = Math.max(1, Math.round(w * scale));
+    const dh = Math.max(1, Math.round(h * scale));
     const canvas = document.createElement('canvas');
-    canvas.width = w; canvas.height = h;
+    canvas.width = dw; canvas.height = dh;
     const ctx = canvas.getContext('2d');
-    const img = ctx.createImageData(w, h);
+    ctx.imageSmoothingEnabled = false;
+    const low = ctx.createImageData(w, h);
     for (let i = 0; i < w * h; i++) {
       const ci = indices[i];
       if (ci === 255) continue;
@@ -1652,9 +1656,12 @@ class Component extends DCLogic {
       if (!tc) continue;
       const rgb = this._hexToRgb(tc.hex);
       const p = i * 4;
-      img.data[p] = rgb[0]; img.data[p + 1] = rgb[1]; img.data[p + 2] = rgb[2]; img.data[p + 3] = 255;
+      low.data[p] = rgb[0]; low.data[p + 1] = rgb[1]; low.data[p + 2] = rgb[2]; low.data[p + 3] = 255;
     }
-    ctx.putImageData(img, 0, 0);
+    const scratch = document.createElement('canvas');
+    scratch.width = w; scratch.height = h;
+    scratch.getContext('2d').putImageData(low, 0, 0);
+    ctx.drawImage(scratch, 0, 0, w, h, 0, 0, dw, dh);
     return canvas.toDataURL('image/png');
   }
 
@@ -1723,6 +1730,11 @@ class Component extends DCLogic {
 
   artworkForWorkflow() {
     return (this.isEmbroidery() && this.state.embroiderySolidImg) || this.state.patternImg;
+  }
+
+  // Full-resolution source art for on-screen preview — never the downsampled separation plate.
+  artworkForPreview() {
+    return this.state.patternImg;
   }
 
   buildTechPackJson() {
@@ -2275,16 +2287,15 @@ class Component extends DCLogic {
     const previewBg = previewMode === 'tote' ? '#E7E3D9' : (previewPatchwork ? '#D7CBB2' : cur.swBg);
     const previewImg = previewMode === 'tote' || previewPatchwork ? 'none' : cur.swImg;
     const previewSize = previewMode === 'tote' || previewPatchwork ? 'auto' : cur.swSize;
-    const tilePx = Math.round(36 * s.motifScale / 100 * s.layoutScale / 100);
-    const isEmbroidery = this.isEmbroidery();
-    const workflowArt = this.artworkForWorkflow();
-    const patternOverlayUseImg = isEmbroidery && !!s.embroiderySolidImg && s.repeatMode === 'single';
-    const patternOverlayShow = !!workflowArt && !s.renderImg;
-    const patternOverlaySrc = workflowArt || '';
-    const patternOverlayImg = this.cssBgUrl(workflowArt);
+    const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
+    const previewArt = this.artworkForPreview();
+    const patternOverlayUseImg = !!previewArt && s.repeatMode === 'single';
+    const patternOverlayShow = !!previewArt;
+    const patternOverlaySrc = previewArt || '';
+    const patternOverlayImg = this.cssBgUrl(previewArt);
     const patternOverlayRepeat = s.repeatMode === 'single' ? 'no-repeat' : 'repeat';
     const patternOverlaySize = s.repeatMode === 'single'
-      ? (Math.round(34 * s.motifScale / 100) + '% auto')
+      ? (Math.round(52 * s.motifScale / 100) + '% auto')
       : (tilePx + 'px ' + (s.repeatMode === 'half-drop' ? Math.round(tilePx * 0.5) + 'px' : tilePx + 'px'));
     const patternOverlayPos = s.repeatMode === 'single'
       ? (s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
@@ -2293,6 +2304,7 @@ class Component extends DCLogic {
       : (s.motifOffsetX + '% ' + s.motifOffsetY + '%');
     const layoutScaleFactor = s.layoutScale / 100;
     const layoutRotate = s.layoutRotate + 'deg';
+    const isEmbroidery = this.isEmbroidery();
 
     const PATTERN_TABS = [['preset', 'Preset tiles'], ['prompt', 'Text prompt'], ['upload', 'Upload image']];
     const patternInputTabs = PATTERN_TABS.map(([id, name]) => {
@@ -2316,7 +2328,7 @@ class Component extends DCLogic {
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
       apiMockShow: !!s.apiMock,
-      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.layoutRotate + s.motifScale + s.motifRotate + s.motifOffsetX + s.motifOffsetY + previewMode + w + 'x' + h + patchSeed + (workflowArt ? '|p' : '') + (s.embroiderySolidImg ? '|es' : ''),
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.layoutRotate + s.motifScale + s.motifRotate + s.motifOffsetX + s.motifOffsetY + previewMode + w + 'x' + h + patchSeed + (previewArt ? '|p' : ''),
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8, n9: s.node === 9,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
@@ -2372,7 +2384,7 @@ class Component extends DCLogic {
       generatePattern: () => this.generatePattern(),
       patternBtnLabel: s.patternBusy ? 'Generating…' : (s.patternImg ? 'Regenerate artwork' : 'Generate artwork'),
       patternPrompt: this.buildPatternPrompt(),
-      patternImg: workflowArt || s.patternImg || '', patternHas: !!workflowArt,
+      patternImg: previewArt || '', patternPreviewImg: previewArt || '', patternHas: !!previewArt,
       patternErr: s.patternErr, patternErrShow: !!s.patternErr,
       patternBusyShow: s.patternBusy,
       patternModeLabel: ({ print: 'Digital print', laser: 'Laser etching', embroidery: 'Embroidery' })[this.surfaceMode()],
@@ -2381,7 +2393,7 @@ class Component extends DCLogic {
       renderImg: s.renderImg || '', renderHas: !!s.renderImg,
       renderErr: s.renderErr, renderErrShow: !!s.renderErr,
       renderBusyShow: s.renderBusy,
-      previewHasRender: !!s.renderImg, previewNoRender: !s.renderImg,
+      previewHasRender: !!s.renderImg,
       dCorner: s.repeatMode === 'single' && s.placement === 'corner',
       dCenter: s.repeatMode === 'single' && s.placement === 'center',
       dBorder: s.repeatMode === 'single' && s.placement === 'border',
