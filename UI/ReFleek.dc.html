@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Archivo:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#F4F1EA;color:#0F0F0E;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#E8452A;text-decoration:none}
+  a:hover{color:#0F0F0E}
+  ::selection{background:#0F0F0E;color:#F4F1EA}
+  input,button{font-family:inherit}
+  button{cursor:pointer}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:rgba(15,15,14,.16)}
+  ::-webkit-scrollbar-track{background:transparent}
+  @keyframes rf-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes rf-swap{from{opacity:0}to{opacity:1}}
+  @media print{
+    header,.rf-no-print{display:none!important}
+    body{background:#fff}
+    div[style*="grid-template-columns:1.05fr"]{display:block!important}
+    div[style*="border-right:1.5px"]{border:none!important;width:100%!important}
+    div[style*="background:#E7E3D9"]{display:none!important}
+  }
+</style>
+</helmet>
+
+<div style="height:100vh;display:flex;flex-direction:column;background:#F4F1EA;overflow:hidden">
+
+  <!-- ===== MASTHEAD ===== -->
+  <header style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px clamp(18px,3vw,40px);border-bottom:1.5px solid #0F0F0E">
+    <div style="display:flex;align-items:baseline;gap:7px">
+      <span style="font-family:'Bodoni Moda',serif;font-weight:800;font-size:24px;letter-spacing:-.01em">ReFleek</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;transform:translateY(-7px);opacity:.6">®</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:rgba(15,15,14,.5);text-align:center">Circular&nbsp;Design — to — Production</div>
+    <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.5);text-align:right">Issue Nº01<br>Deadstock Edition</div>
+  </header>
+
+  <!-- ===== SPLIT BODY ===== -->
+  <div style="flex:1;display:grid;grid-template-columns:1.05fr .95fr;min-height:0">
+
+    <!-- ========== LEFT · WORKFLOW ========== -->
+    <div style="display:flex;flex-direction:column;min-height:0;border-right:1.5px solid #0F0F0E">
+
+      <!-- node stepper -->
+      <div class="rf-no-print" style="flex:none;display:flex;align-items:stretch;border-bottom:1px solid rgba(15,15,14,.16);overflow-x:auto">
+        <div style="flex:none;display:flex;align-items:center;padding:0 14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(15,15,14,.4);border-right:1px solid rgba(15,15,14,.12)">Workflow</div>
+        <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="8">
+          <button onClick="{{ it.onClick }}" title="{{ it.name }}" style="flex:1 0 auto;background:{{ it.tabBg }};border:none;border-right:1px solid rgba(15,15,14,.1);padding:0;min-width:54px">
+            <div style="height:3px;background:{{ it.ruleBg }}"></div>
+            <div style="padding:9px 12px 10px">
+              <sc-if value="{{ it.showNum }}" hint-placeholder-val="{{ true }}"><div style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:{{ it.numColor }}">{{ it.n }}</div></sc-if>
+              <div style="font-family:'Archivo',sans-serif;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:{{ it.nameColor }};white-space:nowrap;margin-top:2px">{{ it.name }}</div>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+
+      <!-- node body (scrolls) -->
+      <div style="flex:1;overflow-y:auto;padding:clamp(22px,3vw,40px) clamp(20px,3.2vw,44px) 28px" key="{{ nodeKey }}">
+
+        <!-- NODE 1 · PRODUCT -->
+        <sc-if value="{{ n1 }}" hint-placeholder-val="{{ true }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Product — Nº01</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 0">What do you<br><span style="font-style:italic;font-weight:500">want to make?</span></h1>
+          <p style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:rgba(15,15,14,.6);max-width:46ch;margin:18px 0 0">State the product — the system sources circular material to match, then walks you to a factory-ready tech pack.</p>
+
+          <div style="margin-top:30px;border-top:1px solid rgba(15,15,14,.16);padding-top:16px">
+            <label style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45)">Your brief</label>
+            <input value="{{ brief }}" onChange="{{ applyBrief }}" style="display:block;width:100%;margin-top:12px;border:none;background:transparent;outline:none;font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(20px,2.4vw,28px);line-height:1.3;color:#0F0F0E" />
+          </div>
+
+          <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:9px">
+            <sc-for list="{{ demoPresets }}" as="dp" hint-placeholder-count="2">
+              <button onClick="{{ dp.onClick }}" style="padding:9px 16px;border:1px solid {{ dp.bd }};background:{{ dp.bg }};color:{{ dp.fg }};font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;transition:all .18s">{{ dp.name }}</button>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:28px">
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:14px">Or pick a product</div>
+            <div style="display:flex;flex-wrap:wrap;gap:9px">
+              <sc-for list="{{ productChips }}" as="c" hint-placeholder-count="8">
+                <button onClick="{{ c.onClick }}" style="padding:9px 16px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};border-radius:999px;font-size:12.5px;font-weight:500;transition:all .18s">{{ c.name }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 2 · MATERIAL -->
+        <sc-if value="{{ n2 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Material — Nº02</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 20px">Source the<br><span style="font-style:italic;font-weight:500">material.</span></h1>
+
+          <div style="display:flex;flex-wrap:wrap;gap:7px;border-bottom:1px solid rgba(15,15,14,.16);padding-bottom:18px">
+            <sc-for list="{{ sourceTabs }}" as="t" hint-placeholder-count="4">
+              <button onClick="{{ t.onClick }}" style="padding:8px 14px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;transition:all .18s">{{ t.name }}</button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ showAiBadge }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:14px;align-items:flex-start;background:#0F0F0E;color:#F4F1EA;padding:14px 18px;margin-top:18px">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:{{ accent }};white-space:nowrap;padding-top:2px">◆ AI</span>
+            <p style="margin:0;font-size:12.5px;line-height:1.55">{{ aiMaterialReason }}</p>
+          </div>
+          </sc-if>
+
+          <div style="display:flex;justify-content:flex-end;margin-top:14px">
+            <button onClick="{{ applyAiPicks }}" style="padding:9px 16px;border:1px solid #0F0F0E;background:transparent;color:#0F0F0E;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">Apply AI picks →</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">
+            <sc-for list="{{ materialsList }}" as="m" hint-placeholder-count="2">
+              <button onClick="{{ m.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ m.selBd }};box-shadow:{{ m.selShadow }};padding:0;overflow:hidden;transition:all .2s">
+                <div style="height:64px;background:{{ m.swBg }};background-image:{{ m.swImg }};background-size:{{ m.swSize }}"></div>
+                <div style="padding:14px 16px">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+                    <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.5)">{{ m.sourceLabel }}</span>
+                    <span style="display:flex;align-items:center;gap:6px;flex:none">
+                      <sc-if value="{{ m.recommended }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.12em;padding:2px 5px;border-radius:3px;background:{{ accent }};color:#F4F1EA">REC</span></sc-if>
+                      <span style="width:15px;height:15px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }}"></span>
+                    </span>
+                  </div>
+                  <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:21px;letter-spacing:-.01em;margin:5px 0 11px">{{ m.name }}</div>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <sc-for list="{{ m.specs }}" as="sp" hint-placeholder-count="3">
+                      <div style="display:flex;justify-content:space-between;gap:10px;font-family:'Space Mono',monospace;font-size:10.5px">
+                        <span style="color:rgba(15,15,14,.45)">{{ sp.k }}</span>
+                        <span style="color:#0F0F0E">{{ sp.v }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="margin-top:11px;padding-top:10px;border-top:1px solid rgba(15,15,14,.1);font-size:11px;line-height:1.5;color:rgba(15,15,14,.6)">{{ m.best }}</div>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 3 · TECHNIQUE -->
+        <sc-if value="{{ n3 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Technique — Nº03</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">How it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
+
+          <div style="display:flex;gap:14px;align-items:flex-start;background:#0F0F0E;color:#F4F1EA;padding:18px 20px">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:{{ accent }};white-space:nowrap;padding-top:2px">◆ AI</span>
+            <p style="margin:0;font-size:13px;line-height:1.6">{{ aiTechniqueCopy }} <span style="opacity:.55">{{ aiAvoidNote }}</span></p>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;margin-top:14px">
+            <button onClick="{{ applyAiPicks }}" style="padding:9px 16px;border:1px solid #0F0F0E;background:transparent;color:#0F0F0E;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">Apply AI picks →</button>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:24px">
+            <sc-for list="{{ techList }}" as="t" hint-placeholder-count="9">
+              <button onClick="{{ t.onToggle }}" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-size:12.5px;font-weight:500;transition:all .18s">
+                {{ t.name }}
+                <sc-if value="{{ t.rec }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.12em;padding:2px 5px;border-radius:3px;background:{{ t.recBg }};color:{{ t.recFg }}">REC</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 4 · PATTERN -->
+        <sc-if value="{{ n4 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Pattern — Nº04</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Surface.</h1>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+            <sc-for list="{{ patternTiles }}" as="p" hint-placeholder-count="4">
+              <button onClick="{{ p.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ p.selBd }};box-shadow:{{ p.selShadow }};padding:0;overflow:hidden;transition:all .2s">
+                <div style="aspect-ratio:4/3;background:#D7CBB2;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.22) 0 1px,transparent 1px 3px);position:relative">
+                  <sc-if value="{{ p.showCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:11px;bottom:11px;width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(90,75,50,.5)"></span></sc-if>
+                  <sc-if value="{{ p.showCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:40px;height:40px;border:1.5px solid rgba(90,75,50,.55);transform:rotate(45deg)"></span></sc-if>
+                  <sc-if value="{{ p.showStitch }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:46px;height:46px;border:1.5px dashed rgba(90,75,50,.6);border-radius:50%"></span></sc-if>
+                </div>
+                <div style="padding:12px 14px">
+                  <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:17px">{{ p.name }}</div>
+                  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;color:rgba(15,15,14,.5);margin-top:3px">{{ p.note }}</div>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 5 · LAYOUT -->
+        <sc-if value="{{ n5 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº05</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Placement.</h1>
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Watch the preview update as you choose →</p>
+
+          <div style="display:flex;flex-direction:column;border-top:1px solid rgba(15,15,14,.16)">
+            <sc-for list="{{ layoutList }}" as="l" hint-placeholder-count="4">
+              <button onClick="{{ l.onSelect }}" style="display:flex;align-items:baseline;gap:14px;text-align:left;background:{{ l.bg }};border:none;border-bottom:1px solid rgba(15,15,14,.16);padding:17px 14px;transition:background .18s">
+                <span style="font-family:'Space Mono',monospace;font-size:11px;color:{{ l.dot }}">{{ l.mark }}</span>
+                <span style="flex:1">
+                  <span style="display:block;font-family:'Bodoni Moda',serif;font-weight:600;font-size:21px;color:{{ l.fg }}">{{ l.name }}</span>
+                  <span style="display:block;font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.5);margin-top:3px">{{ l.desc }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 6 · RENDER -->
+        <sc-if value="{{ n6 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Render — Nº06</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Preview<br><span style="font-style:italic;font-weight:500">ready.</span></h1>
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 24px;max-width:44ch">The render on the right reflects every choice. Confirm the spec, or step back to adjust.</p>
+
+          <div style="display:flex;flex-direction:column;border-top:1px solid rgba(15,15,14,.16)">
+            <sc-for list="{{ summaryRows }}" as="r" hint-placeholder-count="7">
+              <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 4px;border-bottom:1px solid rgba(15,15,14,.13)">
+                <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ r.k }}</span>
+                <span style="font-size:13px;font-weight:500;text-align:right;max-width:62%">{{ r.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 7 · TECH PACK -->
+        <sc-if value="{{ n7 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Tech Pack — Nº07</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Production<br><span style="font-style:italic;font-weight:500">brief.</span></h1>
+
+          <div style="background:#FBFAF6;border:1.5px solid #0F0F0E">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid rgba(15,15,14,.16);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">
+              <span>Tech Pack · TP-001</span><span style="font-family:'Bodoni Moda',serif;font-weight:800;font-size:15px;letter-spacing:0;text-transform:none">ReFleek</span>
+            </div>
+            <sc-for list="{{ techPackRows }}" as="r" hint-placeholder-count="10">
+              <div style="display:flex;justify-content:space-between;gap:14px;padding:11px 18px;border-bottom:1px solid rgba(15,15,14,.1)">
+                <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ r.k }}</span>
+                <span style="font-size:12.5px;font-weight:500;text-align:right">{{ r.v }}</span>
+              </div>
+            </sc-for>
+            <div style="padding:15px 18px;border-bottom:1px solid rgba(15,15,14,.16)">
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:7px">Construction notes</div>
+              <p style="margin:0;font-family:'Space Mono',monospace;font-size:11px;line-height:1.65;color:rgba(15,15,14,.75)">{{ constructionNotes }}</p>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px">
+              <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(15,15,14,.5)">Circular by default</span>
+              <button onClick="{{ exportPdf }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:11px 18px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase">Export PDF <span style="color:{{ accent }}">↓</span></button>
+            </div>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- NODE 8 · PRODUCER -->
+        <sc-if value="{{ n8 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Producer — Nº08</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Where it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
+
+          <div style="background:#0F0F0E;color:#F4F1EA;padding:22px 24px">
+            <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:{{ accent }}">◆ MATCHED PRODUCER</div>
+            <div style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(26px,3vw,38px);letter-spacing:-.01em;margin-top:10px;line-height:1">{{ producer.name }}</div>
+            <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,234,.6);margin-top:8px">{{ producer.loc }}</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(244,241,234,.2)">
+              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">Capable of</div><div style="font-size:12px;margin-top:5px;line-height:1.4">{{ producer.caps }}</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">MOQ</div><div style="font-family:'Bodoni Moda',serif;font-size:24px;margin-top:3px">{{ producer.moq }}</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">Lead time</div><div style="font-family:'Bodoni Moda',serif;font-size:24px;margin-top:3px">{{ producer.lead }}</div></div>
+            </div>
+            <div style="margin-top:18px;font-size:12.5px;line-height:1.6;color:rgba(244,241,234,.8)"><span style="color:{{ accent }};font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em">WHY — </span>{{ producer.why }}</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+            <sc-for list="{{ altProducers }}" as="p" hint-placeholder-count="2">
+              <div style="background:#FBFAF6;border:1px solid rgba(15,15,14,.16);padding:15px 17px">
+                <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:18px;line-height:1.05">{{ p.name }}</div>
+                <div style="font-family:'Space Mono',monospace;font-size:10.5px;color:rgba(15,15,14,.5);margin-top:5px">{{ p.loc }}</div>
+                <div style="font-size:11.5px;line-height:1.45;color:rgba(15,15,14,.6);margin-top:11px">{{ p.caps }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+        </sc-if>
+
+      </div>
+
+      <!-- left footer nav -->
+      <footer class="rf-no-print" style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px clamp(20px,3.2vw,44px);border-top:1.5px solid #0F0F0E">
+        <button onClick="{{ back }}" style="background:none;border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{{ backColor }};padding:6px 0">← Back</button>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.5)">Nº {{ pageNum }} / 08</div>
+        <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:11px;background:#0F0F0E;color:#F4F1EA;border:none;padding:13px 24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase">{{ nextLabel }} <span style="color:{{ accent }}">→</span></button>
+      </footer>
+    </div>
+
+    <!-- ========== RIGHT · LIVE PREVIEW ========== -->
+    <div class="rf-no-print" style="display:flex;flex-direction:column;min-height:0;background:#E7E3D9">
+      <div style="flex:none;display:flex;align-items:center;justify-content:space-between;padding:13px clamp(18px,2.6vw,34px);border-bottom:1px solid rgba(15,15,14,.14)">
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(15,15,14,.55)">Live Preview</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.55)"><span style="width:6px;height:6px;border-radius:50%;background:{{ accent }}"></span>Updating</span>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;padding:clamp(22px,3vw,42px) clamp(18px,2.6vw,34px)">
+
+        <!-- fabric mockup -->
+        <div style="display:flex;align-items:center;justify-content:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
+          <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both">
+
+            <!-- TOTE preview -->
+            <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);width:58%;height:14px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:40px 40px 0 0"></div>
+              <div style="position:absolute;inset:18% 14% 10% 14%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px">
+                <div style="background:#4A5F7A;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 1px,transparent 1px 4px)"></div>
+                <div style="background:#3C4E67;background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.15) 0 1px,transparent 1px 4px)"></div>
+                <div style="background:#5A6B82;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 2px,transparent 2px 5px)"></div>
+                <div style="background:#354558;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 1px,transparent 1px 3px)"></div>
+              </div>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15)"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12)"></span></sc-if>
+            </sc-if>
+
+            <!-- FLAT preview (tablecloth / curtain) -->
+            <sc-if value="{{ previewFlat }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(120,105,80,.05) 0 1px,transparent 1px 5px),repeating-linear-gradient(90deg,rgba(120,105,80,.05) 0 1px,transparent 1px 5px)"></div>
+              <div style="position:absolute;left:10px;top:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
+              <div style="position:absolute;right:10px;top:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
+              <div style="position:absolute;left:10px;bottom:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
+              <div style="position:absolute;right:10px;bottom:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }}"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg)"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }}"></span></sc-if>
+              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center">
+                <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
+                <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
+                <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
+              </span></sc-if>
+            </sc-if>
+
+            <!-- SCARF preview -->
+            <sc-if value="{{ previewScarf }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:12% 8%;background:{{ fabricBg }};background-image:{{ fabricImg }};background-size:{{ fabricSize }};border:1px solid rgba(15,15,14,.2)"></div>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }}"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }}"></span></sc-if>
+            </sc-if>
+
+            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ previewCaption }}</span>
+          </div>
+        </div>
+
+        <!-- circular badge -->
+        <div style="background:#0F0F0E;color:#F4F1EA;padding:15px 18px;margin-bottom:14px">
+          <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:{{ accent }}">◆ CIRCULAR MATERIAL</div>
+          <div style="font-family:'Bodoni Moda',serif;font-size:19px;font-weight:600;margin-top:6px;line-height:1.15">{{ circularLabel }}</div>
+        </div>
+
+        <!-- live spec -->
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ summaryRows }}" as="r" hint-placeholder-count="7">
+            <div style="display:flex;justify-content:space-between;gap:14px;padding:10px 2px;border-bottom:1px solid rgba(15,15,14,.14)">
+              <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ r.k }}</span>
+              <span style="font-size:12.5px;font-weight:500;text-align:right;max-width:62%">{{ r.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- impact -->
+        <sc-if value="{{ showImpact }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-top:22px;border-top:1.5px solid #0F0F0E;padding-top:18px">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(15,15,14,.5);margin-bottom:16px">Circular impact</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <sc-for list="{{ impactRows }}" as="i" hint-placeholder-count="4">
+              <div>
+                <div style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:.95;letter-spacing:-.02em">{{ i.v }}</div>
+                <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(15,15,14,.55);margin-top:6px;line-height:1.4">{{ i.k }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E8452A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;navNumbered&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;showImpact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = {
+    node: 1,
+    brief: 'I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.',
+    product: 'Tote bag',
+    source: 'reclaimed',
+    material: 'denim',
+    techniques: ['patchwork', 'cut-sew', 'embroidery'],
+    pattern: 'placement',
+    layout: 'center',
+    style: 'workwear',
+  };
+
+  PRODUCT_SPECS = {
+    'Tote bag':      { dims: '38 × 42cm', fabricUse: '4 panels/bag', costPer: 12, previewMode: 'tote' },
+    'Tablecloth':    { dims: '150 × 220cm', fabricUse: '38m of 42m', costPer: 16, previewMode: 'flat' },
+    'Apron':         { dims: '70 × 90cm', fabricUse: '1.2m/apron', costPer: 10, previewMode: 'flat' },
+    'Scarf':         { dims: '60 × 180cm', fabricUse: '1.2m/band', costPer: 8, previewMode: 'scarf' },
+    'Cushion cover': { dims: '45 × 45cm', fabricUse: '0.6m/cover', costPer: 9, previewMode: 'flat' },
+    'Curtain':       { dims: '140 × 240cm', fabricUse: '3.5m/panel', costPer: 14, previewMode: 'flat' },
+    'Pouch':         { dims: '25 × 18cm', fabricUse: '0.3m/pouch', costPer: 6, previewMode: 'scarf' },
+    'Bandana':       { dims: '55 × 55cm', fabricUse: '0.4m/bandana', costPer: 5, previewMode: 'scarf' },
+  };
+
+  ACC() { return this.props.accent || '#E8452A'; }
+
+  go(n) { this.setState({ node: Math.max(1, Math.min(8, n)) }); }
+  next() { this.state.node === 8 ? this.go(1) : this.go(this.state.node + 1); }
+  back() { this.go(this.state.node - 1); }
+  toggleTech(id) {
+    const t = this.state.techniques.slice();
+    const i = t.indexOf(id);
+    if (i >= 0) t.splice(i, 1); else t.push(id);
+    this.setState({ techniques: t });
+  }
+
+  parseBrief(brief) {
+    const qtyMatch = brief.match(/(\d+)\s*(tote|bag|tablecloth|piece|pc|apron|scarf|curtain|pouch|bandana|cover)/i)
+      || brief.match(/(\d+)\s/i);
+    const quantity = qtyMatch ? parseInt(qtyMatch[1], 10) : 20;
+    const wantsPatchwork = /patchwork|one-of-one|workwear|vintage/i.test(brief);
+    const wantsMinimal = /minimal|restaurant|tonal|clean/i.test(brief);
+    const wantsReclaimed = /reclaimed|secondhand|circular|denim|patchwork|vintage/i.test(brief);
+    const wantsDeadstock = /deadstock|linen|tablecloth|restaurant/i.test(brief) && !wantsReclaimed;
+    return { quantity, wantsPatchwork, wantsMinimal, wantsReclaimed, wantsDeadstock };
+  }
+
+  getRecommendations(state) {
+    const p = this.parseBrief(state.brief);
+    const product = state.product;
+
+    if (product === 'Tote bag' || p.wantsPatchwork) {
+      return {
+        materialId: 'denim',
+        techniques: ['patchwork', 'cut-sew', 'embroidery'],
+        pattern: 'placement',
+        layout: 'center',
+        source: 'reclaimed',
+        materialReason: 'Reclaimed denim panel lot — deconstructed unresellable jeans and jackets. 120 usable panels at Fleek-linked sorting centre, Pakistan. Best for patchwork totes and accessories.',
+        techniqueReason: 'Patchwork + reinforced stitching + optional embroidery label. Denim panels vary in shade and size, so patchwork turns inconsistency into a design feature.',
+        patternReason: 'Modular workwear patchwork — 4-panel front, 4-panel back, reinforced handle tabs.',
+        avoidNote: 'Avoid all-over print — panel colour variation may make printing inconsistent.',
+      };
+    }
+    if (product === 'Tablecloth' || p.wantsMinimal) {
+      return {
+        materialId: 'linen',
+        techniques: ['cut-sew', 'embroidery', 'edge-finishing'],
+        pattern: 'tonal-logo',
+        layout: 'corner',
+        source: 'deadstock',
+        materialReason: 'New deadstock linen blend — 42m available from Pakistan fabric supplier. Holds a crisp hemmed edge; ideal for hospitality textiles.',
+        techniqueReason: 'Cut-and-sew with one tonal embroidery mark. Linen holds a crisp hemmed edge; a single recessive detail keeps it minimal.',
+        patternReason: 'Tonal logo — single corner mark, bottom-right placement.',
+        avoidNote: 'Skip all-over print — the roll is one dye lot, so surface work is unnecessary.',
+      };
+    }
+    if (product === 'Scarf' || product === 'Bandana' || product === 'Pouch') {
+      return {
+        materialId: 'shirt',
+        techniques: ['cut-sew', 'edge-finishing'],
+        pattern: 'none',
+        layout: 'border',
+        source: 'reclaimed',
+        materialReason: 'Shirt cotton bundle — reclaimed panels from Fleek India sorting centre. Panel-based construction suits scarves and accessories.',
+        techniqueReason: 'Cut-and-sew with edge finishing. Panel-based layout; edge finishing is the primary technique.',
+        patternReason: 'Raw hemmed edges — let the reclaimed stripe pattern speak.',
+        avoidNote: 'Avoid heavy embroidery — panel pattern is already visually rich.',
+      };
+    }
+    if (product === 'Cushion cover') {
+      return {
+        materialId: 'knit',
+        techniques: ['patchwork', 'quilting', 'applique'],
+        pattern: 'placement',
+        layout: 'center',
+        source: 'reclaimed',
+        materialReason: 'Knit bundle — sorted reclaimed knit from Fleek Pakistan. Soft texture suits patchwork cushions.',
+        techniqueReason: 'Patchwork + quilting. Mixed knit panels create tactile, one-of-one cushion covers.',
+        patternReason: 'Centred placement motif on patchwork base.',
+        avoidNote: 'Avoid tight fitted construction — knit panels have variable stretch.',
+      };
+    }
+    return {
+      materialId: 'twill',
+      techniques: ['cut-sew', 'edge-finishing'],
+      pattern: 'none',
+      layout: 'corner',
+      source: 'deadstock',
+      materialReason: 'Cotton twill deadstock — versatile new fabric from India. Suitable for aprons, totes, and workwear panels.',
+      techniqueReason: 'Cut-and-sew with edge finishing. Straightforward construction for semi-flat products.',
+      patternReason: 'Clean raw finish — no surface treatment needed.',
+      avoidNote: 'Skip complex patterning for small-batch runs.',
+    };
+  }
+
+  applyBrief(e) {
+    const brief = e.target.value;
+    const p = this.parseBrief(brief);
+    const updates = { brief };
+    if (/tote|bag/i.test(brief)) updates.product = 'Tote bag';
+    else if (/tablecloth/i.test(brief)) updates.product = 'Tablecloth';
+    else if (/scarf/i.test(brief)) updates.product = 'Scarf';
+    else if (/apron/i.test(brief)) updates.product = 'Apron';
+    else if (/curtain/i.test(brief)) updates.product = 'Curtain';
+    else if (/cushion/i.test(brief)) updates.product = 'Cushion cover';
+    if (p.wantsReclaimed) updates.source = 'reclaimed';
+    if (p.wantsDeadstock) updates.source = 'deadstock';
+    this.setState(updates);
+  }
+
+  applyAiPicks() {
+    const rec = this.getRecommendations(this.state);
+    this.setState({
+      material: rec.materialId,
+      techniques: rec.techniques.slice(),
+      pattern: rec.pattern,
+      layout: rec.layout,
+      source: rec.source,
+    });
+  }
+
+  loadPreset(preset) {
+    if (preset === 'totes') {
+      this.setState({
+        brief: 'I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.',
+        product: 'Tote bag', source: 'reclaimed', material: 'denim',
+        techniques: ['patchwork', 'cut-sew', 'embroidery'],
+        pattern: 'placement', layout: 'center', style: 'workwear',
+      });
+    } else {
+      this.setState({
+        brief: 'I want to make 15 minimal tablecloths for a restaurant using circular materials. Budget under £300.',
+        product: 'Tablecloth', source: 'deadstock', material: 'linen',
+        techniques: ['cut-sew', 'embroidery', 'edge-finishing'],
+        pattern: 'tonal-logo', layout: 'corner', style: 'minimal',
+      });
+    }
+  }
+
+  exportPdf() { window.print(); }
+
+  getConstructionNotes(product, techniques, pattern, layout) {
+    const has = (id) => techniques.indexOf(id) >= 0;
+    if (product === 'Tote bag' && has('patchwork')) {
+      return '4-panel front, 4-panel back, reinforced handle tabs. Reclaimed cotton webbing or deadstock canvas handles. Optional embroidered ReFleek mark on front pocket. Reinforced stitching at stress points.';
+    }
+    if (product === 'Tablecloth') {
+      return 'Double-fold 10mm hem, four edges, mitred corners. Tonal ReFleek mark, bottom-right, 40mm, matched thread. Pre-wash roll to stabilise before cutting.';
+    }
+    if (product === 'Scarf' || product === 'Bandana') {
+      return 'Raw or rolled hem on all edges. Panel layout from reclaimed shirt cotton. Edge finishing primary; no lining required.';
+    }
+    if (product === 'Cushion cover') {
+      return 'Patchwork front panel, solid back. Concealed zip closure. Quilting optional on front panel. 1cm seam allowance throughout.';
+    }
+    if (has('patchwork')) {
+      return 'Modular patchwork construction. Panel layout per tech pack. Reinforced stitching at panel joins. ' + (layout === 'center' ? 'Centred motif placement.' : 'Corner motif placement.');
+    }
+    return 'Cut-and-sew construction per spec. Edge finishing on all exposed seams. Pattern: ' + pattern + ', layout: ' + layout + '.';
+  }
+
+  MATERIALS() {
+    return [
+      { id: 'linen', stream: 'new', sourceLabel: 'New Deadstock · Pakistan', name: 'Natural Linen Blend',
+        swBg: '#D7CBB2', swImg: 'repeating-linear-gradient(0deg,rgba(255,255,255,.4) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.28) 0 1px,transparent 1px 3px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '42m' }, { k: 'Width', v: '150cm' }, { k: 'Colour', v: 'Natural beige' }],
+        best: 'Best for tablecloths, napkins, aprons, cushion covers.' },
+      { id: 'twill', stream: 'new', sourceLabel: 'New Deadstock · India', name: 'Cotton Twill',
+        swBg: '#3B3B39', swImg: 'repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 2px,transparent 2px 5px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '60m' }, { k: 'Width', v: '160cm' }, { k: 'Colour', v: 'Charcoal' }],
+        best: 'Best for aprons, totes, workwear panels, cushion covers.' },
+      { id: 'denim', stream: 'reclaimed', sourceLabel: 'Reclaimed · Fleek Pakistan', name: 'Denim Panel Lot',
+        swBg: '#3C4E67', swImg: 'repeating-linear-gradient(45deg,rgba(255,255,255,.09) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.18) 0 1px,transparent 1px 4px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '120 panels' }, { k: 'Panel', v: '45×60cm' }, { k: 'Colour', v: 'Mixed indigo' }],
+        best: 'Best for patchwork totes, cushions, jackets, appliqué.' },
+      { id: 'shirt', stream: 'reclaimed', sourceLabel: 'Reclaimed · Fleek India', name: 'Shirt Cotton Bundle',
+        swBg: '#E8EDF2', swImg: 'repeating-linear-gradient(90deg,#4E6E9E 0 6px,#E8EDF2 6px 14px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '80 panels' }, { k: 'Panel', v: '40×55cm' }, { k: 'Colour', v: 'Blue stripe' }],
+        best: 'Best for patchwork shirts, linings, scarves, accessories.' },
+      { id: 'knit', stream: 'reclaimed', sourceLabel: 'Reclaimed · Fleek Pakistan', name: 'Knit Bundle',
+        swBg: '#B9B2A6', swImg: 'radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.6px)', swSize: '6px 6px',
+        specs: [{ k: 'Available', v: '25kg' }, { k: 'Type', v: 'Sorted knit' }, { k: 'Colour', v: 'Mixed neutral' }],
+        best: 'Best for patchwork cushions, soft accessories, appliqué.' },
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const accent = this.ACC();
+    const ink = '#0F0F0E';
+    const paper = '#F4F1EA';
+    const navNumbered = this.props.navNumbered !== false;
+    const showImpact = this.props.showImpact !== false;
+    const rec = this.getRecommendations(s);
+    const parsed = this.parseBrief(s.brief);
+    const qty = parsed.quantity;
+    const spec = this.PRODUCT_SPECS[s.product] || this.PRODUCT_SPECS['Tote bag'];
+    const previewMode = spec.previewMode;
+
+    const NODES = ['Product', 'Material', 'Technique', 'Pattern', 'Layout', 'Render', 'Tech Pack', 'Producer'];
+    const navItems = NODES.map((name, i) => {
+      const id = i + 1, active = s.node === id;
+      return {
+        n: String(id).padStart(2, '0'), name, showNum: navNumbered,
+        onClick: () => this.go(id),
+        numColor: active ? accent : 'rgba(15,15,14,.35)',
+        nameColor: active ? ink : 'rgba(15,15,14,.42)',
+        ruleBg: active ? ink : 'transparent',
+        tabBg: active ? 'rgba(15,15,14,.05)' : 'transparent',
+      };
+    });
+
+    const PRODUCTS = ['Tote bag', 'Tablecloth', 'Apron', 'Scarf', 'Cushion cover', 'Curtain', 'Pouch', 'Bandana'];
+    const productChips = PRODUCTS.map(p => {
+      const on = s.product === p;
+      return { name: p, onClick: () => this.setState({ product: p }),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    });
+
+    const demoPresets = [
+      { name: 'Vintage totes', onClick: () => this.loadPreset('totes'),
+        bg: ink, fg: paper, bd: ink },
+      { name: 'Restaurant linens', onClick: () => this.loadPreset('linens'),
+        bg: 'transparent', fg: ink, bd: 'rgba(15,15,14,.25)' },
+    ];
+
+    const SRC = [['deadstock', 'New deadstock'], ['reclaimed', 'Reclaimed'], ['mix', 'Mix both'], ['ai', 'AI recommend']];
+    const sourceTabs = SRC.map(([id, name]) => {
+      const on = s.source === id;
+      return { name, onClick: () => this.setState({ source: id }),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    });
+    const all = this.MATERIALS();
+    let filt = all;
+    if (s.source === 'deadstock') filt = all.filter(m => m.stream === 'new');
+    else if (s.source === 'reclaimed') filt = all.filter(m => m.stream === 'reclaimed');
+    else if (s.source === 'mix') filt = all;
+    else if (s.source === 'ai') filt = all.filter(m => m.id === rec.materialId);
+    const materialsList = filt.map(m => {
+      const sel = s.material === m.id;
+      const recommended = m.id === rec.materialId;
+      return { ...m, recommended, onSelect: () => this.setState({ material: m.id }),
+        selBd: sel ? ink : (recommended ? accent : 'rgba(15,15,14,.14)'),
+        selShadow: sel ? '0 0 0 1px ' + ink : (recommended ? '0 0 0 1px ' + accent : 'none'),
+        tickBg: sel ? accent : 'transparent', tickBd: sel ? accent : 'rgba(15,15,14,.3)' };
+    });
+
+    const recTechIds = rec.techniques;
+    const TECH = [['cut-sew', 'Cut & sew', true], ['embroidery', 'Embroidery', true], ['edge-finishing', 'Edge finishing', true],
+      ['print', 'Print', false], ['applique', 'Appliqué', false], ['patchwork', 'Patchwork', false],
+      ['quilting', 'Quilting', false], ['visible-mending', 'Visible mending', false], ['mixed-media', 'Mixed media', false]];
+    const techList = TECH.map(([id, name]) => {
+      const on = s.techniques.indexOf(id) >= 0;
+      const isRec = recTechIds.indexOf(id) >= 0;
+      return { name, rec: isRec, onToggle: () => this.toggleTech(id),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)',
+        recBg: on ? accent : 'rgba(15,15,14,.1)', recFg: on ? paper : 'rgba(15,15,14,.6)' };
+    });
+
+    const PAT = [['none', 'No pattern', 'Raw linen, hemmed'], ['tonal-logo', 'Tonal logo', 'Single corner mark'],
+      ['placement', 'Placement print', 'Centred motif'], ['embroidery', 'Embroidery motif', 'Stitched monogram']];
+    const patternTiles = PAT.map(([id, name, note]) => {
+      const sel = s.pattern === id;
+      return { id, name, note, onSelect: () => this.setState({ pattern: id }),
+        selBd: sel ? ink : 'rgba(15,15,14,.14)', selShadow: sel ? '0 0 0 1px ' + ink : 'none',
+        showCorner: id === 'tonal-logo', showCenter: id === 'placement', showStitch: id === 'embroidery' };
+    });
+
+    const LAY = [['corner', 'Corner', 'Bottom-right tonal mark'], ['center', 'Centre', 'Single central motif'],
+      ['border', 'Border', 'Inset frame line'], ['repeat', 'Repeat', 'Tiled grid marks']];
+    const layoutList = LAY.map(([id, name, desc]) => {
+      const sel = s.layout === id;
+      return { name, desc, mark: sel ? '●' : '○', onSelect: () => this.setState({ layout: id }),
+        bg: sel ? 'rgba(15,15,14,.05)' : 'transparent', fg: ink, dot: sel ? accent : 'rgba(15,15,14,.4)' };
+    });
+
+    const cur = all.find(m => m.id === s.material) || all[0];
+    const patName = (PAT.find(p => p[0] === s.pattern) || PAT[1])[1];
+    const layName = (LAY.find(l => l[0] === s.layout) || LAY[0])[1];
+    const onTech = TECH.filter(t => s.techniques.indexOf(t[0]) >= 0).map(t => t[1]);
+    const techStr = onTech.length ? onTech.join(' · ') : '—';
+
+    const costLow = qty * spec.costPer;
+    const costHigh = Math.round(qty * spec.costPer * 1.2);
+    const leadTime = cur.stream === 'reclaimed' ? '7–10 days' : '5–8 days';
+    const constructionNotes = this.getConstructionNotes(s.product, s.techniques, s.pattern, s.layout);
+
+    const summaryRows = [
+      { k: 'Product', v: s.product }, { k: 'Quantity', v: qty + ' pieces' },
+      { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
+      { k: 'Technique', v: techStr }, { k: 'Pattern', v: patName }, { k: 'Layout', v: layName },
+    ];
+    const circularLabel = cur.name + ' — ' + (cur.stream === 'new' ? 'new deadstock' : 'reclaimed secondhand');
+
+    const techPackRows = [
+      { k: 'Product', v: s.product }, { k: 'Quantity', v: qty + ' pcs' },
+      { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
+      { k: 'Dimensions', v: spec.dims }, { k: 'Fabric use', v: spec.fabricUse },
+      { k: 'Technique', v: techStr }, { k: 'Pattern / Layout', v: patName + ' · ' + layName },
+      { k: 'Est. cost', v: '£' + costLow + '–' + costHigh }, { k: 'Lead time', v: leadTime },
+    ];
+
+    const reclaimed = cur.stream === 'reclaimed';
+    const producer = reclaimed
+      ? { name: 'Karachi Patchwork Studio', loc: 'Karachi, Pakistan', caps: 'Patchwork, denim, totes, small accessories', moq: '10', lead: '7–10d',
+          why: 'Specialises in mixed reclaimed panels; turns shade variation into a design feature.' }
+      : { name: 'Lahore Home Textile Unit', loc: 'Lahore, Pakistan', caps: 'Tablecloths, aprons, napkins, embroidery', moq: '15', lead: '5–8d',
+          why: 'Deadstock linen and hospitality textiles are its core; tonal embroidery in-house.' };
+    const altProducers = reclaimed
+      ? [{ name: 'Lahore Home Textile Unit', loc: 'Lahore, Pakistan', caps: 'Tablecloths, aprons, edge finishing, embroidery.' },
+         { name: 'Delhi Embroidery Workshop', loc: 'Delhi, India', caps: 'Embroidery, appliqué, logo placement, finishing.' }]
+      : [{ name: 'Delhi Embroidery Workshop', loc: 'Delhi, India', caps: 'Embroidery, appliqué, logo placement, finishing.' },
+         { name: 'Karachi Patchwork Studio', loc: 'Karachi, Pakistan', caps: 'Patchwork, denim products, totes, accessories.' }];
+    const productLabel = s.product === 'Tablecloth' ? 'Tablecloths created' : 'Products created';
+    const impactRows = reclaimed
+      ? [{ v: String(Math.round(qty * 1.75)), k: 'Unresellable garments reused' }, { v: '120', k: 'Usable panels recovered' },
+         { v: String(qty), k: productLabel }, { v: String(Math.round(qty * 0.9)) + 'm', k: 'New fabric avoided' }]
+      : [{ v: spec.fabricUse.split(' ')[0], k: 'Deadstock fabric used' }, { v: String(qty), k: productLabel },
+         { v: '4m', k: 'Leftover → napkins' }, { v: '0m', k: 'New fabric ordered' }];
+
+    const previewAspect = previewMode === 'tote' ? '3/4' : '5/4';
+    const previewBg = previewMode === 'tote' ? '#E7E3D9' : cur.swBg;
+    const previewImg = previewMode === 'tote' ? 'none' : cur.swImg;
+    const previewSize = previewMode === 'tote' ? 'auto' : cur.swSize;
+
+    return {
+      accent, navItems, nodeKey: 'node-' + s.node, previewKey: s.product + s.material + s.layout + previewMode,
+      n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
+      n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8,
+      brief: s.brief, applyBrief: (e) => this.applyBrief(e),
+      productChips, demoPresets, sourceTabs, materialsList, techList, patternTiles, layoutList,
+      showAiBadge: s.source === 'ai',
+      aiMaterialReason: rec.materialReason,
+      aiTechniqueCopy: rec.techniqueReason,
+      aiAvoidNote: rec.avoidNote,
+      applyAiPicks: () => this.applyAiPicks(),
+      exportPdf: () => this.exportPdf(),
+      constructionNotes,
+      dCorner: s.layout === 'corner', dCenter: s.layout === 'center', dBorder: s.layout === 'border', dRepeat: s.layout === 'repeat',
+      previewTote: previewMode === 'tote',
+      previewFlat: previewMode === 'flat',
+      previewScarf: previewMode === 'scarf',
+      previewAspect, previewBg, previewImg, previewSize,
+      fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
+      previewCaption: s.product + ' · ' + spec.dims + ' · ' + cur.name,
+      summaryRows, circularLabel, techPackRows,
+      producer, altProducers, impactRows, showImpact,
+      next: () => this.next(), back: () => this.back(),
+      backColor: s.node === 1 ? 'rgba(15,15,14,.25)' : ink,
+      pageNum: String(s.node).padStart(2, '0'),
+      nextLabel: s.node === 8 ? 'Restart' : (s.node === 7 ? 'Match producer' : 'Next'),
+    };
+  }
+}
+</script>
+</body>
+</html>
