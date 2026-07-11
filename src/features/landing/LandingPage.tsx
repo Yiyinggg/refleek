@@ -1,3 +1,4 @@
+import { WORKFLOW_PATH } from "../../config/routes";
 import {
   ACCENT,
   FEATURES,
@@ -33,7 +34,7 @@ export function LandingPage() {
             </a>
           ))}
         </nav>
-        <a href="/studio/" className="landing__cta landing__cta--dark">
+        <a href={WORKFLOW_PATH} className="landing__cta landing__cta--dark">
           Start workflow <CtaArrow />
         </a>
       </header>
@@ -71,7 +72,10 @@ export function LandingPage() {
               tech pack for production partners.
             </p>
             <div className="landing__cta-row">
-              <a href="/studio/" className="landing__cta landing__cta--dark">
+              <a
+                href={WORKFLOW_PATH}
+                className="landing__cta landing__cta--dark"
+              >
                 Start a workflow <CtaArrow />
               </a>
               <a
@@ -383,7 +387,7 @@ export function LandingPage() {
           <em>manufacturable small-batch products.</em>
         </p>
         <div className="landing__cta-row">
-          <a href="/studio/" className="landing__cta landing__cta--light">
+          <a href={WORKFLOW_PATH} className="landing__cta landing__cta--light">
             Start a workflow <CtaArrow />
           </a>
           <a href="#ecosystem" className="landing__cta landing__cta--ghost">

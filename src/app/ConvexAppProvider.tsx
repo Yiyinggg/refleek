@@ -1,20 +1,29 @@
 import { ConvexProvider, ConvexReactClient } from "convex/react";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import { WORKFLOW_PATH } from "../config/routes";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL;
 const convexClient = convexUrl ? new ConvexReactClient(convexUrl) : null;
 
+function LegacyWorkflowRedirect() {
+  useEffect(() => {
+    window.location.replace(WORKFLOW_PATH);
+  }, []);
+
+  return (
+    <main className="configuration-error" role="status" aria-live="polite">
+      <h1>Opening workflow…</h1>
+      <p>
+        If you are not redirected,{" "}
+        <a href={WORKFLOW_PATH}>open the ReFleek workflow</a>.
+      </p>
+    </main>
+  );
+}
+
 export function ConvexAppProvider({ children }: { children: ReactNode }) {
   if (!convexClient) {
-    return (
-      <main className="configuration-error" role="alert">
-        <h1>ReFleek needs configuration</h1>
-        <p>
-          Copy <code>.env.example</code> to <code>.env.local</code> and set{" "}
-          <code>VITE_CONVEX_URL</code>.
-        </p>
-      </main>
-    );
+    return <LegacyWorkflowRedirect />;
   }
 
   return <ConvexProvider client={convexClient}>{children}</ConvexProvider>;
