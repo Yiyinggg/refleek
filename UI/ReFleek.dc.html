@@ -1054,7 +1054,9 @@ class Component extends DCLogic {
   }
 
   patchworkSeed(ids) {
-    const key = ids.slice().sort().join('|');
+    const key = Array.isArray(ids)
+      ? ids.slice().sort().join('|')
+      : String(ids);
     let h = 0;
     for (let i = 0; i < key.length; i++) h = ((h << 5) - h + key.charCodeAt(i)) | 0;
     return Math.abs(h) || 1;
