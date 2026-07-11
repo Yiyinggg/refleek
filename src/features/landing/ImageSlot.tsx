@@ -7,12 +7,14 @@ function storageKey(id: string): string {
 export function ImageSlot({
   id,
   placeholder,
+  defaultSrc,
 }: {
   id: string;
   placeholder: string;
+  defaultSrc?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [src, setSrc] = useState<string | null>(null);
+  const [src, setSrc] = useState<string | null>(defaultSrc ?? null);
 
   useEffect(() => {
     try {

@@ -1,6 +1,7 @@
 import {
   ACCENT,
   FEATURES,
+  HERO_BG,
   IMPACT,
   NAV_LINKS,
   PROBLEM_STATS,
@@ -37,7 +38,11 @@ export function LandingPage() {
         </a>
       </header>
 
-      <section id="top" className="landing__section landing__hero">
+      <section
+        id="top"
+        className="landing__section landing__hero"
+        style={{ "--hero-bg": `url(${HERO_BG})` } as React.CSSProperties}
+      >
         <div className="landing__issue-bar">
           <span>Circular Design — to — Production</span>
           <span>Issue Nº01 · Deadstock Edition</span>
@@ -327,7 +332,11 @@ export function LandingPage() {
           {PRODUCTS.map((p) => (
             <article key={p.slotId} className="landing__product">
               <div className="landing__product-media">
-                <ImageSlot id={p.slotId} placeholder={p.ph} />
+                <ImageSlot
+                  id={p.slotId}
+                  placeholder={p.ph}
+                  defaultSrc={p.image}
+                />
                 <span
                   className="landing__product-tag"
                   style={{ background: p.tagBg, color: p.tagFg }}

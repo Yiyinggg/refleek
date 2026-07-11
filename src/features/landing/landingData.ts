@@ -1,4 +1,14 @@
+import apronImg from "../../../home images/已生成图像 6 (1).png";
+import cushionImg from "../../../home images/已生成图像 3.png";
+import heroBgImg from "../../../home images/已生成图像 1 (16)_副本.png";
+import scarfImg from "../../../home images/已生成图像 4.png";
+import tableclothImg from "../../../home images/已生成图像 2 (2).png";
+import toteImg from "../../../home images/已生成图像 1 (16).png";
+import wallHangingImg from "../../../home images/已生成图像 5.png";
+
 export const ACCENT = "#E8452A";
+
+export const HERO_BG = heroBgImg;
 
 export const NAV_LINKS = [
   { href: "#problem", label: "Problem" },
@@ -132,6 +142,7 @@ export const PRODUCTS = [
   {
     slotId: "rf-prod-tote",
     ph: "Drop tote render",
+    image: toteImg,
     name: "Patchwork Tote",
     material: "Reclaimed denim panels",
     technique: "Patchwork + reinforced stitch",
@@ -142,6 +153,7 @@ export const PRODUCTS = [
   {
     slotId: "rf-prod-cloth",
     ph: "Drop tablecloth render",
+    image: tableclothImg,
     name: "Minimal Tablecloth",
     material: "New deadstock linen blend",
     technique: "Cut & sew + tonal embroidery",
@@ -152,6 +164,7 @@ export const PRODUCTS = [
   {
     slotId: "rf-prod-cushion",
     ph: "Drop cushion render",
+    image: cushionImg,
     name: "Quilted Cushion Cover",
     material: "Reclaimed shirt cotton",
     technique: "Quilting + appliqué",
@@ -162,6 +175,7 @@ export const PRODUCTS = [
   {
     slotId: "rf-prod-scarf",
     ph: "Drop scarf render",
+    image: scarfImg,
     name: "Silk Scarf",
     material: "Deadstock silk",
     technique: "Placement + border print",
@@ -172,6 +186,7 @@ export const PRODUCTS = [
   {
     slotId: "rf-prod-wall",
     ph: "Drop wall hanging render",
+    image: wallHangingImg,
     name: "Wall Hanging",
     material: "Mixed reclaimed panels",
     technique: "Patchwork + appliqué",
@@ -182,6 +197,7 @@ export const PRODUCTS = [
   {
     slotId: "rf-prod-apron",
     ph: "Drop apron render",
+    image: apronImg,
     name: "Canvas Apron",
     material: "Deadstock canvas",
     technique: "Cut & sew + edge finish",
