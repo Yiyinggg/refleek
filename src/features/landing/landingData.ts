@@ -125,6 +125,16 @@ export const FEATURES = [
     name: "Tech pack + producer",
     desc: "A production-ready brief, matched to an India / Pakistan partner with MOQ, lead time and cost.",
   },
+  {
+    n: "F—07",
+    name: "Craft guardrails",
+    desc: "Construction and surface techniques are filtered by material stream — incompatible finishes stay locked so reclaimed panels never route to the wrong process.",
+  },
+  {
+    n: "F—08",
+    name: "Pattern & layout",
+    desc: "Preset tiles, a text prompt or an upload — then control repeat, scale, rotation and placement across the product surface.",
+  },
 ] as const;
 
 export const WORKFLOW_CHAIN = [
