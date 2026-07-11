@@ -25,6 +25,8 @@
   ::-webkit-scrollbar-track{background:transparent}
   @keyframes rf-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   @keyframes rf-swap{from{opacity:0}to{opacity:1}}
+  .rf-preview-stage{contain:layout style paint}
+  .rf-pattern-layer{will-change:transform;backface-visibility:hidden}
   .rf-range{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:999px;background:rgba(15,15,14,.14);outline:none;margin:10px 0 0}
   .rf-range::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#E8452A;border:2px solid #F4F1EA;box-shadow:0 0 0 1px rgba(15,15,14,.12);cursor:pointer}
   .rf-range::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#E8452A;border:2px solid #F4F1EA;box-shadow:0 0 0 1px rgba(15,15,14,.12);cursor:pointer}
@@ -430,7 +432,7 @@
                   <span style="font-size:13px;font-weight:500">{{ sl.label }}</span>
                   <span style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.55)">{{ sl.val }}</span>
                 </div>
-                <input type="range" class="rf-range" min="{{ sl.min }}" max="{{ sl.max }}" value="{{ sl.value }}" onChange="{{ sl.onChange }}" style="background:linear-gradient(to right,{{ accent }} {{ sl.pct }}%,rgba(15,15,14,.14) {{ sl.pct }}%)" />
+                <input type="range" class="rf-range" min="{{ sl.min }}" max="{{ sl.max }}" value="{{ sl.value }}" onInput="{{ sl.onInput }}" onChange="{{ sl.onChange }}" style="background:linear-gradient(to right,{{ accent }} {{ sl.pct }}%,rgba(15,15,14,.14) {{ sl.pct }}%)" />
               </div>
             </sc-for>
 
@@ -448,7 +450,7 @@
                       <span style="font-size:12.5px;font-weight:500">{{ sl.label }}</span>
                       <span style="font-family:'Space Mono',monospace;font-size:10.5px;color:rgba(15,15,14,.5)">{{ sl.val }}</span>
                     </div>
-                    <input type="range" class="rf-range" min="{{ sl.min }}" max="{{ sl.max }}" value="{{ sl.value }}" onChange="{{ sl.onChange }}" style="background:linear-gradient(to right,{{ accent }} {{ sl.pct }}%,rgba(15,15,14,.14) {{ sl.pct }}%)" />
+                    <input type="range" class="rf-range" min="{{ sl.min }}" max="{{ sl.max }}" value="{{ sl.value }}" onInput="{{ sl.onInput }}" onChange="{{ sl.onChange }}" style="background:linear-gradient(to right,{{ accent }} {{ sl.pct }}%,rgba(15,15,14,.14) {{ sl.pct }}%)" />
                   </div>
                 </sc-for>
               </div>
@@ -576,7 +578,7 @@
 
         <!-- Live preview mockup — always visible; pattern composites on top when artwork exists -->
         <div style="display:flex;flex-direction:column;align-items:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
-          <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both;overflow:hidden">
+          <div key="{{ previewKey }}" class="rf-preview-stage" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both;overflow:hidden">
 
             <!-- TOTE preview -->
             <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
@@ -672,11 +674,18 @@
 
             <!-- Pattern artwork — always the topmost layer on the product preview -->
             <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
-              <sc-if value="{{ patternOverlayImgMode }}" hint-placeholder-val="{{ false }}">
-              <img src="{{ patternOverlaySrc }}" alt="" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:{{ patternOverlayFit }};object-position:{{ patternOverlayPos }};opacity:0.92;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none;image-rendering:auto" />
+              <sc-if value="{{ patternOverlaySingle }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ patternOverlaySrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:contain;object-position:{{ patternOverlayPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none;image-rendering:auto" />
               </sc-if>
-              <sc-if value="{{ patternOverlayBgMode }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;inset:0;z-index:50;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.9;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none"></div>
+              <sc-if value="{{ patternOverlayRepeat }}" hint-placeholder-val="{{ false }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;pointer-events:none;opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})" preserveAspectRatio="none">
+                <defs>
+                  <pattern id="{{ patternTileId }}" patternUnits="objectBoundingBox" width="{{ patternTileW }}" height="{{ patternTileH }}">
+                    <image href="{{ patternOverlaySrc }}" width="1" height="1" preserveAspectRatio="xMidYMid slice" />
+                  </pattern>
+                </defs>
+                <rect width="1" height="1" fill="url(#{{ patternTileId }})" />
+              </svg>
               </sc-if>
             </sc-if>
 
@@ -791,11 +800,25 @@ class Component extends DCLogic {
   STORAGE_KEY = 'refleek-workflow-v2';
   _materialsList = null;
   _persistTimer = null;
+  _lastRenderedFingerprint = null;
+  _persistSkip = 0;
+  _layoutDragPatch = null;
+  _layoutDragRaf = 0;
 
   componentDidMount() {
     const saved = this._readSavedState();
     const orig = this.setState.bind(this);
-    this.setState = (update, cb) => orig(update, () => { this._persistState(); if (cb) cb(); });
+    this.setState = (update, cb) => orig(update, () => {
+      if (this._persistSkip <= 0) this._persistState();
+      if (cb) cb();
+    });
+    this.setStateLive = (update, cb) => {
+      this._persistSkip++;
+      orig(update, () => {
+        this._persistSkip--;
+        if (cb) cb();
+      });
+    };
     if (saved) this.setState(saved, () => {
       if (this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
       if (this.isEmbroidery() && saved.patternImg && (!saved.threadColors || !saved.threadColors.length || !saved.backgroundRemoved)) {
@@ -807,6 +830,7 @@ class Component extends DCLogic {
     });
     if (!saved && this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
     this._loadMaterials();
+    if (this.state.node === 7) this.maybeAutoRenderPreview();
   }
 
   _persistFields() {
@@ -963,12 +987,35 @@ class Component extends DCLogic {
     reader.readAsDataURL(file);
   }
 
-  go(n) { this.setState({ node: Math.max(1, Math.min(9, n)), techNote: '' }); }
+  go(n) {
+    this.setState({ node: Math.max(1, Math.min(9, n)), techNote: '' }, () => {
+      if (n === 7) this.maybeAutoRenderPreview();
+    });
+  }
   next() { this.state.node === 9 ? this.go(1) : this.go(this.state.node + 1); }
   back() { this.go(this.state.node - 1); }
-  setLayoutField(field, raw) {
+  setLayoutField(field, raw, commit) {
     const n = Number(raw);
-    this.setState({ [field]: n, renderImg: null });
+    if (Number.isNaN(n)) return;
+    if (commit) {
+      if (this._layoutDragRaf) {
+        cancelAnimationFrame(this._layoutDragRaf);
+        this._layoutDragRaf = 0;
+      }
+      const patch = Object.assign({}, this._layoutDragPatch || {}, { [field]: n });
+      this._layoutDragPatch = null;
+      this.setState(Object.assign({}, patch, { renderImg: null }));
+      return;
+    }
+    if (!this._layoutDragPatch) this._layoutDragPatch = {};
+    this._layoutDragPatch[field] = n;
+    if (this._layoutDragRaf) return;
+    this._layoutDragRaf = requestAnimationFrame(() => {
+      this._layoutDragRaf = 0;
+      const patch = this._layoutDragPatch;
+      if (!patch) return;
+      this.setStateLive(patch);
+    });
   }
   setRepeatMode(mode) { this.setState({ repeatMode: mode, renderImg: null }); }
   setPlacement(mode) { this.setState({ placement: mode, renderImg: null }); }
@@ -1007,7 +1054,9 @@ class Component extends DCLogic {
   }
 
   patchworkSeed(ids) {
-    const key = ids.slice().sort().join('|');
+    const key = Array.isArray(ids)
+      ? ids.slice().sort().join('|')
+      : String(ids);
     let h = 0;
     for (let i = 0; i < key.length; i++) h = ((h << 5) - h + key.charCodeAt(i)) | 0;
     return Math.abs(h) || 1;
@@ -1314,11 +1363,38 @@ class Component extends DCLogic {
     }
   }
 
-  // ---------- AI generation (OpenRouter via /api/generate) ----------
+  // ---------- AI generation (OpenRouter via /api/generate + /api/preview) ----------
 
   API() {
     if (location.protocol === 'file:') return 'http://localhost:3939/api/generate';
     return '/api/generate';
+  }
+
+  previewAPI() {
+    if (location.protocol === 'file:') return 'http://localhost:3939/api/preview';
+    return '/api/preview';
+  }
+
+  _renderFingerprint() {
+    const s = this.state;
+    const cur = this.curMaterial();
+    return [
+      s.product, s.productWidth, s.productHeight,
+      s.source, s.material, (s.materialMix || []).join(','),
+      s.patchworkMode, (s.techniques || []).join(','),
+      s.pattern, s.repeatMode, s.placement,
+      s.layoutScale, s.layoutRotate, s.motifScale, s.motifRotate,
+      s.motifOffsetX, s.motifOffsetY, s.style,
+      cur.id, s.patternImg ? 'art' : 'no-art',
+    ].join('|');
+  }
+
+  maybeAutoRenderPreview() {
+    if (this.state.renderBusy) return;
+    const fp = this._renderFingerprint();
+    if (!this.state.renderImg || fp !== this._lastRenderedFingerprint) {
+      this.generateRender();
+    }
   }
 
   compressImage(dataUrl, maxDim) {
@@ -1732,8 +1808,12 @@ class Component extends DCLogic {
     return (this.isEmbroidery() && this.state.embroiderySolidImg) || this.state.patternImg;
   }
 
-  // Full-resolution source art for on-screen preview — never the downsampled separation plate.
+  // Prefer background-removed solid plate for overlay; fall back to source art (white bg
+  // knocks out via mix-blend-mode on the canvas until separation finishes).
   artworkForPreview() {
+    if (this.isEmbroidery() && this.state.embroiderySolidImg && this.state.backgroundRemoved) {
+      return this.state.embroiderySolidImg;
+    }
     return this.state.patternImg;
   }
 
@@ -1799,6 +1879,19 @@ class Component extends DCLogic {
     setTimeout(() => this.downloadTextFile('ReFleek-TechPack-TP001.json', JSON.stringify(this.buildTechPackJson(), null, 2), 'application/json'), 800);
   }
 
+  async callPreview(payload) {
+    const r = await fetch(this.previewAPI(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.image) throw new Error(j.error || ('Preview failed (HTTP ' + r.status + ')'));
+    if (j.mock && !this.state.apiMock) this.setState({ apiMock: true });
+    else if (!j.mock && this.state.apiMock) this.setState({ apiMock: false });
+    return j.image;
+  }
+
   async callGenerate(payload) {
     const r = await fetch(this.API(), {
       method: 'POST',
@@ -1842,9 +1935,10 @@ class Component extends DCLogic {
     if (this.state.renderBusy) return;
     this.setState({ renderBusy: true, renderErr: '' });
     try {
-      const payload = { mode: 'render', prompt: this.buildRenderPrompt() };
+      const payload = { prompt: this.buildRenderPrompt() };
       if (this.state.patternImg) payload.image = await this.compressImage(this.artworkForWorkflow() || this.state.patternImg);
-      const img = await this.callGenerate(payload);
+      const img = await this.callPreview(payload);
+      this._lastRenderedFingerprint = this._renderFingerprint();
       this.setState({ renderImg: img, renderBusy: false });
     } catch (e) {
       this.setState({ renderErr: String(e.message || e), renderBusy: false });
@@ -2143,15 +2237,31 @@ class Component extends DCLogic {
     const previewPatchworkGrid = previewPatchwork && patchworkMode === 'grid';
     const previewPatchworkOrganic = previewPatchwork && patchworkMode === 'organic';
     const patchSeed = this.patchworkSeed((mixIds.length ? mixIds : [cur.id]).concat([patchworkMode]));
-    const totePatchworkCells = this.buildPatchworkCells(2, 2, activeMats, patchSeed);
-    const flatPatchworkCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 7);
-    const scarfPatchworkCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 13);
-    const toteOrganicCells = this.buildPatchworkCells(3, 3, activeMats, patchSeed + 21);
-    const flatOrganicCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 29);
-    const scarfOrganicCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 37);
-    const toteOrganicSeams = this.buildSeamPaths(patchSeed + 21, 3, 3);
-    const flatOrganicSeams = this.buildSeamPaths(patchSeed + 29, 4, 4);
-    const scarfOrganicSeams = this.buildSeamPaths(patchSeed + 37, 3, 5);
+    const patchCacheKey = (mixIds.length ? mixIds.join('-') : cur.id) + '|' + patchworkMode + '|' + patchSeed;
+    let totePatchworkCells, flatPatchworkCells, scarfPatchworkCells;
+    let toteOrganicCells, flatOrganicCells, scarfOrganicCells;
+    let toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams;
+    if (this._patchPreviewKey === patchCacheKey && this._patchPreviewCache) {
+      ({ totePatchworkCells, flatPatchworkCells, scarfPatchworkCells,
+        toteOrganicCells, flatOrganicCells, scarfOrganicCells,
+        toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams } = this._patchPreviewCache);
+    } else {
+      totePatchworkCells = this.buildPatchworkCells(2, 2, activeMats, patchSeed);
+      flatPatchworkCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 7);
+      scarfPatchworkCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 13);
+      toteOrganicCells = this.buildPatchworkCells(3, 3, activeMats, patchSeed + 21);
+      flatOrganicCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 29);
+      scarfOrganicCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 37);
+      toteOrganicSeams = this.buildSeamPaths(patchSeed + 21, 3, 3);
+      flatOrganicSeams = this.buildSeamPaths(patchSeed + 29, 4, 4);
+      scarfOrganicSeams = this.buildSeamPaths(patchSeed + 37, 3, 5);
+      this._patchPreviewKey = patchCacheKey;
+      this._patchPreviewCache = {
+        totePatchworkCells, flatPatchworkCells, scarfPatchworkCells,
+        toteOrganicCells, flatOrganicCells, scarfOrganicCells,
+        toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams,
+      };
+    }
     const PATCHWORK_MODES = [['grid', 'Square blocks'], ['organic', 'Organic freeform']];
     const patchworkModeTabs = PATCHWORK_MODES.map(([id, name]) => {
       const on = patchworkMode === id;
@@ -2214,7 +2324,8 @@ class Component extends DCLogic {
       label, min, max, value: s[field],
       val: fmt(s[field]),
       pct: sliderPct(s[field], min, max) + '%',
-      onChange: (e) => this.setLayoutField(field, e.target.value),
+      onInput: (e) => this.setLayoutField(field, e.target.value, false),
+      onChange: (e) => this.setLayoutField(field, e.target.value, true),
     });
     const layoutSliders = [
       mkSlider('Scale', 'layoutScale', 50, 200, v => v + '%'),
@@ -2289,19 +2400,21 @@ class Component extends DCLogic {
     const previewSize = previewMode === 'tote' || previewPatchwork ? 'auto' : cur.swSize;
     const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
     const previewArt = this.artworkForPreview();
-    const patternOverlayUseImg = !!previewArt && s.repeatMode === 'single';
+    const previewArtSolid = !!(this.isEmbroidery() && s.embroiderySolidImg && s.backgroundRemoved && previewArt === s.embroiderySolidImg);
     const patternOverlayShow = !!previewArt;
+    const patternOverlaySingle = patternOverlayShow && s.repeatMode === 'single';
+    const patternOverlayRepeat = patternOverlayShow && s.repeatMode !== 'single';
     const patternOverlaySrc = previewArt || '';
-    const patternOverlayImg = this.cssBgUrl(previewArt);
-    const patternOverlayRepeat = s.repeatMode === 'single' ? 'no-repeat' : 'repeat';
-    const patternOverlaySize = s.repeatMode === 'single'
-      ? (Math.round(52 * s.motifScale / 100) + '% auto')
-      : (tilePx + 'px ' + (s.repeatMode === 'half-drop' ? Math.round(tilePx * 0.5) + 'px' : tilePx + 'px'));
-    const patternOverlayPos = s.repeatMode === 'single'
-      ? (s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
-        : s.placement === 'border' ? 'center'
-        : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)')
-      : (s.motifOffsetX + '% ' + s.motifOffsetY + '%');
+    const patternOverlayBlend = previewArtSolid ? 'normal' : 'multiply';
+    const patternTileFrac = Math.max(0.08, Math.min(0.42, tilePx / 420));
+    const patternTileW = patternTileFrac.toFixed(4);
+    const patternTileH = (s.repeatMode === 'half-drop'
+      ? Math.max(0.04, patternTileFrac * 0.5)
+      : patternTileFrac).toFixed(4);
+    const patternTileId = 'rfPat' + Math.abs(this.patchworkSeed(String(previewArt || '').length + s.repeatMode + tilePx)) % 1000000;
+    const patternOverlayPos = s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
+      : s.placement === 'border' ? 'center'
+      : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
     const layoutScaleFactor = s.layoutScale / 100;
     const layoutRotate = s.layoutRotate + 'deg';
     const isEmbroidery = this.isEmbroidery();
@@ -2328,7 +2441,7 @@ class Component extends DCLogic {
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
       apiMockShow: !!s.apiMock,
-      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.layoutRotate + s.motifScale + s.motifRotate + s.motifOffsetX + s.motifOffsetY + previewMode + w + 'x' + h + patchSeed + (previewArt ? '|p' : ''),
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + previewMode + w + 'x' + h + patchSeed + (previewArt ? (previewArtSolid ? '|solid' : '|raw') : ''),
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8, n9: s.node === 9,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
@@ -2412,9 +2525,9 @@ class Component extends DCLogic {
       toteOrganicCells, flatOrganicCells, scarfOrganicCells,
       toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams,
       previewAspect, previewBg, previewImg, previewSize,
-      patternOverlayShow, patternOverlayImgMode: patternOverlayUseImg, patternOverlayBgMode: patternOverlayShow && !patternOverlayUseImg,
-      patternOverlaySrc, patternOverlayFit: s.repeatMode === 'single' ? 'contain' : 'none',
-      patternOverlayImg, patternOverlaySize, patternOverlayRepeat, patternOverlayPos,
+      patternOverlayShow, patternOverlaySingle, patternOverlayRepeat,
+      patternOverlaySrc, patternOverlayBlend, patternOverlayPos,
+      patternTileId, patternTileW, patternTileH,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
       previewCaption: s.product + ' · ' + dims + ' · ' + materialLabel,

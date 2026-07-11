@@ -12,7 +12,7 @@ export default tseslint.config(
       "playwright-report/**",
       "test-results/**",
       "UI/**/*.js",
-      "api/generate.js",
+      "api/**",
       "dev-server.cjs",
       "scripts/*.cjs",
       "data/**",
