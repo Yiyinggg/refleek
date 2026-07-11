@@ -1,0 +1,10 @@
+.serena/
+UI/
+api/
+dev-server.cjs
+dist/
+node_modules/
+coverage/
+playwright-report/
+test-results/
+convex/_generated/
