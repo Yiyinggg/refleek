@@ -127,6 +127,7 @@ function Sliders({
                   type: "setLayoutField",
                   field: spec.field,
                   value: Number(event.currentTarget.value),
+                  commit: false,
                 } satisfies WorkflowAction);
               }}
               onChange={(event) => {

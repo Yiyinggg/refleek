@@ -6,29 +6,48 @@ import {
 } from "../patternRepeat";
 import type { WorkflowState } from "../types";
 
+function useRafValue<T>(value: T): T {
+  const [rafValue, setRafValue] = useState(value);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setRafValue(value);
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, [value]);
+  return rafValue;
+}
+
 export function PatternOverlay({ state }: { state: WorkflowState }) {
   const art = state.patternImg;
   const [repeatSrc, setRepeatSrc] = useState<string | null>(null);
+
+  const layoutScale = useRafValue(state.layoutScale);
+  const motifScale = useRafValue(state.motifScale);
+  const motifRotate = useRafValue(state.motifRotate);
+  const motifOffsetX = useRafValue(state.motifOffsetX);
+  const motifOffsetY = useRafValue(state.motifOffsetY);
 
   const repeatKey = useMemo(() => {
     if (!art || state.repeatMode === "single") return "";
     return repeatTileCacheKey({
       art,
       repeatMode: state.repeatMode,
-      layoutScale: state.layoutScale,
-      motifScale: state.motifScale,
-      motifRotate: state.motifRotate,
-      motifOffsetX: state.motifOffsetX,
-      motifOffsetY: state.motifOffsetY,
+      layoutScale,
+      motifScale,
+      motifRotate,
+      motifOffsetX,
+      motifOffsetY,
     });
   }, [
     art,
     state.repeatMode,
-    state.layoutScale,
-    state.motifScale,
-    state.motifRotate,
-    state.motifOffsetX,
-    state.motifOffsetY,
+    layoutScale,
+    motifScale,
+    motifRotate,
+    motifOffsetX,
+    motifOffsetY,
   ]);
 
   useEffect(() => {
@@ -40,11 +59,11 @@ export function PatternOverlay({ state }: { state: WorkflowState }) {
     void buildRepeatTileUrl({
       art,
       repeatMode: state.repeatMode,
-      layoutScale: state.layoutScale,
-      motifScale: state.motifScale,
-      motifRotate: state.motifRotate,
-      motifOffsetX: state.motifOffsetX,
-      motifOffsetY: state.motifOffsetY,
+      layoutScale,
+      motifScale,
+      motifRotate,
+      motifOffsetX,
+      motifOffsetY,
     })
       .then((url) => {
         if (!cancelled) setRepeatSrc(url);
@@ -59,11 +78,11 @@ export function PatternOverlay({ state }: { state: WorkflowState }) {
     repeatKey,
     art,
     state.repeatMode,
-    state.layoutScale,
-    state.motifScale,
-    state.motifRotate,
-    state.motifOffsetX,
-    state.motifOffsetY,
+    layoutScale,
+    motifScale,
+    motifRotate,
+    motifOffsetX,
+    motifOffsetY,
   ]);
 
   if (!art) return null;

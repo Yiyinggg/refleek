@@ -1,8 +1,6 @@
 export type MaterialStream = "deadstock" | "reclaimed";
 export type ProductCategory =
-  | "home-textiles"
-  | "garments-accessories"
-  | "unfinished-material";
+  "home-textiles" | "garments-accessories" | "unfinished-material";
 export type PreviewMode = "tote" | "flat" | "scarf";
 export type SourceFilter = MaterialStream | "mix";
 export type PatchworkMode = "grid" | "organic";
@@ -106,6 +104,7 @@ export interface WorkflowState {
   patternImg: string | null;
   patternBusy: boolean;
   patternErr: string;
+  renderPromptText: string;
   renderImg: string | null;
   renderBusy: boolean;
   renderErr: string;

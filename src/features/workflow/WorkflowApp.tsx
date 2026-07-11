@@ -43,7 +43,7 @@ export function WorkflowApp() {
   if (catalog.products.length === 0) {
     return (
       <div className="state" role="alert">
-        <h1 className="masthead__mark">No catalog</h1>
+        <h1 className="node__title">No catalog</h1>
         <p>
           The material catalog is empty. Seed it with{" "}
           <code>npx convex run seed:seedCatalogData</code>, then reload.
@@ -57,11 +57,7 @@ export function WorkflowApp() {
 
 function Workflow({ catalog }: { catalog: Catalog }) {
   const reducer = useMemo(() => createWorkflowReducer(catalog), [catalog]);
-  const [state, dispatch] = useReducer(
-    reducer,
-    catalog,
-    makeInitialState,
-  );
+  const [state, dispatch] = useReducer(reducer, catalog, makeInitialState);
   const production = useProduction(state, true);
 
   const ActiveNode = NODES[state.node - 1] ?? ProductNode;
