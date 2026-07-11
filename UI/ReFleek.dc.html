@@ -10,7 +10,7 @@
 <helmet data-dc-atomics>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Archivo:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..800&family=Archivo:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -45,8 +45,8 @@
   <!-- ===== MASTHEAD ===== -->
   <header style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px clamp(18px,3vw,40px);border-bottom:1.5px solid #0F0F0E">
     <div style="display:flex;align-items:baseline;gap:7px">
-      <span style="font-family:'Bodoni Moda',serif;font-weight:800;font-size:24px;letter-spacing:-.01em">ReFleek</span>
-      <span style="font-family:'Space Mono',monospace;font-size:9px;transform:translateY(-7px);opacity:.6">®</span>
+      <span style="font-family:'Newsreader',serif;font-weight:800;font-size:23px;letter-spacing:-.01em">ReFleek</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;transform:translateY(-7px);opacity:.55">®</span>
     </div>
     <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:rgba(15,15,14,.5);text-align:center">Circular&nbsp;Design — to — Production</div>
     <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.5);text-align:right">Issue Nº01<br>Deadstock Edition</div>
@@ -86,12 +86,12 @@
         <sc-if value="{{ n1 }}" hint-placeholder-val="{{ true }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Product — Nº01</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 0">What do you<br><span style="font-style:italic;font-weight:500">want to make?</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 0">What do you<br><span style="font-style:italic;font-weight:500">want to make?</span></h1>
           <p style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:rgba(15,15,14,.6);max-width:46ch;margin:18px 0 0">State the product — the system sources circular material to match, then walks you to a factory-ready tech pack.</p>
 
           <div style="margin-top:30px;border-top:1px solid rgba(15,15,14,.16);padding-top:16px">
             <label style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(15,15,14,.45)">Your brief</label>
-            <input value="{{ brief }}" onChange="{{ applyBrief }}" style="display:block;width:100%;margin-top:12px;border:none;background:transparent;outline:none;font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(20px,2.4vw,28px);line-height:1.3;color:#0F0F0E" />
+            <input value="{{ brief }}" onChange="{{ applyBrief }}" style="display:block;width:100%;margin-top:12px;border:none;background:transparent;outline:none;font-family:'Newsreader',serif;font-weight:500;font-size:clamp(20px,2.4vw,28px);line-height:1.3;color:#0F0F0E" />
           </div>
 
           <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:9px">
@@ -129,11 +129,11 @@
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:360px">
               <div>
                 <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Width (cm)</label>
-                <input type="number" min="30" max="400" value="{{ productWidth }}" onChange="{{ applyProductWidth }}" style="display:block;width:100%;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:10px 12px;font-family:'Bodoni Moda',serif;font-size:20px;color:#0F0F0E;outline:none" />
+                <input type="number" min="30" max="400" value="{{ productWidth }}" onChange="{{ applyProductWidth }}" style="display:block;width:100%;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:10px 12px;font-family:'Newsreader',serif;font-size:20px;color:#0F0F0E;outline:none" />
               </div>
               <div>
                 <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Height (cm)</label>
-                <input type="number" min="30" max="400" value="{{ productHeight }}" onChange="{{ applyProductHeight }}" style="display:block;width:100%;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:10px 12px;font-family:'Bodoni Moda',serif;font-size:20px;color:#0F0F0E;outline:none" />
+                <input type="number" min="30" max="400" value="{{ productHeight }}" onChange="{{ applyProductHeight }}" style="display:block;width:100%;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:10px 12px;font-family:'Newsreader',serif;font-size:20px;color:#0F0F0E;outline:none" />
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@
         <sc-if value="{{ n2 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Material — Nº02</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 20px">Source the<br><span style="font-style:italic;font-weight:500">material.</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 20px">Source the<br><span style="font-style:italic;font-weight:500">material.</span></h1>
 
           <div style="display:flex;flex-wrap:wrap;gap:7px;border-bottom:1px solid rgba(15,15,14,.16);padding-bottom:18px">
             <sc-for list="{{ sourceTabs }}" as="t" hint-placeholder-count="4">
@@ -209,7 +209,7 @@
                       <sc-if value="{{ m.showTickEmpty }}" hint-placeholder-val="{{ true }}"><span style="width:15px;height:15px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }}"></span></sc-if>
                     </span>
                   </div>
-                  <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:21px;letter-spacing:-.01em;margin:5px 0 11px">{{ m.name }}</div>
+                  <div style="font-family:'Newsreader',serif;font-weight:600;font-size:21px;letter-spacing:-.01em;margin:5px 0 11px">{{ m.name }}</div>
                   <div style="display:flex;flex-direction:column;gap:4px">
                     <sc-for list="{{ m.specs }}" as="sp" hint-placeholder-count="3">
                       <div style="display:flex;justify-content:space-between;gap:10px;font-family:'Space Mono',monospace;font-size:10.5px">
@@ -230,7 +230,7 @@
         <sc-if value="{{ n3 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Technique — Nº03</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">How it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">How it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
 
           <div style="display:flex;gap:14px;align-items:flex-start;background:#0F0F0E;color:#F4F1EA;padding:18px 20px">
             <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:{{ accent }};white-space:nowrap;padding-top:2px">◆ AI</span>
@@ -265,7 +265,7 @@
         <sc-if value="{{ n4 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Pattern — Nº04</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Surface.</h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Surface.</h1>
 
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
             <sc-for list="{{ patternTiles }}" as="p" hint-placeholder-count="3">
@@ -276,7 +276,7 @@
                   <sc-if value="{{ p.showStitch }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:40px;height:40px;background:rgba(90,75,50,.45);border-radius:50%"></span></sc-if>
                 </div>
                 <div style="padding:12px 14px">
-                  <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:17px">{{ p.name }}</div>
+                  <div style="font-family:'Newsreader',serif;font-weight:600;font-size:17px">{{ p.name }}</div>
                   <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;color:rgba(15,15,14,.5);margin-top:3px">{{ p.note }}</div>
                 </div>
               </button>
@@ -343,7 +343,7 @@
         <sc-if value="{{ n5 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Colours — Nº05</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Thread<br><span style="font-style:italic;font-weight:500">separation.</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Thread<br><span style="font-style:italic;font-weight:500">separation.</span></h1>
 
           <sc-if value="{{ colourSepSkip }}" hint-placeholder-val="{{ false }}">
           <p style="font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.65;color:rgba(15,15,14,.55);margin:0 0 18px;max-width:52ch">Colour separation applies to embroidery only. Your surface finish is {{ patternModeLabel }} — continue to Layout.</p>
@@ -398,7 +398,7 @@
         <sc-if value="{{ n6 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº06</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Placement.</h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Placement.</h1>
           <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Place one motif, then tile or scale it — preview updates live →</p>
 
           <div style="border-top:1px solid rgba(15,15,14,.16);padding-top:20px;display:flex;flex-direction:column;gap:22px">
@@ -464,7 +464,7 @@
         <sc-if value="{{ n7 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Render — Nº07</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Preview<br><span style="font-style:italic;font-weight:500">ready.</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Preview<br><span style="font-style:italic;font-weight:500">ready.</span></h1>
           <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 24px;max-width:52ch">AI renders your full workflow — product, dimensions, material, techniques, pattern, and layout — as a photorealistic preview on the right.</p>
 
           <div style="display:flex;flex-direction:column;border-top:1px solid rgba(15,15,14,.16)">
@@ -500,11 +500,11 @@
         <sc-if value="{{ n8 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Tech Pack — Nº08</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Production<br><span style="font-style:italic;font-weight:500">brief.</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Production<br><span style="font-style:italic;font-weight:500">brief.</span></h1>
 
           <div style="background:#FBFAF6;border:1.5px solid #0F0F0E">
             <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid rgba(15,15,14,.16);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">
-              <span>Tech Pack · TP-001</span><span style="font-family:'Bodoni Moda',serif;font-weight:800;font-size:15px;letter-spacing:0;text-transform:none">ReFleek</span>
+              <span>Tech Pack · TP-001</span><span style="font-family:'Newsreader',serif;font-weight:800;font-size:15px;letter-spacing:0;text-transform:none">ReFleek</span>
             </div>
             <sc-for list="{{ techPackRows }}" as="r" hint-placeholder-count="10">
               <div style="display:flex;justify-content:space-between;gap:14px;padding:11px 18px;border-bottom:1px solid rgba(15,15,14,.1)">
@@ -531,16 +531,16 @@
         <sc-if value="{{ n9 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
           <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Producer — Nº09</div>
-          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Where it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
+          <h1 style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Where it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
 
           <div style="background:#0F0F0E;color:#F4F1EA;padding:22px 24px">
             <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:{{ accent }}">◆ MATCHED PRODUCER</div>
-            <div style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(26px,3vw,38px);letter-spacing:-.01em;margin-top:10px;line-height:1">{{ producer.name }}</div>
+            <div style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(26px,3vw,38px);letter-spacing:-.01em;margin-top:10px;line-height:1">{{ producer.name }}</div>
             <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,234,.6);margin-top:8px">{{ producer.loc }}</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(244,241,234,.2)">
               <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">Capable of</div><div style="font-size:12px;margin-top:5px;line-height:1.4">{{ producer.caps }}</div></div>
-              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">MOQ</div><div style="font-family:'Bodoni Moda',serif;font-size:24px;margin-top:3px">{{ producer.moq }}</div></div>
-              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">Lead time</div><div style="font-family:'Bodoni Moda',serif;font-size:24px;margin-top:3px">{{ producer.lead }}</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">MOQ</div><div style="font-family:'Newsreader',serif;font-size:24px;margin-top:3px">{{ producer.moq }}</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.5)">Lead time</div><div style="font-family:'Newsreader',serif;font-size:24px;margin-top:3px">{{ producer.lead }}</div></div>
             </div>
             <div style="margin-top:18px;font-size:12.5px;line-height:1.6;color:rgba(244,241,234,.8)"><span style="color:{{ accent }};font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em">WHY — </span>{{ producer.why }}</div>
           </div>
@@ -548,7 +548,7 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
             <sc-for list="{{ altProducers }}" as="p" hint-placeholder-count="2">
               <div style="background:#FBFAF6;border:1px solid rgba(15,15,14,.16);padding:15px 17px">
-                <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:18px;line-height:1.05">{{ p.name }}</div>
+                <div style="font-family:'Newsreader',serif;font-weight:600;font-size:18px;line-height:1.05">{{ p.name }}</div>
                 <div style="font-family:'Space Mono',monospace;font-size:10.5px;color:rgba(15,15,14,.5);margin-top:5px">{{ p.loc }}</div>
                 <div style="font-size:11.5px;line-height:1.45;color:rgba(15,15,14,.6);margin-top:11px">{{ p.caps }}</div>
               </div>
@@ -678,7 +678,7 @@
               <img src="{{ patternOverlaySrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:contain;object-position:{{ patternOverlayPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }};pointer-events:none;image-rendering:auto" />
               </sc-if>
               <sc-if value="{{ patternOverlayRepeat }}" hint-placeholder-val="{{ false }}">
-              <div class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:repeat;background-position:{{ patternOverlayRepeatPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }};pointer-events:none"></div>
+              <img src="{{ patternOverlayRepeatSrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:cover;object-position:{{ patternOverlayRepeatPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayRepeatTransform }};pointer-events:none;image-rendering:auto" />
               </sc-if>
             </sc-if>
 
@@ -709,7 +709,7 @@
         <!-- circular badge -->
         <div style="background:#0F0F0E;color:#F4F1EA;padding:15px 18px;margin-bottom:14px">
           <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:{{ accent }}">◆ CIRCULAR MATERIAL</div>
-          <div style="font-family:'Bodoni Moda',serif;font-size:19px;font-weight:600;margin-top:6px;line-height:1.15">{{ circularLabel }}</div>
+          <div style="font-family:'Newsreader',serif;font-size:19px;font-weight:600;margin-top:6px;line-height:1.15">{{ circularLabel }}</div>
         </div>
 
         <!-- live spec -->
@@ -729,7 +729,7 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <sc-for list="{{ impactRows }}" as="i" hint-placeholder-count="4">
               <div>
-                <div style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:.95;letter-spacing:-.02em">{{ i.v }}</div>
+                <div style="font-family:'Newsreader',serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:.95;letter-spacing:-.02em">{{ i.v }}</div>
                 <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(15,15,14,.55);margin-top:6px;line-height:1.4">{{ i.k }}</div>
               </div>
             </sc-for>
@@ -802,6 +802,9 @@ class Component extends DCLogic {
   _materialsList = null;
   _persistTimer = null;
   _lastRenderedFingerprint = null;
+  _repeatTileUrl = null;
+  _repeatTileKey = '';
+  _repeatTileGen = 0;
 
   componentDidMount() {
     const saved = this._readSavedState();
@@ -813,6 +816,17 @@ class Component extends DCLogic {
     if (!saved && this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
     this._loadMaterials();
     if (this.state.node === 7) this.maybeAutoRenderPreview();
+    this._repeatWatchSnap = {};
+    this.scheduleRepeatTile();
+  }
+
+  componentDidUpdate() {
+    const watch = ['patternImg', 'embroiderySolidImg', 'backgroundRemoved', 'repeatMode', 'motifScale', 'layoutScale', 'motifOffsetX', 'motifOffsetY'];
+    const prev = this._repeatWatchSnap || {};
+    const cur = {};
+    watch.forEach((k) => { cur[k] = this.state[k]; });
+    if (watch.some((k) => cur[k] !== prev[k])) this.scheduleRepeatTile();
+    this._repeatWatchSnap = cur;
   }
 
   _stripEphemeralArtwork(saved) {
@@ -979,7 +993,7 @@ class Component extends DCLogic {
     if (commit) patch.renderImg = null;
     this.setState(patch);
   }
-  setRepeatMode(mode) { this.setState({ repeatMode: mode, renderImg: null }); }
+  setRepeatMode(mode) { this.setState({ repeatMode: mode, renderImg: null }, () => this.scheduleRepeatTile()); }
   setPlacement(mode) { this.setState({ placement: mode, renderImg: null }); }
   layoutLabel() {
     const s = this.state;
@@ -1793,6 +1807,75 @@ class Component extends DCLogic {
     return this.state.patternImg;
   }
 
+  _repeatTileCacheKey() {
+    const s = this.state;
+    const art = this.artworkForPreview();
+    if (!art || s.repeatMode === 'single') return '';
+    const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
+    return s.repeatMode + '|' + tilePx + '|' + s.motifOffsetX + '|' + s.motifOffsetY + '|' + art.length + '|' + art.slice(-48);
+  }
+
+  scheduleRepeatTile() {
+    const key = this._repeatTileCacheKey();
+    if (!key) {
+      this._repeatTileGen++;
+      if (this._repeatTileUrl) {
+        this._repeatTileUrl = null;
+        this._repeatTileKey = '';
+        this.forceUpdate();
+      }
+      return;
+    }
+    if (key === this._repeatTileKey && this._repeatTileUrl) return;
+    const gen = ++this._repeatTileGen;
+    const s = this.state;
+    const art = this.artworkForPreview();
+    const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
+    const img = new Image();
+    img.onload = () => {
+      if (gen !== this._repeatTileGen) return;
+      const cols = 6;
+      const rows = 8;
+      const w = cols * tilePx;
+      const h = rows * tilePx;
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      const iw = img.naturalWidth || tilePx;
+      const ih = img.naturalHeight || tilePx;
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          let dx = col * tilePx;
+          let dy = row * tilePx;
+          if (s.repeatMode === 'brick' && row % 2) dx += Math.round(tilePx / 2);
+          if (s.repeatMode === 'half-drop' && col % 2) dy += Math.round(tilePx / 2);
+          if (s.repeatMode === 'mirror') {
+            const flipX = col % 2;
+            const flipY = row % 2;
+            ctx.save();
+            ctx.translate(dx + (flipX ? tilePx : 0), dy + (flipY ? tilePx : 0));
+            ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+            ctx.drawImage(img, 0, 0, iw, ih, 0, 0, tilePx, tilePx);
+            ctx.restore();
+          } else {
+            ctx.drawImage(img, 0, 0, iw, ih, dx, dy, tilePx, tilePx);
+          }
+        }
+      }
+      this._repeatTileUrl = canvas.toDataURL('image/png');
+      this._repeatTileKey = key;
+      this.forceUpdate();
+    };
+    img.onerror = () => {
+      if (gen !== this._repeatTileGen) return;
+      this._repeatTileUrl = null;
+      this._repeatTileKey = '';
+      this.forceUpdate();
+    };
+    img.src = art;
+  }
+
   buildTechPackJson() {
     const s = this.state;
     const v = this.renderVals();
@@ -2382,9 +2465,8 @@ class Component extends DCLogic {
     const patternOverlayRepeat = patternOverlayShow && s.repeatMode !== 'single';
     const patternOverlaySrc = previewArt || '';
     const patternOverlayBlend = previewArtSolid ? 'normal' : 'multiply';
-    const patternOverlayImg = this.cssBgUrl(previewArt);
-    const patternOverlaySize = tilePx + 'px ' + (s.repeatMode === 'half-drop' ? Math.round(tilePx * 0.5) + 'px' : tilePx + 'px');
-    const patternOverlayRepeatPos = s.motifOffsetX + '% ' + s.motifOffsetY + '%';
+    const patternOverlayRepeatSrc = this._repeatTileUrl || previewArt || '';
+    const patternOverlayRepeatPos = 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
     const patternOverlayPos = s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
       : s.placement === 'border' ? 'center'
       : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
@@ -2393,6 +2475,7 @@ class Component extends DCLogic {
     const motifScaleFactor = s.motifScale / 100;
     const motifRotate = s.motifRotate;
     const patternOverlayTransform = 'rotate(' + layoutRotate + 'deg) scale(' + layoutScaleFactor + ') rotate(' + motifRotate + 'deg) scale(' + motifScaleFactor + ')';
+    const patternOverlayRepeatTransform = 'rotate(' + layoutRotate + 'deg) rotate(' + motifRotate + 'deg)';
     const isEmbroidery = this.isEmbroidery();
 
     const PATTERN_TABS = [['preset', 'Preset tiles'], ['prompt', 'Text prompt'], ['upload', 'Upload image']];
@@ -2421,7 +2504,7 @@ class Component extends DCLogic {
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
       apiMockShow: !!s.apiMock,
-      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + previewMode + w + 'x' + h + patchSeed + (previewArt ? (previewArtSolid ? '|solid' : '|raw') : ''),
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + previewMode + w + 'x' + h + patchSeed + (previewArt ? (previewArtSolid ? '|solid' : '|raw') : '') + (this._repeatTileKey ? '|r' + this._repeatTileKey.length : ''),
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8, n9: s.node === 9,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
@@ -2506,8 +2589,8 @@ class Component extends DCLogic {
       toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams,
       previewAspect, previewBg, previewImg, previewSize,
       patternOverlayShow, patternOverlaySingle, patternOverlayRepeat,
-      patternOverlaySrc, patternOverlayBlend, patternOverlayPos, patternOverlayTransform,
-      patternOverlayImg, patternOverlaySize, patternOverlayRepeatPos,
+      patternOverlaySrc, patternOverlayBlend, patternOverlayPos, patternOverlayTransform, patternOverlayRepeatTransform,
+      patternOverlayRepeatSrc, patternOverlayRepeatPos,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
       previewCaption: s.product + ' · ' + dims + ' · ' + materialLabel,
