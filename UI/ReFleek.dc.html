@@ -798,6 +798,14 @@ class Component extends DCLogic {
 
   EMBROIDERY_MAX_COLORS = 4;
   STORAGE_KEY = 'refleek-workflow-v2';
+  // Generated artwork is session-only — never survive a reload.
+  _EPHEMERAL_ARTWORK = [
+    'patternImg', 'renderImg', 'apiMock', 'patternUploadImg',
+    'threadColors', 'embroiderySolidImg', 'embroiderySvg', 'backgroundRemoved',
+    'colourSepW', 'colourSepH', 'colourSepIndices',
+    'patternBusy', 'renderBusy', 'patternErr', 'renderErr',
+    'colourSepBusy', 'colourSepErr',
+  ];
   _materialsList = null;
   _persistTimer = null;
   _lastRenderedFingerprint = null;
@@ -808,16 +816,15 @@ class Component extends DCLogic {
     this.setState = (update, cb) => orig(update, () => { this._persistState(); if (cb) cb(); });
     if (saved) this.setState(saved, () => {
       if (this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
-      if (this.isEmbroidery() && saved.patternImg && (!saved.threadColors || !saved.threadColors.length || !saved.backgroundRemoved)) {
-        this.runColourSeparation();
-      } else if (saved.colourSepIndices && saved.threadColors && saved.threadColors.length) {
-        const outputs = this._applyEmbroideryOutputs(saved.colourSepW, saved.colourSepH, saved.colourSepIndices, saved.threadColors);
-        this.setState(outputs);
-      }
     });
     if (!saved && this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
     this._loadMaterials();
     if (this.state.node === 7) this.maybeAutoRenderPreview();
+  }
+
+  _stripEphemeralArtwork(saved) {
+    for (const key of this._EPHEMERAL_ARTWORK) delete saved[key];
+    return saved;
   }
 
   _persistFields() {
@@ -833,10 +840,6 @@ class Component extends DCLogic {
       motifOffsetX: s.motifOffsetX, motifOffsetY: s.motifOffsetY,
       style: s.style, patternInputMode: s.patternInputMode,
       patternPromptText: s.patternPromptText,
-      patternImg: s.patternImg, renderImg: s.renderImg, apiMock: s.apiMock,
-      threadColors: s.threadColors, embroiderySolidImg: s.embroiderySolidImg,
-      backgroundRemoved: s.backgroundRemoved,
-      colourSepW: s.colourSepW, colourSepH: s.colourSepH, colourSepIndices: s.colourSepIndices,
     };
   }
 
@@ -845,12 +848,7 @@ class Component extends DCLogic {
     this._persistTimer = setTimeout(() => {
       try {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._persistFields()));
-      } catch (e) {
-        const slim = this._persistFields();
-        slim.patternImg = null;
-        slim.renderImg = null;
-        try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(slim)); } catch (e2) {}
-      }
+      } catch (e) {}
     }, 400);
   }
 
@@ -861,7 +859,7 @@ class Component extends DCLogic {
       const saved = JSON.parse(raw);
       if (!saved || typeof saved !== 'object') return null;
       if (saved.pattern === 'placement') saved.pattern = 'embroidery';
-      return saved;
+      return this._stripEphemeralArtwork(saved);
     } catch (e) { return null; }
   }
 
