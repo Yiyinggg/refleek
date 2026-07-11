@@ -14,12 +14,25 @@ function preserveLegacyAssets(): Plugin {
     },
     async writeBundle() {
       const legacyOutput = resolve(import.meta.dirname, outputDirectory, "UI");
+      const dataOutput = resolve(import.meta.dirname, outputDirectory, "data");
       await mkdir(legacyOutput, { recursive: true });
+      await mkdir(dataOutput, { recursive: true });
       await Promise.all(
         ["support.js", "image-slot.js"].map((filename) =>
           copyFile(
             resolve(import.meta.dirname, "UI", filename),
             resolve(legacyOutput, filename),
+          ),
+        ),
+      );
+      await Promise.all(
+        [
+          "materials.json",
+          "standardised_product_database_v3_enriched.json",
+        ].map((filename) =>
+          copyFile(
+            resolve(import.meta.dirname, "data", filename),
+            resolve(dataOutput, filename),
           ),
         ),
       );
