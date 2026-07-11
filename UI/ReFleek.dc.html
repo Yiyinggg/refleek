@@ -524,13 +524,9 @@
         <div style="display:flex;align-items:center;justify-content:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
           <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both;overflow:hidden">
 
-            <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;inset:0;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.82;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})"></div>
-            </sc-if>
-
             <!-- TOTE preview -->
             <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);width:58%;height:14px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:40px 40px 0 0"></div>
+              <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);width:58%;height:14px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:40px 40px 0 0;z-index:3"></div>
               <sc-if value="{{ previewToteGrid }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:18% 14% 10% 14%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px">
                 <sc-for list="{{ totePatchworkCells }}" as="cell" hint-placeholder-count="4">
@@ -545,8 +541,8 @@
                 </sc-for>
               </div>
               </sc-if>
-              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15)"></span></sc-if>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12)"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15);z-index:3"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12);z-index:3"></span></sc-if>
             </sc-if>
 
             <!-- FLAT preview (tablecloth / curtain) -->
@@ -572,10 +568,10 @@
               <div style="position:absolute;right:10px;top:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;left:10px;bottom:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;right:10px;bottom:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }}"></span></sc-if>
-              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg)"></span></sc-if>
-              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }}"></span></sc-if>
-              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center">
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg);z-index:3"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
+              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;z-index:3">
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
@@ -601,8 +597,12 @@
               <sc-if value="{{ previewScarfSingle }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:12% 8%;background:{{ fabricBg }};background-image:{{ fabricImg }};background-size:{{ fabricSize }};border:1px solid rgba(15,15,14,.2)"></div>
               </sc-if>
-              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }}"></span></sc-if>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }}"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
+            </sc-if>
+
+            <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;z-index:30;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.82;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})"></div>
             </sc-if>
 
             <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ previewCaption }}</span>
@@ -722,6 +722,13 @@ class Component extends DCLogic {
   };
 
   ACC() { return this.props.accent || '#E8452A'; }
+
+  // dc-runtime cssToObj splits style strings on ';' — encode semicolons in data URLs
+  // so background-image:url(data:image/png;base64,…) survives parsing.
+  cssBgUrl(src) {
+    if (!src) return 'none';
+    return 'url(' + String(src).replace(/;/g, '%3B') + ')';
+  }
 
   productSpec(name) {
     return this.PRODUCT_SPECS[name || this.state.product] || this.PRODUCT_SPECS['Tote bag'];
@@ -1682,7 +1689,7 @@ class Component extends DCLogic {
     const previewSize = previewMode === 'tote' || previewPatchwork ? 'auto' : cur.swSize;
     const tilePx = Math.round(36 * s.motifScale / 100 * s.layoutScale / 100);
     const patternOverlayShow = !!s.patternImg && !s.renderImg;
-    const patternOverlayImg = s.patternImg ? 'url("' + s.patternImg + '")' : 'none';
+    const patternOverlayImg = this.cssBgUrl(s.patternImg);
     const patternOverlayRepeat = s.repeatMode === 'single' ? 'no-repeat' : 'repeat';
     const patternOverlaySize = s.repeatMode === 'single'
       ? (Math.round(34 * s.motifScale / 100) + '% auto')
@@ -1709,7 +1716,7 @@ class Component extends DCLogic {
 
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
-      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.motifScale + previewMode + w + 'x' + h + patchSeed,
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.layoutRotate + s.motifScale + s.motifRotate + s.motifOffsetX + s.motifOffsetY + previewMode + w + 'x' + h + patchSeed + (s.patternImg ? '|p' : ''),
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
