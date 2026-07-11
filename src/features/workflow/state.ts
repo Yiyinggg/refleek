@@ -83,7 +83,6 @@ export type WorkflowAction =
   | { type: "patternStart" }
   | { type: "patternSuccess"; image: string }
   | { type: "patternError"; message: string }
-  | { type: "setRenderPrompt"; text: string }
   | { type: "renderStart" }
   | { type: "renderSuccess"; image: string }
   | { type: "renderError"; message: string }
@@ -154,7 +153,6 @@ const BASE_STATE: Omit<
   patternImg: null,
   patternBusy: false,
   patternErr: "",
-  renderPromptText: "",
   renderImg: null,
   renderBusy: false,
   renderErr: "",
@@ -398,8 +396,6 @@ export function createWorkflowReducer(catalog: Catalog) {
         };
       case "patternError":
         return { ...state, patternErr: action.message, patternBusy: false };
-      case "setRenderPrompt":
-        return { ...state, renderPromptText: action.text, renderErr: "" };
       case "renderStart":
         return { ...state, renderBusy: true, renderErr: "" };
       case "renderSuccess":

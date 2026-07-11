@@ -15,14 +15,6 @@ export function RenderNode({ catalog, state, dispatch }: NodeProps) {
     if (state.renderBusy || !material || !product) {
       return;
     }
-    if (!state.renderPromptText.trim()) {
-      dispatch({
-        type: "renderError",
-        message:
-          "Enter a text prompt describing how the product should be rendered.",
-      });
-      return;
-    }
     dispatch({ type: "renderStart" });
     try {
       const image = await callGenerate({
@@ -52,45 +44,26 @@ export function RenderNode({ catalog, state, dispatch }: NodeProps) {
         Product render
       </h2>
       <p className="node__lede">
-        Describe the scene, then generate a photorealistic preview from
-        everything you’ve chosen. Re-run it any time you change the design.
+        Confirm to generate a photorealistic preview from everything you’ve
+        chosen. Re-run it any time you change the design.
       </p>
 
-      <div className="field">
-        <label className="field__label" htmlFor="render-prompt">
-          Describe the render
-        </label>
-        <textarea
-          id="render-prompt"
-          className="textarea"
-          placeholder="e.g. soft daylight, muted earth tones, tote laid flat with a gentle fold"
-          value={state.renderPromptText}
-          onChange={(event) => {
-            dispatch({ type: "setRenderPrompt", text: event.target.value });
+      <div style={{ marginTop: "0.9rem" }}>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => {
+            void generate();
           }}
-        />
-        <p className="node__lede" style={{ marginTop: "0.75rem" }}>
-          {state.renderPromptText.trim()
-            ? "AI renders your workflow choices with your scene brief — click to generate or re-render."
-            : "Describe lighting, mood, and staging — then confirm to generate."}
-        </p>
-        <div style={{ marginTop: "0.9rem" }}>
-          <button
-            type="button"
-            className="btn"
-            onClick={() => {
-              void generate();
-            }}
-            disabled={state.renderBusy}
-          >
-            {state.renderBusy
-              ? "Rendering…"
-              : state.renderImg
-                ? "Re-render"
-                : "Generate AI render"}{" "}
-            <span className="btn__diamond">◆</span>
-          </button>
-        </div>
+          disabled={state.renderBusy}
+        >
+          {state.renderBusy
+            ? "Rendering…"
+            : state.renderImg
+              ? "Re-render"
+              : "Confirm render"}{" "}
+          <span className="btn__diamond">◆</span>
+        </button>
       </div>
 
       {state.renderErr ? (

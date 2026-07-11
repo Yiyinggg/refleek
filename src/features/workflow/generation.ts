@@ -106,9 +106,6 @@ export function buildRenderPrompt(
   prompt += `Motif scale ${String(state.motifScale)}%, motif rotation ${String(state.motifRotate)}°, offset X ${String(state.motifOffsetX)}%, offset Y ${String(state.motifOffsetY)}%. `;
   prompt +=
     "Warm paper-beige background, soft shadow, front view, no text, no watermark, no people.";
-  if (state.renderPromptText.trim()) {
-    prompt += ` User brief: ${state.renderPromptText.trim()}.`;
-  }
   return prompt;
 }
 

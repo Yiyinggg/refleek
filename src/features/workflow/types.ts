@@ -104,7 +104,6 @@ export interface WorkflowState {
   patternImg: string | null;
   patternBusy: boolean;
   patternErr: string;
-  renderPromptText: string;
   renderImg: string | null;
   renderBusy: boolean;
   renderErr: string;
