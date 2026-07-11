@@ -6,15 +6,19 @@ import type {
 } from "./types";
 
 const QUANTITY_WITH_UNIT =
-  /(\d+)\s*(tote|bag|tablecloth|piece|pc|apron|scarf|curtain|pouch|bandana|cover)/i;
-const FIRST_NUMBER = /(\d+)\s/;
+  /\b(\d{1,4})\s*(pieces?|pcs?|units?|items?|totes?|bags?|tablecloths?|aprons?|scarves?|curtains?|pouches?|bandanas?|covers?)\b/i;
+const QUANTITY_WITH_VERB = /\b(?:make|produce|create|need|want)\s+(\d{1,4})\b/i;
 const DEFAULT_QUANTITY = 20;
 
 export function parseQuantity(brief: string): number {
-  const match = QUANTITY_WITH_UNIT.exec(brief) ?? FIRST_NUMBER.exec(brief);
+  const match =
+    QUANTITY_WITH_UNIT.exec(brief) ?? QUANTITY_WITH_VERB.exec(brief);
   const raw = match?.[1];
   const value = raw ? Number.parseInt(raw, 10) : DEFAULT_QUANTITY;
-  return Number.isFinite(value) && value > 0 ? value : DEFAULT_QUANTITY;
+  if (!Number.isFinite(value) || value <= 0) {
+    return DEFAULT_QUANTITY;
+  }
+  return Math.max(1, Math.min(5000, value));
 }
 
 export function productFor(

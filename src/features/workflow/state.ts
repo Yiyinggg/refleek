@@ -28,6 +28,9 @@ export const STYLE_OPTIONS = [
   "geometric",
 ] as const;
 
+export const LEGACY_DEFAULT_BRIEF =
+  "I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.";
+
 export const PRINT_BLOCK_REASON =
   "Digital print is not available on upcycled fabric — reclaimed panels carry surface irregularity and existing washes, so print colour cannot be controlled. Use laser etching or embroidery instead.";
 
@@ -54,7 +57,11 @@ export type WorkflowAction =
   | { type: "setBrief"; brief: string }
   | { type: "setStyle"; style: string }
   | { type: "selectProduct"; slug: string }
-  | { type: "setDimension"; field: "productWidth" | "productHeight"; value: number }
+  | {
+      type: "setDimension";
+      field: "productWidth" | "productHeight";
+      value: number;
+    }
   | { type: "setSource"; source: SourceFilter }
   | { type: "selectMaterial"; slug: string }
   | { type: "toggleMixMaterial"; slug: string }
@@ -118,8 +125,7 @@ const BASE_STATE: Omit<
   "productSlug" | "productWidth" | "productHeight" | "materialSlug"
 > = {
   node: 1,
-  brief:
-    "I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.",
+  brief: "",
   source: "reclaimed",
   materialMix: [],
   mixNote: "",
@@ -211,7 +217,11 @@ export function createWorkflowReducer(catalog: Catalog) {
   ): WorkflowState {
     switch (action.type) {
       case "goto":
-        return { ...state, node: Math.max(1, Math.min(8, action.node)), techNote: "" };
+        return {
+          ...state,
+          node: Math.max(1, Math.min(8, action.node)),
+          techNote: "",
+        };
       case "next":
         return reducer(state, {
           type: "goto",
@@ -236,7 +246,8 @@ export function createWorkflowReducer(catalog: Catalog) {
           ...CLEARED_ARTWORK,
         };
         if (product.category === "unfinished-material") {
-          next.source = product.slug === "fabric-roll" ? "deadstock" : "reclaimed";
+          next.source =
+            product.slug === "fabric-roll" ? "deadstock" : "reclaimed";
         }
         return next;
       }
@@ -252,7 +263,13 @@ export function createWorkflowReducer(catalog: Catalog) {
             state.materialMix.length > 0
               ? state.materialMix
               : [state.materialSlug];
-          return { ...state, source: "mix", materialMix: mix, materialSlug: mix[0] ?? state.materialSlug, mixNote: "" };
+          return {
+            ...state,
+            source: "mix",
+            materialMix: mix,
+            materialSlug: mix[0] ?? state.materialSlug,
+            mixNote: "",
+          };
         }
         return {
           ...state,
@@ -285,12 +302,18 @@ export function createWorkflowReducer(catalog: Catalog) {
         const index = mix.indexOf(action.slug);
         if (index >= 0) {
           if (mix.length <= 1) {
-            return { ...state, mixNote: "Keep at least one fabric in the mix." };
+            return {
+              ...state,
+              mixNote: "Keep at least one fabric in the mix.",
+            };
           }
           mix.splice(index, 1);
         } else {
           if (mix.length >= MAX_MIX) {
-            return { ...state, mixNote: `Maximum ${String(MAX_MIX)} fabrics for patchwork mix.` };
+            return {
+              ...state,
+              mixNote: `Maximum ${String(MAX_MIX)} fabrics for patchwork mix.`,
+            };
           }
           mix.push(action.slug);
         }
