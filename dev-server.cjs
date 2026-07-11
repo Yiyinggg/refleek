@@ -1,12 +1,13 @@
 // Local dev server mirroring the Vercel setup:
 //   OPENROUTER_API_KEY=sk-or-... node dev-server.cjs
-// Serves static files from the repo root and routes /api/generate to api/generate.js.
+// Serves static files from the repo root and routes /api/generate + /api/preview.
 // Without the env var the API answers with mock images.
 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const generate = require('./api/generate.js');
+const preview = require('./api/preview.js');
 
 const PORT = process.env.PORT || 3939;
 const ROOT = __dirname;
@@ -23,12 +24,15 @@ function vercelRes(res) {
 }
 
 http.createServer((req, res) => {
-  if (req.url.startsWith('/api/generate')) {
+  const apiRoute = req.url.startsWith('/api/preview') ? preview
+    : req.url.startsWith('/api/generate') ? generate
+    : null;
+  if (apiRoute) {
     let body = '';
     req.on('data', (c) => { body += c; });
     req.on('end', () => {
       try { req.body = body ? JSON.parse(body) : {}; } catch { req.body = {}; }
-      Promise.resolve(generate(req, vercelRes(res))).catch((e) => {
+      Promise.resolve(apiRoute(req, vercelRes(res))).catch((e) => {
         vercelRes(res).status(500).json({ error: String(e) });
       });
     });
