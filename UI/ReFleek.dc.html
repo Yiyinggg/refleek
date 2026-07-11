@@ -158,20 +158,46 @@
           </div>
           </sc-if>
 
+          <sc-if value="{{ showMixHint }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:18px;padding:12px 16px;border:1px solid rgba(15,15,14,.14);background:rgba(15,15,14,.04)">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <p style="margin:0;font-family:'Space Mono',monospace;font-size:11px;line-height:1.55;color:rgba(15,15,14,.6)">Mix both — select up to 5 fabrics. Preview updates live as a random patchwork layout.</p>
+              <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:{{ accent }};white-space:nowrap">{{ mixSelectionLabel }}</span>
+            </div>
+            <sc-if value="{{ showPatchworkModes }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+              <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.42)">Patchwork mode</span>
+              <sc-for list="{{ patchworkModeTabs }}" as="tab" hint-placeholder-count="2">
+                <button onClick="{{ tab.onClick }}" style="padding:7px 13px;border:1px solid {{ tab.bd }};background:{{ tab.bg }};color:{{ tab.fg }};font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;transition:all .18s">{{ tab.name }}</button>
+              </sc-for>
+            </div>
+            </sc-if>
+          </div>
+          </sc-if>
+
           <div style="display:flex;justify-content:flex-end;margin-top:14px">
             <button onClick="{{ applyAiPicks }}" style="padding:9px 16px;border:1px solid #0F0F0E;background:transparent;color:#0F0F0E;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">Apply AI picks →</button>
           </div>
 
+          <sc-if value="{{ mixNoteShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:12px;border:1px solid {{ accent }};background:rgba(232,69,42,.07);padding:11px 14px">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:{{ accent }};white-space:nowrap;padding-top:1px">✕ LIMIT</span>
+            <p style="margin:0;font-size:12px;line-height:1.55">{{ mixNote }}</p>
+          </div>
+          </sc-if>
+
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">
             <sc-for list="{{ materialsList }}" as="m" hint-placeholder-count="2">
-              <button onClick="{{ m.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ m.selBd }};box-shadow:{{ m.selShadow }};padding:0;overflow:hidden;transition:all .2s">
+              <button onClick="{{ m.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ m.selBd }};box-shadow:{{ m.selShadow }};padding:0;overflow:hidden;transition:all .2s;opacity:{{ m.cardOpacity }}">
                 <div style="height:64px;background:{{ m.swBg }};background-image:{{ m.swImg }};background-size:{{ m.swSize }}"></div>
                 <div style="padding:14px 16px">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
                     <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.5)">{{ m.sourceLabel }}</span>
                     <span style="display:flex;align-items:center;gap:6px;flex:none">
                       <sc-if value="{{ m.recommended }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.12em;padding:2px 5px;border-radius:3px;background:{{ accent }};color:#F4F1EA">REC</span></sc-if>
-                      <span style="width:15px;height:15px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }}"></span>
+                      <sc-if value="{{ m.showTickOrder }}" hint-placeholder-val="{{ false }}"><span style="width:15px;height:15px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }};display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:8px;font-weight:700;color:#F4F1EA">{{ m.tickOrder }}</span></sc-if>
+                      <sc-if value="{{ m.showTickDot }}" hint-placeholder-val="{{ false }}"><span style="width:15px;height:15px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }}"></span></sc-if>
+                      <sc-if value="{{ m.showTickEmpty }}" hint-placeholder-val="{{ true }}"><span style="width:15px;height:15px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }}"></span></sc-if>
                     </span>
                   </div>
                   <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:21px;letter-spacing:-.01em;margin:5px 0 11px">{{ m.name }}</div>
@@ -505,19 +531,43 @@
             <!-- TOTE preview -->
             <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);width:58%;height:14px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:40px 40px 0 0"></div>
+              <sc-if value="{{ previewToteGrid }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:18% 14% 10% 14%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px">
-                <div style="background:#4A5F7A;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 1px,transparent 1px 4px)"></div>
-                <div style="background:#3C4E67;background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.15) 0 1px,transparent 1px 4px)"></div>
-                <div style="background:#5A6B82;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 2px,transparent 2px 5px)"></div>
-                <div style="background:#354558;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 1px,transparent 1px 3px)"></div>
+                <sc-for list="{{ totePatchworkCells }}" as="cell" hint-placeholder-count="4">
+                  <div style="background:{{ cell.bg }};background-image:{{ cell.img }};background-size:{{ cell.size }}"></div>
+                </sc-for>
               </div>
+              </sc-if>
+              <sc-if value="{{ previewToteOrganic }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:18% 14% 10% 14%;overflow:hidden">
+                <sc-for list="{{ toteOrganicPieces }}" as="piece" hint-placeholder-count="9">
+                  <div style="position:absolute;left:{{ piece.left }};top:{{ piece.top }};width:{{ piece.width }};height:{{ piece.height }};background:{{ piece.bg }};background-image:{{ piece.img }};background-size:{{ piece.size }};clip-path:{{ piece.clipPath }};z-index:{{ piece.zIndex }}"></div>
+                </sc-for>
+              </div>
+              </sc-if>
               <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15)"></span></sc-if>
               <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12)"></span></sc-if>
             </sc-if>
 
             <!-- FLAT preview (tablecloth / curtain) -->
             <sc-if value="{{ previewFlat }}" hint-placeholder-val="{{ true }}">
+              <sc-if value="{{ previewPatchworkGrid }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:2px">
+                  <sc-for list="{{ flatPatchworkCells }}" as="cell" hint-placeholder-count="16">
+                    <div style="background:{{ cell.bg }};background-image:{{ cell.img }};background-size:{{ cell.size }}"></div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ previewPatchworkOrganic }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:0;overflow:hidden">
+                  <sc-for list="{{ flatOrganicPieces }}" as="piece" hint-placeholder-count="16">
+                    <div style="position:absolute;left:{{ piece.left }};top:{{ piece.top }};width:{{ piece.width }};height:{{ piece.height }};background:{{ piece.bg }};background-image:{{ piece.img }};background-size:{{ piece.size }};clip-path:{{ piece.clipPath }};z-index:{{ piece.zIndex }}"></div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ previewFlatSingle }}" hint-placeholder-val="{{ true }}">
               <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(120,105,80,.05) 0 1px,transparent 1px 5px),repeating-linear-gradient(90deg,rgba(120,105,80,.05) 0 1px,transparent 1px 5px)"></div>
+              </sc-if>
               <div style="position:absolute;left:10px;top:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;right:10px;top:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;left:10px;bottom:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
@@ -534,7 +584,23 @@
 
             <!-- SCARF preview -->
             <sc-if value="{{ previewScarf }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ previewPatchworkGrid }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:12% 8%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);gap:2px;border:1px solid rgba(15,15,14,.2)">
+                  <sc-for list="{{ scarfPatchworkCells }}" as="cell" hint-placeholder-count="15">
+                    <div style="background:{{ cell.bg }};background-image:{{ cell.img }};background-size:{{ cell.size }}"></div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ previewPatchworkOrganic }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:12% 8%;overflow:hidden;border:1px solid rgba(15,15,14,.2)">
+                  <sc-for list="{{ scarfOrganicPieces }}" as="piece" hint-placeholder-count="15">
+                    <div style="position:absolute;left:{{ piece.left }};top:{{ piece.top }};width:{{ piece.width }};height:{{ piece.height }};background:{{ piece.bg }};background-image:{{ piece.img }};background-size:{{ piece.size }};clip-path:{{ piece.clipPath }};z-index:{{ piece.zIndex }}"></div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ previewScarfSingle }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:12% 8%;background:{{ fabricBg }};background-image:{{ fabricImg }};background-size:{{ fabricSize }};border:1px solid rgba(15,15,14,.2)"></div>
+              </sc-if>
               <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }}"></span></sc-if>
               <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }}"></span></sc-if>
             </sc-if>
@@ -599,6 +665,9 @@ class Component extends DCLogic {
     productHeight: 42,
     source: 'reclaimed',
     material: 'denim',
+    materialMix: [],
+    mixNote: '',
+    patchworkMode: 'grid',
     techniques: ['patchwork', 'cut-sew', 'embroidery'],
     pattern: 'placement',
     repeatMode: 'brick',
@@ -739,9 +808,145 @@ class Component extends DCLogic {
   }
   curMaterial() {
     const all = this.MATERIALS();
-    return all.find(m => m.id === this.state.material) || all[0];
+    const s = this.state;
+    if (s.source === 'mix' && s.materialMix && s.materialMix.length) {
+      return all.find(m => m.id === s.materialMix[0]) || all[0];
+    }
+    return all.find(m => m.id === s.material) || all[0];
   }
+
+  activeMaterials() {
+    const all = this.MATERIALS();
+    const s = this.state;
+    if (s.source === 'mix' && s.materialMix && s.materialMix.length) {
+      return s.materialMix.map(id => all.find(m => m.id === id)).filter(Boolean);
+    }
+    const m = all.find(x => x.id === s.material);
+    return m ? [m] : [all[0]];
+  }
+
+  patchworkSeed(ids) {
+    const key = ids.slice().sort().join('|');
+    let h = 0;
+    for (let i = 0; i < key.length; i++) h = ((h << 5) - h + key.charCodeAt(i)) | 0;
+    return Math.abs(h) || 1;
+  }
+
+  randFromSeed(seed) {
+    let s = seed >>> 0;
+    return () => {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      return s / 0x100000000;
+    };
+  }
+
+  buildPatchworkCells(cols, rows, materials, seed) {
+    if (!materials.length) return [];
+    const rand = this.randFromSeed(seed);
+    const cells = [];
+    for (let i = 0; i < cols * rows; i++) {
+      const m = materials[Math.floor(rand() * materials.length)];
+      cells.push({ bg: m.swBg, img: m.swImg, size: m.swSize });
+    }
+    return cells;
+  }
+
+  buildOrganicPieces(materials, seed, cols, rows) {
+    if (!materials.length) return [];
+    const rand = this.randFromSeed(seed);
+    const pieces = [];
+    const clamp = (v) => Math.max(0, Math.min(100, v));
+    const jitter = (base, amt) => clamp(base + (rand() - 0.5) * amt);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const m = materials[Math.floor(rand() * materials.length)];
+        const x0 = (c / cols) * 100;
+        const y0 = (r / rows) * 100;
+        const x1 = ((c + 1) / cols) * 100;
+        const y1 = ((r + 1) / rows) * 100;
+        const edgeJitter = 16;
+        const verts = [
+          [jitter(x0, edgeJitter), jitter(y0, edgeJitter)],
+          [jitter((x0 + x1) / 2, 12), jitter(y0, edgeJitter)],
+          [jitter(x1, edgeJitter), jitter(y0, edgeJitter)],
+          [jitter(x1, edgeJitter), jitter((y0 + y1) / 2, 12)],
+          [jitter(x1, edgeJitter), jitter(y1, edgeJitter)],
+          [jitter((x0 + x1) / 2, 12), jitter(y1, edgeJitter)],
+          [jitter(x0, edgeJitter), jitter(y1, edgeJitter)],
+          [jitter(x0, edgeJitter), jitter((y0 + y1) / 2, 12)],
+        ];
+        const clipPath = 'polygon(' + verts.map(p => p[0].toFixed(1) + '% ' + p[1].toFixed(1) + '%').join(', ') + ')';
+        pieces.push({
+          bg: m.swBg, img: m.swImg, size: m.swSize,
+          clipPath,
+          left: '0%', top: '0%', width: '100%', height: '100%',
+          zIndex: r * cols + c + 1,
+        });
+      }
+    }
+    return pieces;
+  }
+
+  setPatchworkMode(mode) {
+    this.setState({ patchworkMode: mode, renderImg: null });
+  }
+
+  toggleMixMaterial(id) {
+    const mix = (this.state.materialMix || []).slice();
+    const i = mix.indexOf(id);
+    if (i >= 0) {
+      if (mix.length <= 1) {
+        this.setState({ mixNote: 'Keep at least one fabric in the mix.' });
+        return;
+      }
+      mix.splice(i, 1);
+    } else {
+      if (mix.length >= 5) {
+        this.setState({ mixNote: 'Maximum 5 fabrics for patchwork mix.' });
+        return;
+      }
+      mix.push(id);
+    }
+    const m = this.MATERIALS().find(x => x.id === id) || {};
+    const upd = {
+      materialMix: mix,
+      material: mix[0],
+      mixNote: '',
+      techNote: '',
+      patternImg: null,
+      renderImg: null,
+      patternErr: '',
+      renderErr: '',
+    };
+    if (mix.length >= 2 && this.state.techniques.indexOf('patchwork') < 0) {
+      upd.techniques = this.state.techniques.concat(['patchwork']);
+    }
+    if (m.stream === 'reclaimed' && this.state.techniques.indexOf('print') >= 0) {
+      upd.techniques = (upd.techniques || this.state.techniques).filter(t => t !== 'print');
+      upd.techNote = this.PRINT_BLOCK_REASON;
+    }
+    this.setState(upd);
+  }
+
+  setSource(id) {
+    const s = this.state;
+    const upd = { source: id, mixNote: '' };
+    if (id === 'mix') {
+      upd.materialMix = (s.materialMix && s.materialMix.length) ? s.materialMix.slice() : [s.material];
+      upd.material = upd.materialMix[0];
+    } else if (s.materialMix && s.materialMix.length) {
+      upd.material = s.materialMix[0] || s.material;
+      upd.materialMix = [];
+    }
+    this.setState(upd);
+  }
+
   selectMaterial(id) {
+    if (this.state.source === 'mix') {
+      this.toggleMixMaterial(id);
+      return;
+    }
     const m = this.MATERIALS().find(x => x.id === id) || {};
     const upd = { material: id, techNote: '', patternImg: null, renderImg: null, patternErr: '', renderErr: '' };
     if (m.stream === 'reclaimed' && this.state.techniques.indexOf('print') >= 0) {
@@ -905,6 +1110,8 @@ class Component extends DCLogic {
     const rec = this.getRecommendations(this.state);
     this.setState({
       material: rec.materialId,
+      materialMix: [],
+      mixNote: '',
       techniques: rec.techniques.slice(),
       pattern: rec.pattern,
       repeatMode: rec.repeatMode,
@@ -1256,7 +1463,7 @@ class Component extends DCLogic {
     const SRC = [['deadstock', 'New deadstock'], ['reclaimed', 'Reclaimed'], ['mix', 'Mix both'], ['ai', 'AI recommend']];
     const sourceTabs = SRC.map(([id, name]) => {
       const on = s.source === id;
-      return { name, onClick: () => this.setState({ source: id }),
+      return { name, onClick: () => this.setSource(id),
         bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
     });
     const all = this.MATERIALS();
@@ -1265,17 +1472,50 @@ class Component extends DCLogic {
     else if (s.source === 'reclaimed') filt = all.filter(m => m.stream === 'reclaimed');
     else if (s.source === 'mix') filt = all;
     else if (s.source === 'ai') filt = all.filter(m => m.id === rec.materialId);
+    const isMix = s.source === 'mix';
+    const mixIds = isMix ? (s.materialMix && s.materialMix.length ? s.materialMix : [s.material]) : [];
     const materialsList = filt.map(m => {
-      const sel = s.material === m.id;
+      const sel = isMix ? mixIds.indexOf(m.id) >= 0 : s.material === m.id;
+      const selOrder = isMix && sel ? mixIds.indexOf(m.id) + 1 : 0;
+      const atMax = isMix && mixIds.length >= 5 && !sel;
       const recommended = m.id === rec.materialId;
       return { ...m, recommended, onSelect: () => this.selectMaterial(m.id),
         selBd: sel ? ink : (recommended ? accent : 'rgba(15,15,14,.14)'),
         selShadow: sel ? '0 0 0 1px ' + ink : (recommended ? '0 0 0 1px ' + accent : 'none'),
-        tickBg: sel ? accent : 'transparent', tickBd: sel ? accent : 'rgba(15,15,14,.3)' };
+        tickBg: sel ? accent : 'transparent',
+        tickBd: sel ? accent : 'rgba(15,15,14,.3)',
+        showTickOrder: isMix && sel,
+        showTickDot: !isMix && sel,
+        showTickEmpty: !sel,
+        tickOrder: selOrder ? String(selOrder) : '',
+        cardOpacity: atMax ? '0.45' : '1' };
     });
 
-    const cur = all.find(m => m.id === s.material) || all[0];
-    const surfaceOk = this.allowedSurface(cur.stream);
+    const cur = all.find(m => m.id === (isMix ? mixIds[0] : s.material)) || all[0];
+    const activeMats = isMix
+      ? mixIds.map(id => all.find(m => m.id === id)).filter(Boolean)
+      : [cur];
+    const previewPatchwork = isMix && activeMats.length >= 2;
+    const patchworkMode = s.patchworkMode || 'grid';
+    const previewPatchworkGrid = previewPatchwork && patchworkMode === 'grid';
+    const previewPatchworkOrganic = previewPatchwork && patchworkMode === 'organic';
+    const patchSeed = this.patchworkSeed((mixIds.length ? mixIds : [cur.id]).concat([patchworkMode]));
+    const totePatchworkCells = this.buildPatchworkCells(2, 2, activeMats, patchSeed);
+    const flatPatchworkCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 7);
+    const scarfPatchworkCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 13);
+    const toteOrganicPieces = this.buildOrganicPieces(activeMats, patchSeed + 21, 3, 3);
+    const flatOrganicPieces = this.buildOrganicPieces(activeMats, patchSeed + 29, 5, 5);
+    const scarfOrganicPieces = this.buildOrganicPieces(activeMats, patchSeed + 37, 3, 5);
+    const PATCHWORK_MODES = [['grid', 'Square blocks'], ['organic', 'Organic freeform']];
+    const patchworkModeTabs = PATCHWORK_MODES.map(([id, name]) => {
+      const on = patchworkMode === id;
+      return { name, onClick: () => this.setPatchworkMode(id),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    });
+    const mixHasReclaimed = activeMats.some(m => m.stream === 'reclaimed');
+    const surfaceOk = isMix && mixHasReclaimed
+      ? ['embroidery', 'laser']
+      : this.allowedSurface(cur.stream);
     const recTechIds = rec.techniques;
     const TECH = [['cut-sew', 'Cut & sew'], ['embroidery', 'Embroidery'], ['laser', 'Laser etching'],
       ['print', 'Digital print'], ['edge-finishing', 'Edge finishing'], ['applique', 'Appliqué'],
@@ -1293,9 +1533,13 @@ class Component extends DCLogic {
         bd: locked ? 'rgba(15,15,14,.12)' : (on ? ink : 'rgba(15,15,14,.25)'),
         recBg: on ? accent : 'rgba(15,15,14,.1)', recFg: on ? paper : 'rgba(15,15,14,.6)' };
     });
-    const surfaceRule = cur.stream === 'new'
-      ? 'Unfinished deadstock — surface finishes: Embroidery · Digital print · Laser etching.'
-      : 'Upcycled reclaimed fabric — surface finishes: Embroidery · Laser etching. Digital print not supported.';
+    const surfaceRule = isMix && mixHasReclaimed
+      ? 'Mixed lot with reclaimed fabric — surface finishes: Embroidery · Laser etching. Digital print not supported on reclaimed panels.'
+      : isMix
+        ? 'Mixed deadstock lot — surface finishes: Embroidery · Digital print · Laser etching.'
+        : cur.stream === 'new'
+          ? 'Unfinished deadstock — surface finishes: Embroidery · Digital print · Laser etching.'
+          : 'Upcycled reclaimed fabric — surface finishes: Embroidery · Laser etching. Digital print not supported.';
 
     const PAT = [['none', 'No pattern', 'Raw linen, hemmed'], ['tonal-logo', 'Tonal logo', 'Single corner mark'],
       ['placement', 'Placement print', 'Centred motif'], ['embroidery', 'Embroidery motif', 'Stitched monogram']];
@@ -1346,24 +1590,33 @@ class Component extends DCLogic {
     const leadTime = cur.stream === 'reclaimed' ? '7–10 days' : '5–8 days';
     const constructionNotes = this.getConstructionNotes(s.product, s.techniques, s.pattern, s.repeatMode, s.placement);
 
+    const materialLabel = previewPatchwork
+      ? activeMats.map(m => m.name).join(' + ')
+      : cur.name;
+    const sourceLabel = previewPatchwork
+      ? 'Mix both · ' + activeMats.length + ' fabrics · ' + (patchworkMode === 'organic' ? 'organic' : 'square')
+      : cur.sourceLabel;
+
     const summaryRows = [
       { k: 'Product', v: s.product }, { k: 'Quantity', v: qty + ' pieces' },
       { k: 'Dimensions', v: dims },
-      { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
+      { k: 'Material', v: materialLabel }, { k: 'Source', v: sourceLabel },
       { k: 'Technique', v: techStr }, { k: 'Pattern', v: patName },
       { k: 'Layout', v: layName + ' · ' + s.layoutScale + '%' },
     ];
-    const circularLabel = cur.name + ' — ' + (cur.stream === 'new' ? 'new deadstock' : 'reclaimed secondhand');
+    const circularLabel = previewPatchwork
+      ? materialLabel + ' — mixed circular patchwork'
+      : cur.name + ' — ' + (cur.stream === 'new' ? 'new deadstock' : 'reclaimed secondhand');
 
     const techPackRows = [
       { k: 'Product', v: s.product }, { k: 'Quantity', v: qty + ' pcs' },
-      { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
+      { k: 'Material', v: materialLabel }, { k: 'Source', v: sourceLabel },
       { k: 'Dimensions', v: dims }, { k: 'Fabric use', v: spec.fabricUse },
       { k: 'Technique', v: techStr }, { k: 'Pattern / Layout', v: patName + ' · ' + layName },
       { k: 'Est. cost', v: '£' + costLow + '–' + costHigh }, { k: 'Lead time', v: leadTime },
     ];
 
-    const reclaimed = cur.stream === 'reclaimed';
+    const reclaimed = mixHasReclaimed || cur.stream === 'reclaimed';
     const producer = reclaimed
       ? { name: 'Karachi Patchwork Studio', loc: 'Karachi, Pakistan', caps: 'Patchwork, denim, totes, small accessories', moq: '10', lead: '7–10d',
           why: 'Specialises in mixed reclaimed panels; turns shade variation into a design feature.' }
@@ -1384,9 +1637,9 @@ class Component extends DCLogic {
     const w = Math.max(30, Math.min(400, Number(s.productWidth) || spec.defaultWidth));
     const h = Math.max(30, Math.min(400, Number(s.productHeight) || spec.defaultHeight));
     const previewAspect = previewMode === 'tote' ? '3/4' : Math.max(0.4, Math.min(2.5, w / h)).toFixed(3).replace(/\.?0+$/, '') + '/1';
-    const previewBg = previewMode === 'tote' ? '#E7E3D9' : cur.swBg;
-    const previewImg = previewMode === 'tote' ? 'none' : cur.swImg;
-    const previewSize = previewMode === 'tote' ? 'auto' : cur.swSize;
+    const previewBg = previewMode === 'tote' ? '#E7E3D9' : (previewPatchwork ? '#D7CBB2' : cur.swBg);
+    const previewImg = previewMode === 'tote' || previewPatchwork ? 'none' : cur.swImg;
+    const previewSize = previewMode === 'tote' || previewPatchwork ? 'auto' : cur.swSize;
     const tilePx = Math.round(36 * s.motifScale / 100 * s.layoutScale / 100);
     const patternOverlayShow = !!s.patternImg && !s.renderImg;
     const patternOverlayImg = s.patternImg ? 'url("' + s.patternImg + '")' : 'none';
@@ -1416,7 +1669,7 @@ class Component extends DCLogic {
 
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
-      previewKey: s.product + s.material + s.repeatMode + s.placement + s.layoutScale + s.motifScale + previewMode + w + 'x' + h,
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.motifScale + previewMode + w + 'x' + h + patchSeed,
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
       n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
@@ -1428,6 +1681,11 @@ class Component extends DCLogic {
       applyProductHeight: (e) => this.setProductDimension('productHeight', e.target.value),
       effectiveDims: dims,
       sourceTabs, materialsList, techList, patternTiles,
+      showMixHint: isMix,
+      showPatchworkModes: previewPatchwork,
+      patchworkModeTabs,
+      mixSelectionLabel: mixIds.length + ' / 5 selected',
+      mixNote: s.mixNote, mixNoteShow: !!s.mixNote,
       patternInputTabs,
       patternInputPrompt: s.patternInputMode === 'prompt',
       patternInputUpload: s.patternInputMode === 'upload',
@@ -1468,11 +1726,20 @@ class Component extends DCLogic {
       previewTote: previewMode === 'tote',
       previewFlat: previewMode === 'flat',
       previewScarf: previewMode === 'scarf',
+      previewPatchwork,
+      previewPatchworkGrid,
+      previewPatchworkOrganic,
+      previewToteGrid: previewMode === 'tote' && (!previewPatchwork || previewPatchworkGrid),
+      previewToteOrganic: previewMode === 'tote' && previewPatchworkOrganic,
+      previewFlatSingle: previewMode === 'flat' && !previewPatchwork,
+      previewScarfSingle: previewMode === 'scarf' && !previewPatchwork,
+      totePatchworkCells, flatPatchworkCells, scarfPatchworkCells,
+      toteOrganicPieces, flatOrganicPieces, scarfOrganicPieces,
       previewAspect, previewBg, previewImg, previewSize,
       patternOverlayShow, patternOverlayImg, patternOverlaySize, patternOverlayRepeat, patternOverlayPos,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
-      previewCaption: s.product + ' · ' + dims + ' · ' + cur.name,
+      previewCaption: s.product + ' · ' + dims + ' · ' + materialLabel,
       summaryRows, circularLabel, techPackRows,
       producer, altProducers, impactRows, showImpact,
       next: () => this.next(), back: () => this.back(),

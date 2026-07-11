@@ -35,8 +35,14 @@ http.createServer((req, res) => {
     return;
   }
   const urlPath = decodeURIComponent(req.url.split('?')[0]);
-  const rel = urlPath === '/' ? '/UI/ReFleek.dc.html' : urlPath;
-  const file = path.join(ROOT, rel);
+  // Redirect root to the real path (matches vercel.json) so the page's
+  // relative asset refs like ./support.js resolve against /UI/.
+  if (urlPath === '/') {
+    res.statusCode = 302;
+    res.setHeader('Location', '/UI/ReFleek.dc.html');
+    return res.end();
+  }
+  const file = path.join(ROOT, urlPath);
   if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
     res.statusCode = 404;
     return res.end('Not found');

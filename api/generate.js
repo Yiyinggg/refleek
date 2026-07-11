@@ -48,22 +48,58 @@ module.exports = async (req, res) => {
         lastError = (j.error && j.error.message) || 'OpenRouter HTTP ' + r.status;
         continue;
       }
-      const img =
-        j.choices &&
-        j.choices[0] &&
-        j.choices[0].message &&
-        j.choices[0].message.images &&
-        j.choices[0].message.images[0] &&
-        j.choices[0].message.images[0].image_url &&
-        j.choices[0].message.images[0].image_url.url;
+      const img = extractImage(j);
       if (img) return res.status(200).json({ image: img, model });
-      lastError = 'Model ' + model + ' returned no image';
+      // Surface the shape so a live deploy can be debugged without guessing.
+      lastError = 'Model ' + model + ' returned no image. Response keys: ' + describe(j);
     } catch (e) {
       lastError = String((e && e.message) || e);
     }
   }
   return res.status(502).json({ error: lastError });
 };
+
+// OpenRouter has shipped a few response shapes for image output; check all the
+// known ones so a field rename upstream does not silently break generation.
+function extractImage(j) {
+  const msg = j && j.choices && j.choices[0] && j.choices[0].message;
+  const asData = (s) => (typeof s === 'string' && (s.startsWith('data:') || s.startsWith('http')) ? s : null);
+
+  if (msg && Array.isArray(msg.images)) {
+    for (const im of msg.images) {
+      const hit = asData(im) ||
+        (im && im.image_url && asData(im.image_url.url)) ||
+        (im && asData(im.url)) ||
+        (im && asData(im.b64_json) ? 'data:image/png;base64,' + im.b64_json : null);
+      if (hit) return hit;
+    }
+  }
+  if (msg && Array.isArray(msg.content)) {
+    for (const part of msg.content) {
+      if (part && (part.type === 'image_url' || part.type === 'output_image')) {
+        const hit = (part.image_url && asData(part.image_url.url)) || asData(part.image_url);
+        if (hit) return hit;
+      }
+    }
+  }
+  // Dedicated images endpoint shape, in case a future model routes through it.
+  if (j && Array.isArray(j.data) && j.data[0]) {
+    if (asData(j.data[0].url)) return j.data[0].url;
+    if (j.data[0].b64_json) return 'data:image/png;base64,' + j.data[0].b64_json;
+  }
+  return null;
+}
+
+function describe(j) {
+  try {
+    const msg = j && j.choices && j.choices[0] && j.choices[0].message;
+    return JSON.stringify({
+      topKeys: Object.keys(j || {}),
+      messageKeys: msg ? Object.keys(msg) : null,
+      contentType: msg ? typeof msg.content : null,
+    });
+  } catch (e) { return 'unshapeable'; }
+}
 
 // Deterministic placeholder artwork (SVG data URL) keyed off the prompt,
 // so the demo flow works end-to-end before the API key is configured.
