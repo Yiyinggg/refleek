@@ -140,15 +140,16 @@ function mockImage(prompt, mode) {
   for (let i = 0; i < prompt.length; i++) h = (h * 31 + prompt.charCodeAt(i)) >>> 0;
   const hue = h % 360;
   const laser = /laser|monochrome|line art/i.test(prompt);
-  const emb = /embroider/i.test(prompt);
+  const emb = /illustration artwork|flat vector|digitiz|embroider/i.test(prompt);
   const c1 = laser ? '#5a4b32' : 'hsl(' + hue + ',38%,42%)';
-  const c2 = laser ? '#d7cbb2' : 'hsl(' + ((hue + 40) % 360) + ',30%,72%)';
+  const c2 = laser ? '#d7cbb2' : emb ? '#ffffff' : 'hsl(' + ((hue + 40) % 360) + ',30%,72%)';
+  const c3 = emb ? 'hsl(' + ((hue + 80) % 360) + ',45%,55%)' : c1;
   let motifs = '';
   for (let i = 0; i < 9; i++) {
     const x = 90 + (i % 3) * 160, y = 90 + Math.floor(i / 3) * 160;
     const r = 28 + ((h >> (i % 8)) % 26);
     motifs += emb
-      ? '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="none" stroke="' + c1 + '" stroke-width="5" stroke-dasharray="7 6"/>'
+      ? '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + (i % 2 ? c1 : c3) + '"/>'
       : '<rect x="' + (x - r) + '" y="' + (y - r) + '" width="' + r * 2 + '" height="' + r * 2 + '" fill="none" stroke="' + c1 + '" stroke-width="' + (laser ? 3 : 8) + '" transform="rotate(' + ((h + i * 37) % 90) + ' ' + x + ' ' + y + ')"/>';
   }
   const svg =
