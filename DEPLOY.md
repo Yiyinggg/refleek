@@ -14,7 +14,11 @@ Browser (UI/ReFleek.dc.html)
 ```
 
 Without `OPENROUTER_API_KEY` the endpoint returns deterministic **mock** SVG
-artwork so the whole flow is demoable offline.
+artwork so the whole flow is demoable offline. The UI shows a **DEMO** banner
+when mock mode is active.
+
+Material inventory is loaded from `data/materials.json` (built from
+`fabricsgalore.csv` + `all_fleek_products.json` via `npm run build:materials`).
 
 ## Run locally
 
@@ -54,5 +58,14 @@ the print chip stays visible but locked in the Technique node.
 ## Demo path (verified end-to-end in mock mode)
 
 Product → Material → Technique (print locks/unlocks by material) → Pattern
-(Generate artwork) → Layout → Render (Generate AI render) → Tech Pack
-(Export PDF, ~2 MB with images embedded) → Producer.
+(Generate solid embroidery artwork) → **Colours** (thread separation, max 4)
+→ Layout → Render (Generate AI render) → Tech Pack
+(Export PDF + SVG + JSON, ~2 MB with images embedded) → Producer.
+
+### Embroidery export (Custex-style)
+
+When surface finish is **embroidery**, the tech pack export includes:
+
+- `ReFleek-TechPack-TP001.pdf` — production brief
+- `ReFleek-TechPack-TP001-embroidery.svg` — solid colour-separated vector for digitizing
+- `ReFleek-TechPack-TP001.json` — thread palette, layout, and producer metadata

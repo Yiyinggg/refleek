@@ -1,0 +1,8 @@
+{
+  "name": "refleek",
+  "private": true,
+  "scripts": {
+    "dev": "node dev-server.cjs",
+    "build:materials": "node scripts/build-materials.cjs"
+  }
+}

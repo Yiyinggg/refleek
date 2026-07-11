@@ -8,15 +8,51 @@ const MODELS = [
   'google/gemini-2.5-flash-image-preview',
 ].filter(Boolean);
 
+const MAX_IMAGE_CHARS = 3 * 1024 * 1024;
+const RATE_WINDOW_MS = 60 * 1000;
+const RATE_MAX = 12;
+const rateHits = new Map();
+
+function corsOrigin(req) {
+  const origin = req.headers.origin;
+  if (!origin) return '*';
+  const host = req.headers.host || '';
+  if (origin === 'https://' + host || origin === 'http://' + host) return origin;
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return origin;
+  if (/^https:\/\/refleek(-[a-z0-9-]+)?\.vercel\.app$/.test(origin)) return origin;
+  return null;
+}
+
+function clientIp(req) {
+  const fwd = req.headers['x-forwarded-for'];
+  if (typeof fwd === 'string' && fwd) return fwd.split(',')[0].trim();
+  return req.socket && req.socket.remoteAddress || 'unknown';
+}
+
+function rateLimited(ip) {
+  const now = Date.now();
+  const rec = rateHits.get(ip) || { n: 0, t: now };
+  if (now - rec.t > RATE_WINDOW_MS) { rec.n = 0; rec.t = now; }
+  rec.n++;
+  rateHits.set(ip, rec);
+  return rec.n > RATE_MAX;
+}
+
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const allow = corsOrigin(req);
+  if (allow) res.setHeader('Access-Control-Allow-Origin', allow);
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
+  if (!allow && req.headers.origin) return res.status(403).json({ error: 'Origin not allowed' });
+  if (rateLimited(clientIp(req))) return res.status(429).json({ error: 'Rate limit exceeded — try again in a minute' });
 
   const { prompt, image, mode } = req.body || {};
   if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
+  if (image && image.length > MAX_IMAGE_CHARS) {
+    return res.status(413).json({ error: 'Image payload too large — compress before upload (max ~3 MB)' });
+  }
 
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) {
@@ -50,7 +86,6 @@ module.exports = async (req, res) => {
       }
       const img = extractImage(j);
       if (img) return res.status(200).json({ image: img, model });
-      // Surface the shape so a live deploy can be debugged without guessing.
       lastError = 'Model ' + model + ' returned no image. Response keys: ' + describe(j);
     } catch (e) {
       lastError = String((e && e.message) || e);
@@ -82,7 +117,6 @@ function extractImage(j) {
       }
     }
   }
-  // Dedicated images endpoint shape, in case a future model routes through it.
   if (j && Array.isArray(j.data) && j.data[0]) {
     if (asData(j.data[0].url)) return j.data[0].url;
     if (j.data[0].b64_json) return 'data:image/png;base64,' + j.data[0].b64_json;
@@ -101,8 +135,6 @@ function describe(j) {
   } catch (e) { return 'unshapeable'; }
 }
 
-// Deterministic placeholder artwork (SVG data URL) keyed off the prompt,
-// so the demo flow works end-to-end before the API key is configured.
 function mockImage(prompt, mode) {
   let h = 0;
   for (let i = 0; i < prompt.length; i++) h = (h * 31 + prompt.charCodeAt(i)) >>> 0;
