@@ -7,7 +7,9 @@ import {
 import type { Recommendation, RecommendationInput } from "./types";
 
 export const aiRecommendationSchema = z.object({
-  materialSlug: z.enum(MATERIAL_SLUGS),
+  materialSlug: z
+    .string()
+    .refine((value) => MATERIAL_SLUGS.includes(value), "Unknown material"),
   techniqueSlugs: z.array(
     z.enum([
       "cut-sew",
