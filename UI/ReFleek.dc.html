@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Archivo:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#F4F1EA;color:#0F0F0E;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#E8452A;text-decoration:none}
+  a:hover{color:#0F0F0E}
+  ::selection{background:#0F0F0E;color:#F4F1EA}
+  input,button{font-family:inherit}
+  button{cursor:pointer}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:rgba(15,15,14,.18)}
+  @keyframes rf-fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes rf-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#F4F1EA">
+
+  <!-- ===== MASTHEAD ===== -->
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(20px,4vw,52px);border-bottom:1.5px solid #0F0F0E">
+    <div style="display:flex;align-items:baseline;gap:8px">
+      <span style="font-family:'Bodoni Moda',serif;font-weight:800;font-size:26px;letter-spacing:-.01em">ReFleek</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;transform:translateY(-8px);opacity:.6">®</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(15,15,14,.55);text-align:center">Circular&nbsp;Design — to — Production</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.55);text-align:right">Issue Nº01<br>Deadstock Edition</div>
+  </header>
+
+  <!-- ===== WORKFLOW INDEX ===== -->
+  <nav style="display:flex;gap:0;padding:0 clamp(20px,4vw,52px);border-bottom:1px solid rgba(15,15,14,.16);overflow-x:auto">
+    <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="8">
+      <button onClick="{{ it.onClick }}" style="flex:1 0 auto;min-width:96px;background:none;border:none;padding:0;text-align:left">
+        <div style="height:3px;background:{{ it.ruleBg }};transform-origin:left;transition:background .2s"></div>
+        <div style="display:flex;align-items:baseline;gap:6px;padding:11px 14px 12px 0">
+          <sc-if value="{{ it.showNum }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:{{ it.numColor }}">{{ it.n }}</span></sc-if>
+          <span style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:{{ it.nameColor }}">{{ it.name }}</span>
+        </div>
+      </button>
+    </sc-for>
+  </nav>
+
+  <!-- ===== STAGE ===== -->
+  <main style="flex:1;overflow-y:auto;padding:clamp(24px,3.5vw,44px) clamp(20px,4vw,52px) 60px">
+  <div style="max-width:1240px;margin:0 auto">
+
+    <!-- NODE 1 · PRODUCT -->
+    <sc-if value="{{ n1 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,64px);align-items:end">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Product — Nº01</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 0">What do you<br><span style="font-style:italic;font-weight:500">want to make?</span></h1>
+        </div>
+        <p style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:rgba(15,15,14,.6);margin:0 0 8px">A ReFleek workflow starts with intent — not a blank canvas. State the product, and the system sources circular material to match.</p>
+      </div>
+
+      <div style="margin-top:clamp(36px,5vw,60px);border-top:1px solid rgba(15,15,14,.16);padding-top:18px">
+        <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.45)">Your brief</label>
+        <input value="{{ brief }}" onChange="{{ setBrief }}" style="display:block;width:100%;margin-top:14px;border:none;background:transparent;outline:none;font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(22px,3vw,34px);line-height:1.25;color:#0F0F0E" />
+      </div>
+
+      <div style="margin-top:clamp(32px,4vw,48px)">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:16px">Or pick a product</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ productChips }}" as="c" hint-placeholder-count="8">
+            <button onClick="{{ c.onClick }}" style="padding:10px 18px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};border-radius:999px;font-size:13px;font-weight:500;letter-spacing:.01em;transition:all .18s">{{ c.name }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-top:clamp(40px,5vw,56px)">
+        <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:16px;background:#0F0F0E;color:#F4F1EA;border:none;padding:18px 30px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase">Start workflow <span style="font-size:16px;color:{{ accent }}">→</span></button>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 2 · MATERIAL -->
+    <sc-if value="{{ n2 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,64px);align-items:end">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Material — Nº02</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 0">Source the<br><span style="font-style:italic;font-weight:500">material.</span></h1>
+        </div>
+        <p style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:rgba(15,15,14,.6);margin:0 0 8px">Two circular streams. New deadstock from mills and brands; reclaimed fabric deconstructed at Fleek sorting centres.</p>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:34px;border-bottom:1px solid rgba(15,15,14,.16);padding-bottom:22px">
+        <sc-for list="{{ sourceTabs }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.onClick }}" style="padding:9px 16px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:all .18s">{{ t.name }}</button>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:24px">
+        <sc-for list="{{ materialsList }}" as="m" hint-placeholder-count="2">
+          <button onClick="{{ m.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ m.selBd }};box-shadow:{{ m.selShadow }};padding:0;overflow:hidden;transition:all .2s">
+            <div style="display:flex;gap:0">
+              <div style="width:118px;flex:none;align-self:stretch;background:{{ m.swBg }};background-image:{{ m.swImg }};background-size:{{ m.swSize }}"></div>
+              <div style="flex:1;padding:16px 18px">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+                  <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.5)">{{ m.sourceLabel }}</span>
+                  <span style="width:16px;height:16px;border-radius:50%;border:1px solid {{ m.tickBd }};background:{{ m.tickBg }};flex:none"></span>
+                </div>
+                <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:23px;letter-spacing:-.01em;margin:6px 0 12px">{{ m.name }}</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <sc-for list="{{ m.specs }}" as="sp" hint-placeholder-count="3">
+                    <div style="display:flex;justify-content:space-between;gap:12px;font-family:'Space Mono',monospace;font-size:11px">
+                      <span style="color:rgba(15,15,14,.45)">{{ sp.k }}</span>
+                      <span style="color:#0F0F0E;text-align:right">{{ sp.v }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="margin-top:12px;padding-top:11px;border-top:1px solid rgba(15,15,14,.1);font-size:11.5px;line-height:1.5;color:rgba(15,15,14,.6)">{{ m.best }}</div>
+              </div>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 3 · TECHNIQUE -->
+    <sc-if value="{{ n3 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Technique — Nº03</div>
+      <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 0">How it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
+
+      <div style="display:flex;gap:16px;align-items:flex-start;margin-top:34px;background:#0F0F0E;color:#F4F1EA;padding:22px 24px">
+        <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;color:{{ accent }};white-space:nowrap;padding-top:2px">◆ AI RECOMMENDS</span>
+        <p style="margin:0;font-size:14.5px;line-height:1.6;max-width:760px">Cut-and-sew with a single tonal embroidery mark. Linen holds a crisp hemmed edge, and one recessive detail keeps the piece minimal. <span style="opacity:.55">Avoid all-over print — the deadstock roll is a single dye lot, so surface work is unnecessary.</span></p>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
+        <sc-for list="{{ techList }}" as="t" hint-placeholder-count="9">
+          <button onClick="{{ t.onToggle }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 18px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-size:13px;font-weight:500;transition:all .18s">
+            {{ t.name }}
+            <sc-if value="{{ t.rec }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.14em;padding:2px 6px;border-radius:3px;background:{{ t.recBg }};color:{{ t.recFg }}">REC</span></sc-if>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 4 · PATTERN -->
+    <sc-if value="{{ n4 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Pattern — Nº04</div>
+      <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 34px">Surface.</h1>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px">
+        <sc-for list="{{ patternTiles }}" as="p" hint-placeholder-count="4">
+          <button onClick="{{ p.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ p.selBd }};box-shadow:{{ p.selShadow }};padding:0;overflow:hidden;transition:all .2s">
+            <div style="aspect-ratio:4/3;background:#D7CBB2;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.22) 0 1px,transparent 1px 3px);position:relative">
+              <sc-if value="{{ p.showCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:12px;bottom:12px;width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(90,75,50,.5)"></span></sc-if>
+              <sc-if value="{{ p.showCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:44px;height:44px;border:1.5px solid rgba(90,75,50,.55);transform:rotate(45deg)"></span></sc-if>
+              <sc-if value="{{ p.showStitch }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:52px;height:52px;border:1.5px dashed rgba(90,75,50,.6);border-radius:50%"></span></sc-if>
+            </div>
+            <div style="padding:13px 15px">
+              <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:18px">{{ p.name }}</div>
+              <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:rgba(15,15,14,.5);margin-top:4px">{{ p.note }}</div>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 5 · LAYOUT -->
+    <sc-if value="{{ n5 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº05</div>
+      <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 34px">Placement.</h1>
+
+      <div style="display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,56px);align-items:start">
+        <div style="display:flex;flex-direction:column;border-top:1px solid rgba(15,15,14,.16)">
+          <sc-for list="{{ layoutList }}" as="l" hint-placeholder-count="4">
+            <button onClick="{{ l.onSelect }}" style="display:flex;align-items:baseline;gap:16px;text-align:left;background:{{ l.bg }};border:none;border-bottom:1px solid rgba(15,15,14,.16);padding:18px 16px;transition:background .18s">
+              <span style="font-family:'Space Mono',monospace;font-size:11px;color:{{ l.dot }}">{{ l.mark }}</span>
+              <span style="flex:1">
+                <span style="display:block;font-family:'Bodoni Moda',serif;font-weight:600;font-size:22px;color:{{ l.fg }}">{{ l.name }}</span>
+                <span style="display:block;font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.5);margin-top:3px">{{ l.desc }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="background:#EAE6DC;padding:clamp(30px,4vw,56px);display:flex;align-items:center;justify-content:center;min-height:340px">
+          <div style="position:relative;width:min(100%,380px);aspect-ratio:5/4;background:#FBFAF6;box-shadow:0 24px 48px -20px rgba(15,15,14,.35);border:1px solid rgba(15,15,14,.08)">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(120,105,80,.06) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(120,105,80,.06) 0 1px,transparent 1px 4px)"></div>
+            <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:22px;bottom:22px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }}"></span></sc-if>
+            <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:56px;height:56px;border:1.5px solid {{ accent }};transform:rotate(45deg)"></span></sc-if>
+            <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:20px;border:1.5px solid {{ accent }}"></span></sc-if>
+            <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:28px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center">
+              <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
+              <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
+              <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
+            </span></sc-if>
+            <span style="position:absolute;left:16px;top:14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(15,15,14,.4)">TABLECLOTH · 150×220</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 6 · RENDER -->
+    <sc-if value="{{ n6 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Render — Nº06</div>
+      <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 34px">Preview.</h1>
+
+      <div style="display:grid;grid-template-columns:1.35fr .65fr;gap:clamp(20px,3vw,36px);align-items:stretch">
+        <div style="position:relative;background:#E7E3D9;aspect-ratio:4/3;overflow:hidden">
+          <div style="position:absolute;inset:16px;overflow:hidden">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="rf-render-tablecloth" shape="rect" placeholder="Drop product photo" hint-size="100%,100%"></x-import>
+          </div>
+          <div style="position:absolute;left:12px;top:12px;width:18px;height:18px;border-left:1.5px solid rgba(15,15,14,.4);border-top:1.5px solid rgba(15,15,14,.4);pointer-events:none"></div>
+          <div style="position:absolute;right:12px;top:12px;width:18px;height:18px;border-right:1.5px solid rgba(15,15,14,.4);border-top:1.5px solid rgba(15,15,14,.4);pointer-events:none"></div>
+          <div style="position:absolute;left:12px;bottom:12px;width:18px;height:18px;border-left:1.5px solid rgba(15,15,14,.4);border-bottom:1.5px solid rgba(15,15,14,.4);pointer-events:none"></div>
+          <div style="position:absolute;right:12px;bottom:12px;width:18px;height:18px;border-right:1.5px solid rgba(15,15,14,.4);border-bottom:1.5px solid rgba(15,15,14,.4);pointer-events:none"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:12px 16px;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.55);pointer-events:none">
+            <span>ReFleek · Tablecloth</span><span>Preview render · Nº01</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+          <div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ summaryRows }}" as="r" hint-placeholder-count="6">
+                <div style="display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid rgba(15,15,14,.14)">
+                  <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ r.k }}</span>
+                  <span style="font-size:13px;font-weight:500;text-align:right;max-width:60%">{{ r.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:#0F0F0E;color:#F4F1EA;padding:18px 20px">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:{{ accent }}">◆ CIRCULAR MATERIAL</div>
+            <div style="font-family:'Bodoni Moda',serif;font-size:20px;font-weight:600;margin-top:8px;line-height:1.15">{{ circularLabel }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 7 · TECH PACK -->
+    <sc-if value="{{ n7 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Tech Pack — Nº07</div>
+      <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 34px">Production<br><span style="font-style:italic;font-weight:500">brief.</span></h1>
+
+      <div style="background:#FBFAF6;border:1.5px solid #0F0F0E">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid rgba(15,15,14,.16);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase">
+          <span>Tech Pack · Nº TP-001</span><span style="font-family:'Bodoni Moda',serif;font-weight:800;font-size:16px;letter-spacing:0;text-transform:none">ReFleek</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+          <div style="border-right:1px solid rgba(15,15,14,.14)">
+            <sc-for list="{{ techLeft }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;justify-content:space-between;gap:14px;padding:13px 24px;border-bottom:1px solid rgba(15,15,14,.1)">
+                <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ r.k }}</span>
+                <span style="font-size:13px;font-weight:500;text-align:right">{{ r.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div>
+            <sc-for list="{{ techRight }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;justify-content:space-between;gap:14px;padding:13px 24px;border-bottom:1px solid rgba(15,15,14,.1)">
+                <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ r.k }}</span>
+                <span style="font-size:13px;font-weight:500;text-align:right">{{ r.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:18px 24px;border-top:1px solid rgba(15,15,14,.16)">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:8px">Construction notes</div>
+          <p style="margin:0;font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:rgba(15,15,14,.75)">Double-fold 10mm hem on all four edges, mitred corners. Tonal embroidered ReFleek mark, bottom-right, 40mm, matched thread. Pre-wash roll to stabilise before cutting. QC: check square, colour consistency across the single dye lot, hem tension.</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1.5px solid #0F0F0E">
+          <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.5)">Generated by ReFleek · circular by default</span>
+          <button style="display:inline-flex;align-items:center;gap:10px;background:#0F0F0E;color:#F4F1EA;border:none;padding:12px 20px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase">Export PDF <span style="color:{{ accent }}">↓</span></button>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- NODE 8 · PRODUCER -->
+    <sc-if value="{{ n8 }}" hint-placeholder-val="{{ true }}">
+    <section style="animation:rf-fade .5s ease both">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Producer — Nº08</div>
+      <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(40px,6vw,88px);line-height:.9;letter-spacing:-.02em;margin:16px 0 34px">Where it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
+
+      <div style="display:grid;grid-template-columns:1.3fr .7fr;gap:14px;align-items:stretch">
+        <div style="background:#0F0F0E;color:#F4F1EA;padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:{{ accent }}">◆ MATCHED PRODUCER</div>
+              <div style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(30px,3.6vw,46px);letter-spacing:-.01em;margin-top:12px;line-height:1">{{ producer.name }}</div>
+              <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:rgba(244,241,234,.6);margin-top:10px">{{ producer.loc }}</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(244,241,234,.2)">
+            <div><div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.5)">Capabilities</div><div style="font-size:13px;margin-top:6px;line-height:1.4">{{ producer.caps }}</div></div>
+            <div><div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.5)">MOQ</div><div style="font-family:'Bodoni Moda',serif;font-size:26px;margin-top:4px">{{ producer.moq }}</div></div>
+            <div><div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,234,.5)">Lead time</div><div style="font-family:'Bodoni Moda',serif;font-size:26px;margin-top:4px">{{ producer.lead }}</div></div>
+          </div>
+          <div style="margin-top:22px;font-size:13px;line-height:1.6;color:rgba(244,241,234,.8)"><span style="color:{{ accent }};font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em">WHY MATCHED — </span>{{ producer.why }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ altProducers }}" as="p" hint-placeholder-count="2">
+            <div style="flex:1;background:#FBFAF6;border:1px solid rgba(15,15,14,.16);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:20px;line-height:1.05">{{ p.name }}</div>
+                <div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(15,15,14,.5);margin-top:5px">{{ p.loc }}</div>
+              </div>
+              <div style="font-size:12px;line-height:1.45;color:rgba(15,15,14,.6);margin-top:14px">{{ p.caps }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{ showImpact }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:26px;border-top:1.5px solid #0F0F0E;padding-top:22px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(15,15,14,.5);margin-bottom:20px">Circular impact</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px">
+          <sc-for list="{{ impactRows }}" as="i" hint-placeholder-count="4">
+            <div>
+              <div style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4vw,52px);line-height:.95;letter-spacing:-.02em">{{ i.v }}</div>
+              <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:rgba(15,15,14,.55);margin-top:8px;line-height:1.4">{{ i.k }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+    </section>
+    </sc-if>
+
+  </div>
+  </main>
+
+  <!-- ===== FOOTER NAV ===== -->
+  <footer style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(20px,4vw,52px);border-top:1.5px solid #0F0F0E;background:#F4F1EA">
+    <button onClick="{{ back }}" disabled="{{ atStart }}" style="background:none;border:none;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ backColor }};padding:8px 0">← Back</button>
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.55)">Nº {{ pageNum }} / 08 — {{ nodeName }}</div>
+    <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:12px;background:#0F0F0E;color:#F4F1EA;border:none;padding:14px 26px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase">{{ nextLabel }} <span style="color:{{ accent }}">→</span></button>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E8452A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;navNumbered&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;showImpact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = {
+    node: 1,
+    brief: '15 minimal tablecloths for a restaurant, using circular materials.',
+    product: 'Tablecloth',
+    source: 'deadstock',
+    material: 'linen',
+    techniques: ['cut-sew', 'embroidery', 'edge-finishing'],
+    pattern: 'tonal-logo',
+    layout: 'corner',
+  };
+
+  ACC() { return this.props.accent || '#E8452A'; }
+
+  go(n) { this.setState({ node: Math.max(1, Math.min(8, n)) }); }
+  next() { this.go(this.state.node + 1); }
+  back() { this.go(this.state.node - 1); }
+  toggleTech(id) {
+    const t = this.state.techniques.slice();
+    const i = t.indexOf(id);
+    if (i >= 0) t.splice(i, 1); else t.push(id);
+    this.setState({ techniques: t });
+  }
+
+  MATERIALS() {
+    return [
+      { id: 'linen', stream: 'new', sourceLabel: 'New Deadstock · Pakistan', name: 'Natural Linen Blend',
+        swBg: '#D7CBB2', swImg: 'repeating-linear-gradient(0deg,rgba(255,255,255,.4) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.28) 0 1px,transparent 1px 3px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '42m' }, { k: 'Width', v: '150cm' }, { k: 'Colour', v: 'Natural beige' }],
+        best: 'Best for tablecloths, napkins, aprons, cushion covers.' },
+      { id: 'twill', stream: 'new', sourceLabel: 'New Deadstock · India', name: 'Cotton Twill',
+        swBg: '#3B3B39', swImg: 'repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 2px,transparent 2px 5px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '60m' }, { k: 'Width', v: '160cm' }, { k: 'Colour', v: 'Charcoal' }],
+        best: 'Best for aprons, totes, workwear panels, cushion covers.' },
+      { id: 'denim', stream: 'reclaimed', sourceLabel: 'Reclaimed · Fleek Pakistan', name: 'Denim Panel Lot',
+        swBg: '#3C4E67', swImg: 'repeating-linear-gradient(45deg,rgba(255,255,255,.09) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.18) 0 1px,transparent 1px 4px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '120 panels' }, { k: 'Panel', v: '45×60cm' }, { k: 'Colour', v: 'Mixed indigo' }],
+        best: 'Best for patchwork totes, cushions, jackets, appliqué.' },
+      { id: 'shirt', stream: 'reclaimed', sourceLabel: 'Reclaimed · Fleek India', name: 'Shirt Cotton Bundle',
+        swBg: '#E8EDF2', swImg: 'repeating-linear-gradient(90deg,#4E6E9E 0 6px,#E8EDF2 6px 14px)', swSize: 'auto',
+        specs: [{ k: 'Available', v: '80 panels' }, { k: 'Panel', v: '40×55cm' }, { k: 'Colour', v: 'Blue stripe' }],
+        best: 'Best for patchwork shirts, linings, scarves, accessories.' },
+      { id: 'knit', stream: 'reclaimed', sourceLabel: 'Reclaimed · Fleek Pakistan', name: 'Knit Bundle',
+        swBg: '#B9B2A6', swImg: 'radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.6px)', swSize: '6px 6px',
+        specs: [{ k: 'Available', v: '25kg' }, { k: 'Type', v: 'Sorted knit' }, { k: 'Colour', v: 'Mixed neutral' }],
+        best: 'Best for patchwork cushions, soft accessories, appliqué.' },
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const accent = this.ACC();
+    const ink = '#0F0F0E';
+    const paper = '#F4F1EA';
+    const navNumbered = this.props.navNumbered !== false;
+    const showImpact = this.props.showImpact !== false;
+
+    const NODES = ['Product', 'Material', 'Technique', 'Pattern', 'Layout', 'Render', 'Tech Pack', 'Producer'];
+    const navItems = NODES.map((name, i) => {
+      const id = i + 1, active = s.node === id;
+      return {
+        n: String(id).padStart(2, '0'), name, showNum: navNumbered,
+        onClick: () => this.go(id),
+        numColor: active ? accent : 'rgba(15,15,14,.35)',
+        nameColor: active ? ink : 'rgba(15,15,14,.42)',
+        ruleBg: active ? ink : 'rgba(15,15,14,.12)',
+      };
+    });
+
+    // Node 1 — product chips
+    const PRODUCTS = ['Tablecloth', 'Tote bag', 'Apron', 'Scarf', 'Cushion cover', 'T-shirt', 'Patchwork jacket', 'Custom'];
+    const productChips = PRODUCTS.map(p => {
+      const on = s.product === p;
+      return { name: p, onClick: () => this.setState({ product: p }),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    });
+
+    // Node 2 — source tabs + filtered materials
+    const SRC = [['deadstock', 'New deadstock'], ['reclaimed', 'Reclaimed'], ['mix', 'Mix both'], ['ai', 'AI recommend']];
+    const sourceTabs = SRC.map(([id, name]) => {
+      const on = s.source === id;
+      return { name, onClick: () => this.setState({ source: id }),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)' };
+    });
+    const all = this.MATERIALS();
+    let filt = all;
+    if (s.source === 'deadstock') filt = all.filter(m => m.stream === 'new');
+    else if (s.source === 'reclaimed') filt = all.filter(m => m.stream === 'reclaimed');
+    const materialsList = filt.map(m => {
+      const sel = s.material === m.id;
+      return { ...m, onSelect: () => this.setState({ material: m.id }),
+        selBd: sel ? ink : 'rgba(15,15,14,.14)',
+        selShadow: sel ? '0 0 0 1px ' + ink : 'none',
+        tickBg: sel ? accent : 'transparent', tickBd: sel ? accent : 'rgba(15,15,14,.3)' };
+    });
+
+    // Node 3 — techniques
+    const TECH = [['cut-sew', 'Cut & sew', true], ['embroidery', 'Embroidery', true], ['edge-finishing', 'Edge finishing', true],
+      ['print', 'Print', false], ['applique', 'Appliqué', false], ['patchwork', 'Patchwork', false],
+      ['quilting', 'Quilting', false], ['visible-mending', 'Visible mending', false], ['mixed-media', 'Mixed media', false]];
+    const techList = TECH.map(([id, name, rec]) => {
+      const on = s.techniques.indexOf(id) >= 0;
+      return { name, rec, onToggle: () => this.toggleTech(id),
+        bg: on ? ink : 'transparent', fg: on ? paper : ink, bd: on ? ink : 'rgba(15,15,14,.25)',
+        recBg: on ? accent : 'rgba(15,15,14,.1)', recFg: on ? paper : 'rgba(15,15,14,.6)' };
+    });
+
+    // Node 4 — patterns
+    const PAT = [['none', 'No pattern', 'Raw linen, hemmed'], ['tonal-logo', 'Tonal logo', 'Single corner mark'],
+      ['placement', 'Placement print', 'Centred motif'], ['embroidery', 'Embroidery motif', 'Stitched monogram']];
+    const patternTiles = PAT.map(([id, name, note]) => {
+      const sel = s.pattern === id;
+      return { id, name, note, onSelect: () => this.setState({ pattern: id }),
+        selBd: sel ? ink : 'rgba(15,15,14,.14)', selShadow: sel ? '0 0 0 1px ' + ink : 'none',
+        showCorner: id === 'tonal-logo', showCenter: id === 'placement', showStitch: id === 'embroidery' };
+    });
+
+    // Node 5 — layout
+    const LAY = [['corner', 'Corner', 'Bottom-right tonal mark'], ['center', 'Centre', 'Single central motif'],
+      ['border', 'Border', 'Inset frame line'], ['repeat', 'Repeat', 'Tiled grid marks']];
+    const layoutList = LAY.map(([id, name, desc]) => {
+      const sel = s.layout === id;
+      return { name, desc, mark: sel ? '●' : '○', onSelect: () => this.setState({ layout: id }),
+        bg: sel ? 'rgba(15,15,14,.05)' : 'transparent', fg: ink, dot: sel ? accent : 'rgba(15,15,14,.4)' };
+    });
+
+    // Derived material + label maps
+    const cur = all.find(m => m.id === s.material) || all[0];
+    const patName = (PAT.find(p => p[0] === s.pattern) || PAT[1])[1];
+    const layName = (LAY.find(l => l[0] === s.layout) || LAY[0])[1];
+    const techNames = techList.filter(t => TECH[techList.indexOf(t)] && s.techniques.indexOf(TECH[techList.indexOf(t)][0]) >= 0).map(t => t.name);
+    const onTech = TECH.filter(t => s.techniques.indexOf(t[0]) >= 0).map(t => t[1]);
+    const techStr = onTech.length ? onTech.join(' · ') : '—';
+
+    const summaryRows = [
+      { k: 'Product', v: s.product }, { k: 'Quantity', v: '15 pieces' },
+      { k: 'Material', v: cur.name }, { k: 'Source', v: cur.sourceLabel },
+      { k: 'Technique', v: techStr }, { k: 'Pattern', v: patName }, { k: 'Layout', v: layName },
+    ];
+    const circularLabel = cur.name + ' — ' + (cur.stream === 'new' ? 'new deadstock' : 'reclaimed secondhand');
+
+    // Node 7 — tech pack
+    const techLeft = [
+      { k: 'Product', v: s.product }, { k: 'Quantity', v: '15 pcs' },
+      { k: 'Material', v: cur.name }, { k: 'Source', v: cur.stream === 'new' ? 'New deadstock' : 'Reclaimed' },
+      { k: 'Dimensions', v: '150 × 220cm' }, { k: 'Fabric use', v: '38m of 42m' },
+    ];
+    const techRight = [
+      { k: 'Technique', v: 'Cut & sew + embroidery' }, { k: 'Pattern', v: patName },
+      { k: 'Layout', v: layName }, { k: 'Est. cost', v: '£240–290' },
+      { k: 'Lead time', v: '5–8 days' }, { k: 'Producer', v: 'Home textile unit' },
+    ];
+
+    // Node 8 — producer + impact (depends on source)
+    const reclaimed = cur.stream === 'reclaimed';
+    const producer = reclaimed
+      ? { name: 'Karachi Patchwork Studio', loc: 'Karachi, Pakistan', caps: 'Patchwork · denim · totes · small accessories', moq: '10', lead: '7–10d',
+          why: 'Specialises in mixed reclaimed panels; turns shade variation into a design feature.' }
+      : { name: 'Lahore Home Textile Unit', loc: 'Lahore, Pakistan', caps: 'Tablecloths · aprons · napkins · edge finishing · embroidery', moq: '15', lead: '5–8d',
+          why: 'Deadstock linen and hospitality textiles are its core; tonal embroidery in-house.' };
+    const altProducers = reclaimed
+      ? [{ name: 'Lahore Home Textile Unit', loc: 'Lahore, Pakistan', caps: 'Tablecloths, aprons, edge finishing, embroidery.' },
+         { name: 'Delhi Embroidery Workshop', loc: 'Delhi, India', caps: 'Embroidery, appliqué, logo placement, finishing.' }]
+      : [{ name: 'Delhi Embroidery Workshop', loc: 'Delhi, India', caps: 'Embroidery, appliqué, logo placement, finishing.' },
+         { name: 'Karachi Patchwork Studio', loc: 'Karachi, Pakistan', caps: 'Patchwork, denim products, totes, accessories.' }];
+    const impactRows = reclaimed
+      ? [{ v: '35', k: 'Unresellable garments reused' }, { v: '120', k: 'Usable panels recovered' },
+         { v: '15', k: 'Products created' }, { v: '18m', k: 'New fabric avoided' }]
+      : [{ v: '38m', k: 'Deadstock fabric used' }, { v: '15', k: 'Tablecloths created' },
+         { v: '4m', k: 'Leftover → napkins' }, { v: '0m', k: 'New fabric ordered' }];
+
+    const nodeNames = { 1: 'Product', 2: 'Material', 3: 'Technique', 4: 'Pattern', 5: 'Layout', 6: 'Render', 7: 'Tech Pack', 8: 'Producer' };
+
+    return {
+      accent, navItems,
+      n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
+      n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8,
+      brief: s.brief, setBrief: (e) => this.setState({ brief: e.target.value }),
+      productChips, sourceTabs, materialsList, techList, patternTiles, layoutList,
+      dCorner: s.layout === 'corner', dCenter: s.layout === 'center', dBorder: s.layout === 'border', dRepeat: s.layout === 'repeat',
+      summaryRows, circularLabel, techLeft, techRight,
+      producer, altProducers, impactRows, showImpact,
+      next: () => (s.node === 8 ? this.go(1) : this.next()), back: () => this.back(),
+      atStart: s.node === 1, backColor: s.node === 1 ? 'rgba(15,15,14,.25)' : ink,
+      pageNum: String(s.node).padStart(2, '0'), nodeName: nodeNames[s.node],
+      nextLabel: s.node === 8 ? 'Restart' : (s.node === 7 ? 'Match producer' : 'Next node'),
+    };
+  }
+}
+</script>
+</body>
+</html>
