@@ -106,6 +106,9 @@ export function buildRenderPrompt(
   prompt += `Motif scale ${String(state.motifScale)}%, motif rotation ${String(state.motifRotate)}°, offset X ${String(state.motifOffsetX)}%, offset Y ${String(state.motifOffsetY)}%. `;
   prompt +=
     "Warm paper-beige background, soft shadow, front view, no text, no watermark, no people.";
+  if (state.renderPromptText.trim()) {
+    prompt += ` User brief: ${state.renderPromptText.trim()}.`;
+  }
   return prompt;
 }
 
@@ -130,9 +133,7 @@ export async function callGenerate(payload: GeneratePayload): Promise<string> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
-  const body = (await response
-    .json()
-    .catch(() => ({}))) as GenerateResponse;
+  const body = (await response.json().catch(() => ({}))) as GenerateResponse;
   if (!response.ok || !body.image) {
     throw new Error(
       body.error ?? `Generation failed (HTTP ${String(response.status)})`,

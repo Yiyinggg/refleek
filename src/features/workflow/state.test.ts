@@ -119,4 +119,27 @@ describe("workflow reducer", () => {
     const dirty = reducer(initial, { type: "goto", node: 5 });
     expect(reducer(dirty, { type: "restart" }).node).toBe(1);
   });
+
+  it("keeps the render during live layout slider drags", () => {
+    const withRender = {
+      ...initial,
+      renderImg: "data:image/png;base64,abc",
+    };
+    const live = reducer(withRender, {
+      type: "setLayoutField",
+      field: "layoutScale",
+      value: 120,
+      commit: false,
+    });
+    expect(live.layoutScale).toBe(120);
+    expect(live.renderImg).toBe("data:image/png;base64,abc");
+
+    const committed = reducer(live, {
+      type: "setLayoutField",
+      field: "layoutScale",
+      value: 125,
+    });
+    expect(committed.layoutScale).toBe(125);
+    expect(committed.renderImg).toBeNull();
+  });
 });

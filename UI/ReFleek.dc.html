@@ -471,9 +471,15 @@
           </div>
 
           <!-- AI render -->
-          <div style="margin-top:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-            <button onClick="{{ generateRender }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:12px 20px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase">{{ renderBtnLabel }} <span style="color:{{ accent }}">◆</span></button>
-            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(15,15,14,.5)">Uses your generated artwork + material + layout.</span>
+          <div style="margin-top:24px;border-top:1.5px solid rgba(15,15,14,.16);padding-top:20px">
+            <div style="margin-bottom:16px">
+              <label style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.4)">Describe the render</label>
+              <textarea value="{{ renderPromptText }}" onChange="{{ applyRenderPrompt }}" placeholder="e.g. soft daylight, muted earth tones, tote laid flat with a gentle fold, catalogue-style product shot…" style="display:block;width:100%;min-height:88px;margin-top:8px;border:1px solid rgba(15,15,14,.2);background:#FBFAF6;padding:12px 14px;font-family:'Archivo',sans-serif;font-size:13px;line-height:1.55;color:#0F0F0E;outline:none;resize:vertical"></textarea>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+              <p style="margin:0;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.65;color:rgba(15,15,14,.5);max-width:70ch;flex:1">{{ renderPromptHint }}</p>
+              <button onClick="{{ generateRender }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:12px 20px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;flex:none">{{ renderBtnLabel }} <span style="color:{{ accent }}">◆</span></button>
+            </div>
           </div>
 
           <sc-if value="{{ renderBusyShow }}" hint-placeholder-val="{{ false }}">
@@ -773,6 +779,7 @@ class Component extends DCLogic {
     patternBusy: false,
     patternErr: '',
     renderImg: null,
+    renderPromptText: '',
     renderBusy: false,
     renderErr: '',
     apiMock: false,
@@ -814,7 +821,6 @@ class Component extends DCLogic {
     });
     if (!saved && this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
     this._loadMaterials();
-    if (this.state.node === 7) this.maybeAutoRenderPreview();
     this._repeatWatchSnap = {};
     this.scheduleRepeatTile();
   }
@@ -846,6 +852,7 @@ class Component extends DCLogic {
       motifOffsetX: s.motifOffsetX, motifOffsetY: s.motifOffsetY,
       style: s.style, patternInputMode: s.patternInputMode,
       patternPromptText: s.patternPromptText,
+      renderPromptText: s.renderPromptText,
     };
   }
 
@@ -970,6 +977,10 @@ class Component extends DCLogic {
     this.setState({ patternPromptText: e.target.value, patternErr: '' });
   }
 
+  applyRenderPrompt(e) {
+    this.setState({ renderPromptText: e.target.value, renderErr: '' });
+  }
+
   onPatternUpload(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
@@ -979,9 +990,7 @@ class Component extends DCLogic {
   }
 
   go(n) {
-    this.setState({ node: Math.max(1, Math.min(9, n)), techNote: '' }, () => {
-      if (n === 7) this.maybeAutoRenderPreview();
-    });
+    this.setState({ node: Math.max(1, Math.min(9, n)), techNote: '' });
   }
   next() { this.state.node === 9 ? this.go(1) : this.go(this.state.node + 1); }
   back() { this.go(this.state.node - 1); }
@@ -1357,14 +1366,6 @@ class Component extends DCLogic {
     ].join('|');
   }
 
-  maybeAutoRenderPreview() {
-    if (this.state.renderBusy) return;
-    const fp = this._renderFingerprint();
-    if (!this.state.renderImg || fp !== this._lastRenderedFingerprint) {
-      this.generateRender();
-    }
-  }
-
   compressImage(dataUrl, maxDim) {
     maxDim = maxDim || 1024;
     return new Promise((ok) => {
@@ -1463,6 +1464,9 @@ class Component extends DCLogic {
     p += 'Layout scale ' + s.layoutScale + '%, layout rotation ' + s.layoutRotate + '°. ';
     p += 'Motif scale ' + s.motifScale + '%, motif rotation ' + s.motifRotate + '°, offset X ' + s.motifOffsetX + '%, offset Y ' + s.motifOffsetY + '%. ';
     p += 'Warm paper-beige background, soft shadow, front view, no text, no watermark, no people.';
+    if (s.renderPromptText.trim()) {
+      p += ' User brief: ' + s.renderPromptText.trim() + '.';
+    }
     return p;
   }
 
@@ -1999,6 +2003,10 @@ class Component extends DCLogic {
 
   async generateRender() {
     if (this.state.renderBusy) return;
+    if (!this.state.renderPromptText.trim()) {
+      this.setState({ renderErr: 'Enter a text prompt describing how the product should be rendered.' });
+      return;
+    }
     this.setState({ renderBusy: true, renderErr: '' });
     try {
       const payload = { prompt: this.buildRenderPrompt() };
@@ -2562,6 +2570,11 @@ class Component extends DCLogic {
       patternErr: s.patternErr, patternErrShow: !!s.patternErr,
       patternBusyShow: s.patternBusy,
       patternModeLabel: ({ print: 'Digital print', laser: 'Laser etching', embroidery: 'Embroidery' })[this.surfaceMode()],
+      renderPromptText: s.renderPromptText,
+      applyRenderPrompt: (e) => this.applyRenderPrompt(e),
+      renderPromptHint: s.renderPromptText.trim()
+        ? 'AI renders your workflow choices with your scene brief — click to generate or re-render.'
+        : 'Describe lighting, mood, and staging — then confirm to generate the photorealistic preview.',
       generateRender: () => this.generateRender(),
       renderBtnLabel: s.renderBusy ? 'Rendering…' : (s.renderImg ? 'Re-render' : 'Generate AI render'),
       renderImg: s.renderImg || '', renderHas: !!s.renderImg,

@@ -54,7 +54,11 @@ export type WorkflowAction =
   | { type: "setBrief"; brief: string }
   | { type: "setStyle"; style: string }
   | { type: "selectProduct"; slug: string }
-  | { type: "setDimension"; field: "productWidth" | "productHeight"; value: number }
+  | {
+      type: "setDimension";
+      field: "productWidth" | "productHeight";
+      value: number;
+    }
   | { type: "setSource"; source: SourceFilter }
   | { type: "selectMaterial"; slug: string }
   | { type: "toggleMixMaterial"; slug: string }
@@ -64,13 +68,19 @@ export type WorkflowAction =
   | { type: "setPattern"; slug: string }
   | { type: "setRepeatMode"; slug: string }
   | { type: "setPlacement"; slug: string }
-  | { type: "setLayoutField"; field: LayoutField; value: number }
+  | {
+      type: "setLayoutField";
+      field: LayoutField;
+      value: number;
+      commit?: boolean;
+    }
   | { type: "setPatternInputMode"; mode: PatternInputMode }
   | { type: "setPatternPrompt"; text: string }
   | { type: "setPatternUpload"; image: string }
   | { type: "patternStart" }
   | { type: "patternSuccess"; image: string }
   | { type: "patternError"; message: string }
+  | { type: "setRenderPrompt"; text: string }
   | { type: "renderStart" }
   | { type: "renderSuccess"; image: string }
   | { type: "renderError"; message: string }
@@ -142,6 +152,7 @@ const BASE_STATE: Omit<
   patternImg: null,
   patternBusy: false,
   patternErr: "",
+  renderPromptText: "",
   renderImg: null,
   renderBusy: false,
   renderErr: "",
@@ -211,7 +222,11 @@ export function createWorkflowReducer(catalog: Catalog) {
   ): WorkflowState {
     switch (action.type) {
       case "goto":
-        return { ...state, node: Math.max(1, Math.min(8, action.node)), techNote: "" };
+        return {
+          ...state,
+          node: Math.max(1, Math.min(8, action.node)),
+          techNote: "",
+        };
       case "next":
         return reducer(state, {
           type: "goto",
@@ -236,7 +251,8 @@ export function createWorkflowReducer(catalog: Catalog) {
           ...CLEARED_ARTWORK,
         };
         if (product.category === "unfinished-material") {
-          next.source = product.slug === "fabric-roll" ? "deadstock" : "reclaimed";
+          next.source =
+            product.slug === "fabric-roll" ? "deadstock" : "reclaimed";
         }
         return next;
       }
@@ -252,7 +268,13 @@ export function createWorkflowReducer(catalog: Catalog) {
             state.materialMix.length > 0
               ? state.materialMix
               : [state.materialSlug];
-          return { ...state, source: "mix", materialMix: mix, materialSlug: mix[0] ?? state.materialSlug, mixNote: "" };
+          return {
+            ...state,
+            source: "mix",
+            materialMix: mix,
+            materialSlug: mix[0] ?? state.materialSlug,
+            mixNote: "",
+          };
         }
         return {
           ...state,
@@ -285,12 +307,18 @@ export function createWorkflowReducer(catalog: Catalog) {
         const index = mix.indexOf(action.slug);
         if (index >= 0) {
           if (mix.length <= 1) {
-            return { ...state, mixNote: "Keep at least one fabric in the mix." };
+            return {
+              ...state,
+              mixNote: "Keep at least one fabric in the mix.",
+            };
           }
           mix.splice(index, 1);
         } else {
           if (mix.length >= MAX_MIX) {
-            return { ...state, mixNote: `Maximum ${String(MAX_MIX)} fabrics for patchwork mix.` };
+            return {
+              ...state,
+              mixNote: `Maximum ${String(MAX_MIX)} fabrics for patchwork mix.`,
+            };
           }
           mix.push(action.slug);
         }
@@ -339,8 +367,13 @@ export function createWorkflowReducer(catalog: Catalog) {
         return { ...state, repeatMode: action.slug, ...CLEARED_ARTWORK };
       case "setPlacement":
         return { ...state, placement: action.slug, ...CLEARED_ARTWORK };
-      case "setLayoutField":
-        return { ...state, [action.field]: action.value, ...CLEARED_ARTWORK };
+      case "setLayoutField": {
+        const next = { ...state, [action.field]: action.value };
+        if (action.commit === false) {
+          return next;
+        }
+        return { ...next, ...CLEARED_ARTWORK };
+      }
       case "setPatternInputMode":
         return { ...state, patternInputMode: action.mode, patternErr: "" };
       case "setPatternPrompt":
@@ -363,6 +396,8 @@ export function createWorkflowReducer(catalog: Catalog) {
         };
       case "patternError":
         return { ...state, patternErr: action.message, patternBusy: false };
+      case "setRenderPrompt":
+        return { ...state, renderPromptText: action.text, renderErr: "" };
       case "renderStart":
         return { ...state, renderBusy: true, renderErr: "" };
       case "renderSuccess":
