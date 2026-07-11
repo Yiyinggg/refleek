@@ -678,14 +678,7 @@
               <img src="{{ patternOverlaySrc }}" alt="" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:contain;object-position:{{ patternOverlayPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }};pointer-events:none;image-rendering:auto" />
               </sc-if>
               <sc-if value="{{ patternOverlayRepeat }}" hint-placeholder-val="{{ false }}">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;pointer-events:none;opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }}" preserveAspectRatio="none">
-                <defs>
-                  <pattern id="{{ patternTileId }}" patternUnits="objectBoundingBox" width="{{ patternTileW }}" height="{{ patternTileH }}">
-                    <image href="{{ patternOverlaySrc }}" width="1" height="1" preserveAspectRatio="xMidYMid slice" />
-                  </pattern>
-                </defs>
-                <rect width="1" height="1" fill="url(#{{ patternTileId }})" />
-              </svg>
+              <div class="rf-pattern-layer" style="position:absolute;inset:0;z-index:50;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:repeat;background-position:{{ patternOverlayRepeatPos }};opacity:0.94;mix-blend-mode:{{ patternOverlayBlend }};transform:{{ patternOverlayTransform }};pointer-events:none"></div>
               </sc-if>
             </sc-if>
 
@@ -2389,12 +2382,9 @@ class Component extends DCLogic {
     const patternOverlayRepeat = patternOverlayShow && s.repeatMode !== 'single';
     const patternOverlaySrc = previewArt || '';
     const patternOverlayBlend = previewArtSolid ? 'normal' : 'multiply';
-    const patternTileFrac = Math.max(0.08, Math.min(0.42, tilePx / 420));
-    const patternTileW = patternTileFrac.toFixed(4);
-    const patternTileH = (s.repeatMode === 'half-drop'
-      ? Math.max(0.04, patternTileFrac * 0.5)
-      : patternTileFrac).toFixed(4);
-    const patternTileId = 'rfPat' + Math.abs(this.patchworkSeed(String(previewArt || '').length + s.repeatMode + tilePx)) % 1000000;
+    const patternOverlayImg = this.cssBgUrl(previewArt);
+    const patternOverlaySize = tilePx + 'px ' + (s.repeatMode === 'half-drop' ? Math.round(tilePx * 0.5) + 'px' : tilePx + 'px');
+    const patternOverlayRepeatPos = s.motifOffsetX + '% ' + s.motifOffsetY + '%';
     const patternOverlayPos = s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
       : s.placement === 'border' ? 'center'
       : 'calc(50% + ' + s.motifOffsetX + '%) calc(50% + ' + s.motifOffsetY + '%)';
@@ -2500,7 +2490,7 @@ class Component extends DCLogic {
       dCorner: s.repeatMode === 'single' && s.placement === 'corner',
       dCenter: s.repeatMode === 'single' && s.placement === 'center',
       dBorder: s.repeatMode === 'single' && s.placement === 'border',
-      dRepeat: s.repeatMode !== 'single',
+      dRepeat: s.repeatMode !== 'single' && !previewArt,
       previewTote: previewMode === 'tote',
       previewFlat: previewMode === 'flat',
       previewScarf: previewMode === 'scarf',
@@ -2517,7 +2507,7 @@ class Component extends DCLogic {
       previewAspect, previewBg, previewImg, previewSize,
       patternOverlayShow, patternOverlaySingle, patternOverlayRepeat,
       patternOverlaySrc, patternOverlayBlend, patternOverlayPos, patternOverlayTransform,
-      patternTileId, patternTileW, patternTileH,
+      patternOverlayImg, patternOverlaySize, patternOverlayRepeatPos,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
       previewCaption: s.product + ' · ' + dims + ' · ' + materialLabel,
