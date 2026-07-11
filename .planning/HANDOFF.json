@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-07-11T15:18:42.608Z",
+  "phase": "react-convex-migration",
+  "phase_name": "ReFleek React and Convex Migration",
+  "phase_dir": ".planning",
+  "plan": 1,
+  "task": 1,
+  "total_tasks": 7,
+  "status": "paused",
+  "completed_tasks": [
+    {
+      "id": 1,
+      "name": "Bootstrap Vite, TypeScript, checks, hooks, CI, and Vercel configuration",
+      "status": "in_progress",
+      "progress": "Interrupted implementer created the Vite/React shell, npm tooling, strict TypeScript configuration, ESLint/Prettier/Vitest/Playwright setup, Husky pre-commit hook, GitHub Actions, Dependabot, environment template, and Vercel SPA configuration. npm run check passes, but requirements and E2E coverage are not complete."
+    },
+    {
+      "id": 2,
+      "name": "Implement the backend-heavy Convex domain",
+      "status": "in_progress",
+      "progress": "Draft schema, seed data, catalog query, production query, deterministic recommendations, and hybrid AI action exist. Migrations and rate-limiter components are not installed or configured; the production query does not yet accept the full workflow selection contract; Convex has not been initialized against a deployment."
+    },
+    {
+      "id": 3,
+      "name": "Create engineering and Claude guidance",
+      "status": "in_progress",
+      "progress": "AGENTS.md and CLAUDE.md drafts exist but are uncommitted and need final review against the completed implementation."
+    }
+  ],
+  "remaining_tasks": [
+    {
+      "id": 1,
+      "name": "Finish and review bootstrap infrastructure",
+      "status": "in_progress"
+    },
+    {
+      "id": 2,
+      "name": "Finish and verify Convex backend, migrations, and rate limiting",
+      "status": "in_progress"
+    },
+    {
+      "id": 3,
+      "name": "Finalize docs and create the infrastructure commit",
+      "status": "not_started"
+    },
+    {
+      "id": 4,
+      "name": "Extract typed ephemeral workflow state and Convex client hooks",
+      "status": "not_started"
+    },
+    {
+      "id": 5,
+      "name": "Rebuild the complete eight-node React interface",
+      "status": "not_started"
+    },
+    {
+      "id": 6,
+      "name": "Implement responsive editorial CSS and print output",
+      "status": "not_started"
+    },
+    {
+      "id": 7,
+      "name": "Verify parity, remove legacy runtime, commit, and deploy",
+      "status": "not_started"
+    }
+  ],
+  "blockers": [
+    {
+      "description": "The repository is not connected to a Convex development deployment.",
+      "type": "human_action",
+      "workaround": "Resume locally and run npx convex dev; authenticate or select the intended project when prompted."
+    },
+    {
+      "description": "Vercel AI Gateway credentials are not configured in the Convex environment.",
+      "type": "human_action",
+      "workaround": "Because the action runs on Convex, Vercel deployment OIDC is not automatically available there; configure a scoped AI_GATEWAY_API_KEY in Convex or revise the runtime boundary."
+    },
+    {
+      "description": "The latest origin/main expanded the parity target after the original plan was written.",
+      "type": "technical",
+      "workaround": "Treat current UI/ReFleek.dc.html and api/generate.js as the source of truth for pattern upload/generation, render generation, craft constraints, embedded images in PDF export, and failure/loading states."
+    }
+  ],
+  "human_actions_pending": [
+    {
+      "action": "Confirm or authenticate the intended Convex project during npx convex dev.",
+      "context": "No CONVEX_DEPLOYMENT or VITE_CONVEX_URL is currently configured.",
+      "blocking": true
+    },
+    {
+      "action": "Link the repository to the intended Vercel project and enable AI Gateway.",
+      "context": "Production deployment and AI enhancement cannot be verified without project access.",
+      "blocking": true
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Use Vite, React, strict TypeScript, and authored CSS.",
+      "rationale": "This replaces the generated Design Component runtime with a maintainable SPA while preserving the editorial interface.",
+      "phase": "react-convex-migration"
+    },
+    {
+      "decision": "Use a backend-heavy Convex boundary without accounts or workflow persistence.",
+      "rationale": "The user selected backend-owned catalogs, production calculations, recommendations, producer matching, impact, and tech-pack output while explicitly declining user persistence.",
+      "phase": "react-convex-migration"
+    },
+    {
+      "decision": "Use Vercel AI Gateway only as an enhancement with deterministic fallback.",
+      "rationale": "The workflow must remain reliable and demoable when model access, budget, validation, or rate limits fail.",
+      "phase": "react-convex-migration"
+    },
+    {
+      "decision": "Preserve the current editorial identity and refine responsiveness.",
+      "rationale": "The migration should retain the recognizable ReFleek visual system rather than redesigning it from scratch.",
+      "phase": "react-convex-migration"
+    }
+  ],
+  "uncommitted_files": [
+    ".gitignore",
+    "DEPLOY.md",
+    "vercel.json",
+    ".env.example",
+    ".github/",
+    ".husky/",
+    ".prettierignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "convex.json",
+    "convex/",
+    "e2e/",
+    "eslint.config.mjs",
+    "index.html",
+    "package-lock.json",
+    "package.json",
+    "playwright.config.ts",
+    "src/",
+    "tsconfig.app.json",
+    "tsconfig.json",
+    "tsconfig.node.json",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ],
+  "next_action": "Read .planning/.continue-here.md, inspect every uncommitted change, then reconcile the draft backend with the current UI parity contract before writing more code.",
+  "context_notes": "The implementation subagent was explicitly interrupted at the user's request. No application commit or deployment was created. npm run check currently exits 0 with 9 unit tests passing and a successful Vite build, but this is not evidence that the plan is complete: Playwright was not run, Convex codegen/deployment was not run, migrations and distributed rate limiting are missing, and the React workflow has not been built."
+}
