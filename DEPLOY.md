@@ -76,7 +76,8 @@ OPENROUTER_API_KEY=... node dev-server.cjs
 ```
 
 The legacy endpoint uses OpenRouter image generation and returns deterministic
-mock SVG artwork when `OPENROUTER_API_KEY` is absent.
+mock SVG artwork when `OPENROUTER_API_KEY` is absent. Its material inventory is
+built from source data via `npm run build:materials` into `data/materials.json`.
 
 ## Craft constraint rules (surface finishes)
 
@@ -91,5 +92,14 @@ the print chip stays visible but locked in the Technique node.
 ## Legacy demo path
 
 Product → Material → Technique (print locks/unlocks by material) → Pattern
-(Generate artwork) → Layout → Render (Generate AI render) → Tech Pack
-(Export PDF, ~2 MB with images embedded) → Producer.
+(Generate solid embroidery artwork) → **Colours** (thread separation, max 4)
+→ Layout → Render (Generate AI render) → Tech Pack
+(Export PDF + SVG + JSON, ~2 MB with images embedded) → Producer.
+
+### Embroidery export (Custex-style)
+
+When surface finish is **embroidery**, the tech pack export includes:
+
+- `ReFleek-TechPack-TP001.pdf` — production brief
+- `ReFleek-TechPack-TP001-embroidery.svg` — solid colour-separated vector for digitizing
+- `ReFleek-TechPack-TP001.json` — thread palette, layout, and producer metadata

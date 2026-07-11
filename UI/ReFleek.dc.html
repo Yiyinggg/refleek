@@ -50,6 +50,13 @@
     <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.5);text-align:right">Issue Nº01<br>Deadstock Edition</div>
   </header>
 
+  <sc-if value="{{ apiMockShow }}" hint-placeholder-val="{{ false }}">
+  <div class="rf-no-print" style="flex:none;display:flex;gap:12px;align-items:flex-start;background:#0F0F0E;color:#F4F1EA;padding:11px clamp(18px,3vw,40px);border-bottom:1px solid rgba(244,241,234,.12)">
+    <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:{{ accent }};white-space:nowrap;padding-top:2px">◆ DEMO</span>
+    <p style="margin:0;font-size:12px;line-height:1.55">Placeholder artwork — server has no <span style="font-family:'Space Mono',monospace;font-size:10px">OPENROUTER_API_KEY</span>. Set it locally or in Vercel env vars for real Gemini generation.</p>
+  </div>
+  </sc-if>
+
   <!-- ===== SPLIT BODY ===== -->
   <div style="flex:1;display:grid;grid-template-columns:1.05fr .95fr;min-height:0">
 
@@ -59,7 +66,7 @@
       <!-- node stepper -->
       <div class="rf-no-print" style="flex:none;display:flex;align-items:stretch;border-bottom:1px solid rgba(15,15,14,.16);overflow-x:auto">
         <div style="flex:none;display:flex;align-items:center;padding:0 14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(15,15,14,.4);border-right:1px solid rgba(15,15,14,.12)">Workflow</div>
-        <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="8">
+        <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="9">
           <button onClick="{{ it.onClick }}" title="{{ it.name }}" style="flex:1 0 auto;background:{{ it.tabBg }};border:none;border-right:1px solid rgba(15,15,14,.1);padding:0;min-width:54px">
             <div style="height:3px;background:{{ it.ruleBg }}"></div>
             <div style="padding:9px 12px 10px">
@@ -259,12 +266,12 @@
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Surface.</h1>
 
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
-            <sc-for list="{{ patternTiles }}" as="p" hint-placeholder-count="4">
+            <sc-for list="{{ patternTiles }}" as="p" hint-placeholder-count="3">
               <button onClick="{{ p.onSelect }}" style="text-align:left;background:#FBFAF6;border:1px solid {{ p.selBd }};box-shadow:{{ p.selShadow }};padding:0;overflow:hidden;transition:all .2s">
                 <div style="aspect-ratio:4/3;background:#D7CBB2;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.22) 0 1px,transparent 1px 3px);position:relative">
                   <sc-if value="{{ p.showCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:11px;bottom:11px;width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(90,75,50,.5)"></span></sc-if>
                   <sc-if value="{{ p.showCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:40px;height:40px;border:1.5px solid rgba(90,75,50,.55);transform:rotate(45deg)"></span></sc-if>
-                  <sc-if value="{{ p.showStitch }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:46px;height:46px;border:1.5px dashed rgba(90,75,50,.6);border-radius:50%"></span></sc-if>
+                  <sc-if value="{{ p.showStitch }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:40px;height:40px;background:rgba(90,75,50,.45);border-radius:50%"></span></sc-if>
                 </div>
                 <div style="padding:12px 14px">
                   <div style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:17px">{{ p.name }}</div>
@@ -322,18 +329,73 @@
 
             <sc-if value="{{ patternHas }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:16px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
-              <img src="{{ patternImg }}" style="width:min(100%,300px);border:1.5px solid #0F0F0E;background:#fff;display:block" />
-              <div style="flex:1;min-width:180px;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.7;color:rgba(15,15,14,.6)">Generated artwork — carried into the AI render and embedded in the tech pack PDF.</div>
+              <img src="{{ patternPreviewImg }}" style="width:min(100%,360px);max-height:360px;object-fit:contain;border:1.5px solid #0F0F0E;background:#fff;display:block" />
+              <div style="flex:1;min-width:180px;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.7;color:rgba(15,15,14,.6)">{{ patternResultNote }}</div>
             </div>
             </sc-if>
           </div>
         </section>
         </sc-if>
 
-        <!-- NODE 5 · LAYOUT -->
+        <!-- NODE 5 · COLOURS (embroidery thread separation) -->
         <sc-if value="{{ n5 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
-          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº05</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Colours — Nº05</div>
+          <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Thread<br><span style="font-style:italic;font-weight:500">separation.</span></h1>
+
+          <sc-if value="{{ colourSepSkip }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.65;color:rgba(15,15,14,.55);margin:0 0 18px;max-width:52ch">Colour separation applies to embroidery only. Your surface finish is {{ patternModeLabel }} — continue to Layout.</p>
+          </sc-if>
+
+          <sc-if value="{{ showColourSep }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.65;color:rgba(15,15,14,.55);margin:0 0 18px;max-width:56ch">Split flat illustration artwork into up to 4 thread colour plates — like Custex. Adjust each thread; exports as production-ready SVG + JSON.</p>
+
+          <sc-if value="{{ colourSepBusyShow }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px dashed rgba(15,15,14,.3);padding:26px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.5)">Analysing solid colour plates…</div>
+          </sc-if>
+
+          <sc-if value="{{ colourSepErrShow }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:12px;border:1px solid {{ accent }};background:rgba(232,69,42,.07);padding:13px 16px;font-size:12px;line-height:1.5"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:{{ accent }}">✕ ERROR — </span>{{ colourSepErr }}</div>
+          </sc-if>
+
+          <sc-if value="{{ colourSepReady }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;margin-top:8px">
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:10px">Solid embroidery preview</div>
+              <div style="width:100%;max-width:280px;border:1.5px solid #0F0F0E;background-color:#f4f1ea;background-image:linear-gradient(45deg,rgba(15,15,14,.09) 25%,transparent 25%,transparent 75%,rgba(15,15,14,.09) 75%),linear-gradient(45deg,rgba(15,15,14,.09) 25%,transparent 25%,transparent 75%,rgba(15,15,14,.09) 75%);background-size:12px 12px;background-position:0 0,6px 6px">
+                <img src="{{ embroiderySolidImg }}" style="width:100%;display:block" />
+              </div>
+              <p style="font-family:'Space Mono',monospace;font-size:10px;line-height:1.6;color:rgba(15,15,14,.5);margin:10px 0 0">{{ embroideryThreadCount }} thread colours · flat fills only{{ colourSepBgNote }}</p>
+            </div>
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:10px">Thread palette</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ threadColorRows }}" as="tc" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid rgba(15,15,14,.14);background:#FBFAF6">
+                    <label style="display:flex;align-items:center;gap:10px;flex:1;cursor:pointer">
+                      <input type="color" value="{{ tc.hex }}" onChange="{{ tc.onChange }}" style="width:42px;height:42px;border:1px solid rgba(15,15,14,.2);padding:2px;background:#fff;cursor:pointer" />
+                      <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em">{{ tc.label }}</span>
+                    </label>
+                    <span style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(15,15,14,.45)">{{ tc.hex }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <button onClick="{{ rerunColourSep }}" style="margin-top:14px;padding:9px 16px;border:1px solid rgba(15,15,14,.25);background:transparent;color:#0F0F0E;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">Re-analyse colours</button>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ colourSepNeedPattern }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.65;color:rgba(15,15,14,.55);margin:12px 0 0">Generate flat illustration artwork in Pattern first, then return here to separate thread colours.</p>
+          </sc-if>
+          </sc-if>
+        </section>
+        </sc-if>
+
+        <!-- NODE 6 · LAYOUT -->
+        <sc-if value="{{ n6 }}" hint-placeholder-val="{{ false }}">
+        <section style="animation:rf-fade .45s ease both">
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Layout — Nº06</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Placement.</h1>
           <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 22px">Adjust repeat, scale, and motif position — preview updates live →</p>
 
@@ -396,10 +458,10 @@
         </section>
         </sc-if>
 
-        <!-- NODE 6 · RENDER -->
-        <sc-if value="{{ n6 }}" hint-placeholder-val="{{ false }}">
+        <!-- NODE 7 · RENDER -->
+        <sc-if value="{{ n7 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
-          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Render — Nº06</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Render — Nº07</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 8px">Preview<br><span style="font-style:italic;font-weight:500">ready.</span></h1>
           <p style="font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(15,15,14,.55);margin:0 0 24px;max-width:52ch">AI renders your full workflow — product, dimensions, material, techniques, pattern, and layout — as a photorealistic preview on the right.</p>
 
@@ -432,10 +494,10 @@
         </section>
         </sc-if>
 
-        <!-- NODE 7 · TECH PACK -->
-        <sc-if value="{{ n7 }}" hint-placeholder-val="{{ false }}">
+        <!-- NODE 8 · TECH PACK -->
+        <sc-if value="{{ n8 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
-          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Tech Pack — Nº07</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Tech Pack — Nº08</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Production<br><span style="font-style:italic;font-weight:500">brief.</span></h1>
 
           <div style="background:#FBFAF6;border:1.5px solid #0F0F0E">
@@ -452,18 +514,21 @@
               <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,15,14,.45);margin-bottom:7px">Construction notes</div>
               <p style="margin:0;font-family:'Space Mono',monospace;font-size:11px;line-height:1.65;color:rgba(15,15,14,.75)">{{ constructionNotes }}</p>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px">
+            <sc-if value="{{ showEmbroideryExportNote }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:12px 18px;border-bottom:1px solid rgba(15,15,14,.12);font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.6;color:rgba(15,15,14,.55)">Embroidery pack includes <strong style="font-weight:600;color:#0F0F0E">PDF + SVG + JSON</strong> — solid colour-separated artwork for digitizing (Wilcom, Hatch, Ink/Stitch).</div>
+            </sc-if>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px;flex-wrap:wrap;gap:10px">
               <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(15,15,14,.5)">Circular by default</span>
-              <button onClick="{{ exportPdf }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:11px 18px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase">Export PDF <span style="color:{{ accent }}">↓</span></button>
+              <button onClick="{{ exportTechPack }}" style="display:inline-flex;align-items:center;gap:9px;background:#0F0F0E;color:#F4F1EA;border:none;padding:11px 18px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase">Export tech pack <span style="color:{{ accent }}">↓</span></button>
             </div>
           </div>
         </section>
         </sc-if>
 
-        <!-- NODE 8 · PRODUCER -->
-        <sc-if value="{{ n8 }}" hint-placeholder-val="{{ false }}">
+        <!-- NODE 9 · PRODUCER -->
+        <sc-if value="{{ n9 }}" hint-placeholder-val="{{ false }}">
         <section style="animation:rf-fade .45s ease both">
-          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Producer — Nº08</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,15,14,.5)">Producer — Nº09</div>
           <h1 style="font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:.92;letter-spacing:-.02em;margin:14px 0 22px">Where it's<br><span style="font-style:italic;font-weight:500">made.</span></h1>
 
           <div style="background:#0F0F0E;color:#F4F1EA;padding:22px 24px">
@@ -495,7 +560,7 @@
       <!-- left footer nav -->
       <footer class="rf-no-print" style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px clamp(20px,3.2vw,44px);border-top:1.5px solid #0F0F0E">
         <button onClick="{{ back }}" style="background:none;border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{{ backColor }};padding:6px 0">← Back</button>
-        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.5)">Nº {{ pageNum }} / 08</div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,15,14,.5)">Nº {{ pageNum }} / 09</div>
         <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:11px;background:#0F0F0E;color:#F4F1EA;border:none;padding:13px 24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase">{{ nextLabel }} <span style="color:{{ accent }}">→</span></button>
       </footer>
     </div>
@@ -509,24 +574,13 @@
 
       <div style="flex:1;overflow-y:auto;padding:clamp(22px,3vw,42px) clamp(18px,2.6vw,34px)">
 
-        <!-- AI render preview (replaces CSS mockup once generated) -->
-        <sc-if value="{{ previewHasRender }}" hint-placeholder-val="{{ false }}">
+        <!-- Live preview mockup — always visible; pattern composites on top when artwork exists -->
         <div style="display:flex;flex-direction:column;align-items:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
-          <div style="position:relative;width:min(100%,420px)">
-            <img src="{{ renderImg }}" style="width:100%;display:block;box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both" />
-            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">◆ AI render · {{ previewCaption }}</span>
-          </div>
-        </div>
-        </sc-if>
-
-        <!-- fabric mockup -->
-        <sc-if value="{{ previewNoRender }}" hint-placeholder-val="{{ true }}">
-        <div style="display:flex;align-items:center;justify-content:center;padding:clamp(6px,2vw,26px) 0 clamp(18px,2vw,30px)">
           <div key="{{ previewKey }}" style="position:relative;width:min(100%,420px);aspect-ratio:{{ previewAspect }};background:{{ previewBg }};background-image:{{ previewImg }};background-size:{{ previewSize }};box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both;overflow:hidden">
 
             <!-- TOTE preview -->
             <sc-if value="{{ previewTote }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;left:50%;top:8%;transform:translateX(-50%);width:58%;height:14px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:40px 40px 0 0;z-index:3"></div>
+              <div style="position:absolute;left:50%;top:6%;transform:translateX(-50%);width:50%;height:22px;border:3px solid rgba(15,15,14,.55);border-bottom:none;border-radius:999px 999px 0 0;z-index:2"></div>
               <sc-if value="{{ previewToteGrid }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:18% 14% 10% 14%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px">
                 <sc-for list="{{ totePatchworkCells }}" as="cell" hint-placeholder-count="4">
@@ -536,13 +590,18 @@
               </sc-if>
               <sc-if value="{{ previewToteOrganic }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:18% 14% 10% 14%;overflow:hidden">
-                <sc-for list="{{ toteOrganicPieces }}" as="piece" hint-placeholder-count="9">
-                  <div style="position:absolute;left:{{ piece.left }};top:{{ piece.top }};width:{{ piece.width }};height:{{ piece.height }};background:{{ piece.bg }};background-image:{{ piece.img }};background-size:{{ piece.size }};clip-path:{{ piece.clipPath }};z-index:{{ piece.zIndex }}"></div>
-                </sc-for>
+                <div style="width:100%;height:100%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)">
+                  <sc-for list="{{ toteOrganicCells }}" as="cell" hint-placeholder-count="9">
+                    <div style="background:{{ cell.bg }};background-image:{{ cell.img }};background-size:{{ cell.size }}"></div>
+                  </sc-for>
+                </div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path d="{{ toteOrganicSeams }}" fill="none" stroke="rgba(15,15,14,0.42)" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+                </svg>
               </div>
               </sc-if>
-              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15);z-index:3"></span></sc-if>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12);z-index:3"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.15);z-index:2"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:22%;bottom:28%;width:22px;height:22px;border-radius:50%;border:1.5px solid {{ accent }};background:rgba(232,69,42,.12);z-index:2"></span></sc-if>
             </sc-if>
 
             <!-- FLAT preview (tablecloth / curtain) -->
@@ -556,9 +615,14 @@
               </sc-if>
               <sc-if value="{{ previewPatchworkOrganic }}" hint-placeholder-val="{{ false }}">
                 <div style="position:absolute;inset:0;overflow:hidden">
-                  <sc-for list="{{ flatOrganicPieces }}" as="piece" hint-placeholder-count="16">
-                    <div style="position:absolute;left:{{ piece.left }};top:{{ piece.top }};width:{{ piece.width }};height:{{ piece.height }};background:{{ piece.bg }};background-image:{{ piece.img }};background-size:{{ piece.size }};clip-path:{{ piece.clipPath }};z-index:{{ piece.zIndex }}"></div>
-                  </sc-for>
+                  <div style="width:100%;height:100%;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr)">
+                    <sc-for list="{{ flatOrganicCells }}" as="cell" hint-placeholder-count="16">
+                      <div style="background:{{ cell.bg }};background-image:{{ cell.img }};background-size:{{ cell.size }}"></div>
+                    </sc-for>
+                  </div>
+                  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="{{ flatOrganicSeams }}" fill="none" stroke="rgba(15,15,14,0.42)" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+                  </svg>
                 </div>
               </sc-if>
               <sc-if value="{{ previewFlatSingle }}" hint-placeholder-val="{{ true }}">
@@ -568,10 +632,10 @@
               <div style="position:absolute;right:10px;top:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-top:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;left:10px;bottom:10px;width:16px;height:16px;border-left:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
               <div style="position:absolute;right:10px;bottom:10px;width:16px;height:16px;border-right:1.5px solid rgba(15,15,14,.45);border-bottom:1.5px solid rgba(15,15,14,.45)"></div>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
-              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg);z-index:3"></span></sc-if>
-              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
-              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;z-index:3">
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:26px;bottom:26px;width:34px;height:34px;border-radius:50%;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
+              <sc-if value="{{ dCenter }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;margin:auto;width:58px;height:58px;border:1.5px solid {{ accent }};transform:rotate(45deg);z-index:2"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:24px;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
+              <sc-if value="{{ dRepeat }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:30px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;z-index:2">
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
                 <span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span><span style="width:16px;height:16px;border-radius:50%;border:1.4px solid {{ accent }}"></span>
@@ -589,23 +653,43 @@
               </sc-if>
               <sc-if value="{{ previewPatchworkOrganic }}" hint-placeholder-val="{{ false }}">
                 <div style="position:absolute;inset:12% 8%;overflow:hidden;border:1px solid rgba(15,15,14,.2)">
-                  <sc-for list="{{ scarfOrganicPieces }}" as="piece" hint-placeholder-count="15">
-                    <div style="position:absolute;left:{{ piece.left }};top:{{ piece.top }};width:{{ piece.width }};height:{{ piece.height }};background:{{ piece.bg }};background-image:{{ piece.img }};background-size:{{ piece.size }};clip-path:{{ piece.clipPath }};z-index:{{ piece.zIndex }}"></div>
-                  </sc-for>
+                  <div style="width:100%;height:100%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr)">
+                    <sc-for list="{{ scarfOrganicCells }}" as="cell" hint-placeholder-count="15">
+                      <div style="background:{{ cell.bg }};background-image:{{ cell.img }};background-size:{{ cell.size }}"></div>
+                    </sc-for>
+                  </div>
+                  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="{{ scarfOrganicSeams }}" fill="none" stroke="rgba(15,15,14,0.42)" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+                  </svg>
                 </div>
               </sc-if>
               <sc-if value="{{ previewScarfSingle }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;inset:12% 8%;background:{{ fabricBg }};background-image:{{ fabricImg }};background-size:{{ fabricSize }};border:1px solid rgba(15,15,14,.2)"></div>
               </sc-if>
-              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
-              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }};z-index:3"></span></sc-if>
+              <sc-if value="{{ dBorder }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:18% 14%;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
+              <sc-if value="{{ dCorner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:14%;bottom:18%;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ accent }};z-index:2"></span></sc-if>
             </sc-if>
 
+            <!-- Pattern artwork — always the topmost layer on the product preview -->
             <sc-if value="{{ patternOverlayShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;inset:0;z-index:30;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.82;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }})"></div>
+              <sc-if value="{{ patternOverlayImgMode }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ patternOverlaySrc }}" alt="" style="position:absolute;inset:0;z-index:50;width:100%;height:100%;object-fit:{{ patternOverlayFit }};object-position:{{ patternOverlayPos }};opacity:0.92;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none;image-rendering:auto" />
+              </sc-if>
+              <sc-if value="{{ patternOverlayBgMode }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;z-index:50;background-image:{{ patternOverlayImg }};background-size:{{ patternOverlaySize }};background-repeat:{{ patternOverlayRepeat }};background-position:{{ patternOverlayPos }};opacity:0.9;transform:rotate({{ layoutRotate }}deg) scale({{ layoutScaleFactor }});pointer-events:none"></div>
+              </sc-if>
             </sc-if>
 
-            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">{{ previewCaption }}</span>
+            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45);z-index:51">{{ previewCaption }}</span>
+          </div>
+        </div>
+
+        <!-- AI photorealistic render (optional, shown below live mockup) -->
+        <sc-if value="{{ previewHasRender }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;padding:0 0 clamp(18px,2vw,30px)">
+          <div style="position:relative;width:min(100%,420px)">
+            <img src="{{ renderImg }}" style="width:100%;display:block;box-shadow:0 28px 56px -22px rgba(15,15,14,.5);animation:rf-swap .4s ease both" />
+            <span style="position:absolute;left:14px;top:-26px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(15,15,14,.45)">◆ AI render · {{ previewCaption }}</span>
           </div>
         </div>
         </sc-if>
@@ -613,7 +697,9 @@
         <!-- generated artwork chip -->
         <sc-if value="{{ patternHas }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;gap:12px;align-items:center;background:#FBFAF6;border:1px solid rgba(15,15,14,.16);padding:10px 12px;margin-bottom:14px">
-          <img src="{{ patternImg }}" style="width:44px;height:44px;object-fit:cover;border:1px solid rgba(15,15,14,.2);display:block" />
+          <div style="width:44px;height:44px;flex-shrink:0;border:1px solid rgba(15,15,14,.2);background-color:#f4f1ea;background-image:linear-gradient(45deg,rgba(15,15,14,.09) 25%,transparent 25%,transparent 75%,rgba(15,15,14,.09) 75%),linear-gradient(45deg,rgba(15,15,14,.09) 25%,transparent 25%,transparent 75%,rgba(15,15,14,.09) 75%);background-size:8px 8px;background-position:0 0,4px 4px;overflow:hidden">
+            <img src="{{ patternPreviewImg }}" style="width:100%;height:100%;object-fit:contain;display:block" />
+          </div>
           <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(15,15,14,.6)">AI artwork · {{ patternModeLabel }}</div>
         </div>
         </sc-if>
@@ -669,7 +755,7 @@ class Component extends DCLogic {
     mixNote: '',
     patchworkMode: 'grid',
     techniques: ['patchwork', 'cut-sew', 'embroidery'],
-    pattern: 'placement',
+    pattern: 'embroidery',
     repeatMode: 'brick',
     placement: 'center',
     layoutScale: 100,
@@ -689,7 +775,95 @@ class Component extends DCLogic {
     renderImg: null,
     renderBusy: false,
     renderErr: '',
+    apiMock: false,
+    threadColors: [],
+    colourSepW: 0,
+    colourSepH: 0,
+    colourSepIndices: null,
+    embroiderySolidImg: null,
+    embroiderySvg: null,
+    backgroundRemoved: false,
+    colourSepBusy: false,
+    colourSepErr: '',
   };
+
+  EMBROIDERY_MAX_COLORS = 4;
+  STORAGE_KEY = 'refleek-workflow-v2';
+  _materialsList = null;
+  _persistTimer = null;
+
+  componentDidMount() {
+    const saved = this._readSavedState();
+    const orig = this.setState.bind(this);
+    this.setState = (update, cb) => orig(update, () => { this._persistState(); if (cb) cb(); });
+    if (saved) this.setState(saved, () => {
+      if (this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
+      if (this.isEmbroidery() && saved.patternImg && (!saved.threadColors || !saved.threadColors.length || !saved.backgroundRemoved)) {
+        this.runColourSeparation();
+      } else if (saved.colourSepIndices && saved.threadColors && saved.threadColors.length) {
+        const outputs = this._applyEmbroideryOutputs(saved.colourSepW, saved.colourSepH, saved.colourSepIndices, saved.threadColors);
+        this.setState(outputs);
+      }
+    });
+    if (!saved && this.state.pattern === 'placement') this.setState({ pattern: 'embroidery' });
+    this._loadMaterials();
+  }
+
+  _persistFields() {
+    const s = this.state;
+    return {
+      node: s.node, brief: s.brief, product: s.product,
+      productWidth: s.productWidth, productHeight: s.productHeight,
+      source: s.source, material: s.material, materialMix: s.materialMix,
+      patchworkMode: s.patchworkMode, techniques: s.techniques,
+      pattern: s.pattern, repeatMode: s.repeatMode, placement: s.placement,
+      layoutScale: s.layoutScale, layoutRotate: s.layoutRotate,
+      motifScale: s.motifScale, motifRotate: s.motifRotate,
+      motifOffsetX: s.motifOffsetX, motifOffsetY: s.motifOffsetY,
+      style: s.style, patternInputMode: s.patternInputMode,
+      patternPromptText: s.patternPromptText,
+      patternImg: s.patternImg, renderImg: s.renderImg, apiMock: s.apiMock,
+      threadColors: s.threadColors, embroiderySolidImg: s.embroiderySolidImg,
+      backgroundRemoved: s.backgroundRemoved,
+      colourSepW: s.colourSepW, colourSepH: s.colourSepH, colourSepIndices: s.colourSepIndices,
+    };
+  }
+
+  _persistState() {
+    clearTimeout(this._persistTimer);
+    this._persistTimer = setTimeout(() => {
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._persistFields()));
+      } catch (e) {
+        const slim = this._persistFields();
+        slim.patternImg = null;
+        slim.renderImg = null;
+        try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(slim)); } catch (e2) {}
+      }
+    }, 400);
+  }
+
+  _readSavedState() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      if (!saved || typeof saved !== 'object') return null;
+      if (saved.pattern === 'placement') saved.pattern = 'embroidery';
+      return saved;
+    } catch (e) { return null; }
+  }
+
+  _loadMaterials() {
+    fetch('/data/materials.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (!j || !Array.isArray(j.deadstock) || !Array.isArray(j.reclaimed)) return;
+        this._materialsList = j.deadstock.concat(j.reclaimed);
+        this.forceUpdate();
+      })
+      .catch(() => {});
+  }
 
   // Surface-finish rules by material stream:
   //   unfinished deadstock  → embroidery, digital print, laser etching
@@ -789,8 +963,8 @@ class Component extends DCLogic {
     reader.readAsDataURL(file);
   }
 
-  go(n) { this.setState({ node: Math.max(1, Math.min(8, n)), techNote: '' }); }
-  next() { this.state.node === 8 ? this.go(1) : this.go(this.state.node + 1); }
+  go(n) { this.setState({ node: Math.max(1, Math.min(9, n)), techNote: '' }); }
+  next() { this.state.node === 9 ? this.go(1) : this.go(this.state.node + 1); }
   back() { this.go(this.state.node - 1); }
   setLayoutField(field, raw) {
     const n = Number(raw);
@@ -858,41 +1032,34 @@ class Component extends DCLogic {
     return cells;
   }
 
-  buildOrganicPieces(materials, seed, cols, rows) {
-    if (!materials.length) return [];
-    const rand = this.randFromSeed(seed);
-    const pieces = [];
-    const clamp = (v) => Math.max(0, Math.min(100, v));
-    const jitter = (base, amt) => clamp(base + (rand() - 0.5) * amt);
+  buildSeamPaths(seed, cols, rows) {
+    const rand = this.randFromSeed(seed + 501);
+    const segments = [];
+    const wobble = 1.4;
+    const steps = 5;
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const m = materials[Math.floor(rand() * materials.length)];
-        const x0 = (c / cols) * 100;
-        const y0 = (r / rows) * 100;
-        const x1 = ((c + 1) / cols) * 100;
-        const y1 = ((r + 1) / rows) * 100;
-        const edgeJitter = 16;
-        const verts = [
-          [jitter(x0, edgeJitter), jitter(y0, edgeJitter)],
-          [jitter((x0 + x1) / 2, 12), jitter(y0, edgeJitter)],
-          [jitter(x1, edgeJitter), jitter(y0, edgeJitter)],
-          [jitter(x1, edgeJitter), jitter((y0 + y1) / 2, 12)],
-          [jitter(x1, edgeJitter), jitter(y1, edgeJitter)],
-          [jitter((x0 + x1) / 2, 12), jitter(y1, edgeJitter)],
-          [jitter(x0, edgeJitter), jitter(y1, edgeJitter)],
-          [jitter(x0, edgeJitter), jitter((y0 + y1) / 2, 12)],
-        ];
-        const clipPath = 'polygon(' + verts.map(p => p[0].toFixed(1) + '% ' + p[1].toFixed(1) + '%').join(', ') + ')';
-        pieces.push({
-          bg: m.swBg, img: m.swImg, size: m.swSize,
-          clipPath,
-          left: '0%', top: '0%', width: '100%', height: '100%',
-          zIndex: r * cols + c + 1,
-        });
+    for (let c = 1; c < cols; c++) {
+      const x0 = (c / cols) * 100;
+      let d = 'M' + x0.toFixed(2) + ' 0';
+      for (let i = 1; i <= steps; i++) {
+        const y = (i / steps) * 100;
+        const x = x0 + (rand() - 0.5) * wobble;
+        d += ' L' + x.toFixed(2) + ' ' + y.toFixed(2);
       }
+      segments.push(d);
     }
-    return pieces;
+    for (let r = 1; r < rows; r++) {
+      const y0 = (r / rows) * 100;
+      let d = 'M0 ' + y0.toFixed(2);
+      for (let i = 1; i <= steps; i++) {
+        const x = (i / steps) * 100;
+        const y = y0 + (rand() - 0.5) * wobble;
+        d += ' L' + x.toFixed(2) + ' ' + y.toFixed(2);
+      }
+      segments.push(d);
+    }
+    segments.push('M0 0 L100 0 L100 100 L0 100 Z');
+    return segments.join(' ');
   }
 
   setPatchworkMode(mode) {
@@ -955,7 +1122,8 @@ class Component extends DCLogic {
       return;
     }
     const m = this.MATERIALS().find(x => x.id === id) || {};
-    const upd = { material: id, techNote: '', patternImg: null, renderImg: null, patternErr: '', renderErr: '' };
+    const upd = { material: id, techNote: '', patternImg: null, renderImg: null, patternErr: '', renderErr: '',
+      embroiderySolidImg: null, embroiderySvg: null, threadColors: [], colourSepIndices: null, colourSepErr: '', backgroundRemoved: false };
     if (m.stream === 'reclaimed' && this.state.techniques.indexOf('print') >= 0) {
       upd.techniques = this.state.techniques.filter(t => t !== 'print');
       upd.techNote = this.PRINT_BLOCK_REASON;
@@ -982,13 +1150,13 @@ class Component extends DCLogic {
       return {
         materialId: 'denim',
         techniques: ['patchwork', 'cut-sew', 'laser', 'embroidery'],
-        pattern: 'placement',
+        pattern: 'embroidery',
         repeatMode: 'single',
         placement: 'center',
         source: 'reclaimed',
         materialReason: 'Reclaimed denim panel lot — deconstructed unresellable jeans and jackets. 120 usable panels at Fleek-linked sorting centre, Pakistan. Best for patchwork totes and accessories.',
         techniqueReason: 'Patchwork + reinforced stitching, laser-etched tonal motif + optional embroidery label. Denim panels vary in shade and size, so patchwork turns inconsistency into a design feature.',
-        patternReason: 'Modular workwear patchwork — 4-panel front, 4-panel back, reinforced handle tabs.',
+        patternReason: 'Illustration motif — centred flat graphic mark on patchwork base.',
         avoidNote: 'Digital print is not available on upcycled fabric — surface irregularity and existing washes make print colour uncontrollable; laser etching gives the tonal mark instead.',
       };
     }
@@ -1024,13 +1192,13 @@ class Component extends DCLogic {
       return {
         materialId: 'knit',
         techniques: ['patchwork', 'quilting', 'applique'],
-        pattern: 'placement',
+        pattern: 'embroidery',
         repeatMode: 'single',
         placement: 'center',
         source: 'reclaimed',
         materialReason: 'Knit bundle — sorted reclaimed knit from Fleek Pakistan. Soft texture suits patchwork cushions.',
         techniqueReason: 'Patchwork + quilting. Mixed knit panels create tactile, one-of-one cushion covers.',
-        patternReason: 'Centred placement motif on patchwork base.',
+        patternReason: 'Illustration motif — centred flat graphic mark on patchwork base.',
         avoidNote: 'Avoid tight fitted construction — knit panels have variable stretch.',
       };
     }
@@ -1134,7 +1302,7 @@ class Component extends DCLogic {
         brief: 'I want to make 20 tote bags for a vintage market using circular materials. I want them to feel one-of-one, but still easy to produce.',
         product: 'Tote bag', productWidth: 38, productHeight: 42, source: 'reclaimed', material: 'denim',
         techniques: ['patchwork', 'cut-sew', 'embroidery'],
-        pattern: 'placement', repeatMode: 'single', placement: 'center', style: 'workwear',
+        pattern: 'embroidery', repeatMode: 'single', placement: 'center', style: 'workwear',
       });
     } else {
       this.setState({
@@ -1148,7 +1316,29 @@ class Component extends DCLogic {
 
   // ---------- AI generation (OpenRouter via /api/generate) ----------
 
-  API() { return (location.protocol === 'file:' ? 'http://localhost:3000' : '') + '/api/generate'; }
+  API() {
+    if (location.protocol === 'file:') return 'http://localhost:3939/api/generate';
+    return '/api/generate';
+  }
+
+  compressImage(dataUrl, maxDim) {
+    maxDim = maxDim || 1024;
+    return new Promise((ok) => {
+      if (!dataUrl || !/^data:image\//i.test(dataUrl)) return ok(dataUrl);
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxDim / Math.max(img.naturalWidth || 1, img.naturalHeight || 1));
+        const w = Math.max(1, Math.round((img.naturalWidth || maxDim) * scale));
+        const h = Math.max(1, Math.round((img.naturalHeight || maxDim) * scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        ok(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = () => ok(dataUrl);
+      img.src = dataUrl;
+    });
+  }
 
   // Which surface finish drives the artwork: honour selection, fall back to what the material allows.
   surfaceMode() {
@@ -1165,15 +1355,15 @@ class Component extends DCLogic {
       cur.name.toLowerCase() + ' (' + (cur.stream === 'new' ? 'unfinished deadstock' : 'upcycled reclaimed fabric') + ')';
     const mode = this.surfaceMode();
     let finish = '';
-    if (mode === 'print') finish = 'Seamless repeating textile print pattern, ' + base + ', flat 2D artwork, balanced repeat, production-ready for digital fabric printing, plain background, no mockup, no text.';
+    if (mode === 'print') finish = 'Seamless repeating textile print pattern, ' + base + ', flat 2D artwork, balanced repeat, production-ready for digital fabric printing, high resolution 1024 pixels, plain background, no mockup, no text.';
     else if (mode === 'laser') finish = 'Single-colour monochrome line-art motif for laser etching on fabric, ' + base + ', tone-on-tone, clean bold linework, high contrast dark lines on plain light background, flat 2D, no shading, no text.';
-    else finish = 'Embroidery motif artwork, maximum 4 thread colours, ' + base + ', flat 2D stitch-style illustration, visible thread texture, plain background, no text.';
+    else finish = 'Flat vector illustration artwork (source art for embroidery production, NOT an embroidered photo), ' + base + ', pure 2D graphic design with maximum 4 solid flat colour fills, crisp closed shapes like a logo or screen-print colour separation, NOT embroidered, NOT stitched, NO thread texture, NO stitch lines, NO satin stitch, NO needlework, NO 3D relief, NO fabric weave, NO gradients, NO shading, NO photographic texture, plain pure white background with no shadows, production-ready digitizing source art, high resolution 1024 pixels, sharp edges, no text.';
 
     if (s.patternInputMode === 'prompt' && s.patternPromptText.trim()) {
       return finish + ' User brief: ' + s.patternPromptText.trim() + '.';
     }
     if (s.patternInputMode === 'upload' && s.patternUploadImg) {
-      return 'Create production-ready textile artwork inspired by the attached reference image. ' + finish + ' Preserve the visual language of the reference while adapting it for ' + mode + ' on ' + cur.name.toLowerCase() + '.';
+      return 'Create production-ready flat illustration artwork inspired by the attached reference image. ' + finish + ' Preserve the visual language of the reference while adapting it as clean 2D source art for ' + mode + ' on ' + cur.name.toLowerCase() + '. Do NOT render as stitched embroidery.';
     }
     return finish;
   }
@@ -1184,11 +1374,12 @@ class Component extends DCLogic {
     const spec = this.productSpec(s.product);
     const dims = this.effectiveDims(s);
     const mode = this.surfaceMode();
-    const PAT = [['none', 'No pattern'], ['tonal-logo', 'Tonal logo'], ['placement', 'Placement print'], ['embroidery', 'Embroidery motif']];
+    const PAT = [['none', 'No pattern'], ['tonal-logo', 'Tonal logo'], ['embroidery', 'Embroidery motif']];
     const patName = (PAT.find(p => p[0] === s.pattern) || PAT[1])[1];
     const TECH = [['cut-sew', 'Cut & sew'], ['embroidery', 'Embroidery'], ['laser', 'Laser etching'],
       ['print', 'Digital print'], ['edge-finishing', 'Edge finishing'], ['applique', 'Appliqué'],
-      ['patchwork', 'Patchwork'], ['quilting', 'Quilting'], ['visible-mending', 'Visible mending']];
+      ['patchwork', 'Patchwork'], ['quilting', 'Quilting'], ['visible-mending', 'Visible mending'],
+      ['mixed-media', 'Mixed media']];
     const techStr = TECH.filter(t => s.techniques.indexOf(t[0]) >= 0).map(t => t[1]).join(', ') || 'cut and sew';
     const finish = mode === 'print' ? 'digitally printed pattern'
       : mode === 'laser' ? 'laser-etched tone-on-tone motif' : 'embroidered motif';
@@ -1206,12 +1397,406 @@ class Component extends DCLogic {
     let p = 'Photorealistic studio product photo of a ' + s.product.toLowerCase() + ' (' + dims + ') made from ' + cur.name.toLowerCase() +
       (cur.stream === 'reclaimed' ? ', visibly assembled from reclaimed panels with subtle shade variation. ' : ', clean unfinished deadstock fabric. ');
     p += 'Construction techniques: ' + techStr + '. Surface pattern style: ' + patName + '. ';
-    if (this.state.patternImg) p += 'Apply the attached artwork onto the product as a ' + finish + ', placed ' + lay + '. ';
-    else p += 'Finish: ' + finish + ', placed ' + lay + '. ';
+    if (this.state.patternImg) {
+      p += mode === 'embroidery'
+        ? 'Apply the attached flat illustration artwork onto the product, rendered as realistic embroidered stitching on fabric, placed ' + lay + '. '
+        : 'Apply the attached artwork onto the product as a ' + finish + ', placed ' + lay + '. ';
+    } else p += 'Finish: ' + finish + ', placed ' + lay + '. ';
     p += 'Layout scale ' + s.layoutScale + '%, layout rotation ' + s.layoutRotate + '°. ';
     p += 'Motif scale ' + s.motifScale + '%, motif rotation ' + s.motifRotate + '°, offset X ' + s.motifOffsetX + '%, offset Y ' + s.motifOffsetY + '%. ';
     p += 'Warm paper-beige background, soft shadow, front view, no text, no watermark, no people.';
     return p;
+  }
+
+  isEmbroidery() { return this.surfaceMode() === 'embroidery'; }
+
+  _loadImage(url) {
+    return new Promise((ok, err) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => ok(img);
+      img.onerror = err;
+      img.src = url;
+    });
+  }
+
+  _rgbToHex(r, g, b) {
+    const h = (n) => n.toString(16).padStart(2, '0');
+    return '#' + h(r) + h(g) + h(b);
+  }
+
+  _hexToRgb(hex) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+    if (!m) return [0, 0, 0];
+    const n = parseInt(m[1], 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  _colorDist(a, b) {
+    return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2;
+  }
+
+  _pickCentroids(points, k) {
+    const picks = [points[0].slice()];
+    while (picks.length < k) {
+      const dists = points.map((p) => {
+        let min = Infinity;
+        for (const c of picks) min = Math.min(min, this._colorDist(p, c));
+        return min;
+      });
+      const total = dists.reduce((a, b) => a + b, 0) || 1;
+      let r = Math.random() * total, idx = 0;
+      for (let i = 0; i < dists.length; i++) { r -= dists[i]; if (r <= 0) { idx = i; break; } }
+      picks.push(points[idx].slice());
+    }
+    return picks;
+  }
+
+  _kMeans(points, k, iters) {
+    let centroids = this._pickCentroids(points, k);
+    const assign = new Array(points.length);
+    for (let t = 0; t < iters; t++) {
+      const sums = centroids.map(() => [0, 0, 0, 0]);
+      for (let i = 0; i < points.length; i++) {
+        let best = 0, bestD = Infinity;
+        for (let c = 0; c < centroids.length; c++) {
+          const d = this._colorDist(points[i], centroids[c]);
+          if (d < bestD) { bestD = d; best = c; }
+        }
+        assign[i] = best;
+        const s = sums[best];
+        s[0] += points[i][0]; s[1] += points[i][1]; s[2] += points[i][2]; s[3]++;
+      }
+      centroids = centroids.map((c, ci) => {
+        const s = sums[ci];
+        if (!s[3]) return c;
+        return [Math.round(s[0] / s[3]), Math.round(s[1] / s[3]), Math.round(s[2] / s[3])];
+      });
+    }
+    return { centroids, assign };
+  }
+
+  _colorDistRgb(a, b) {
+    return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2;
+  }
+
+  _isNearWhite(rgb) {
+    return rgb[0] > 232 && rgb[1] > 232 && rgb[2] > 232;
+  }
+
+  // Custex-style: flood-fill background from image edges (corners + border).
+  _detectBackgroundMask(data, w, h) {
+    const THRESH = 42 * 42;
+    const mask = new Uint8Array(w * h);
+    const opaque = (idx) => data[idx * 4 + 3] >= 40;
+    const rgbAt = (idx) => [data[idx * 4], data[idx * 4 + 1], data[idx * 4 + 2]];
+
+    const border = [];
+    for (let x = 0; x < w; x++) {
+      for (const y of [0, h - 1]) {
+        const idx = y * w + x;
+        if (opaque(idx)) border.push(rgbAt(idx));
+      }
+    }
+    for (let y = 1; y < h - 1; y++) {
+      for (const x of [0, w - 1]) {
+        const idx = y * w + x;
+        if (opaque(idx)) border.push(rgbAt(idx));
+      }
+    }
+    if (!border.length) return mask;
+
+    const bins = {};
+    for (const c of border) {
+      const key = (c[0] >> 4) + ',' + (c[1] >> 4) + ',' + (c[2] >> 4);
+      if (!bins[key]) bins[key] = { n: 0, r: 0, g: 0, b: 0 };
+      bins[key].n++; bins[key].r += c[0]; bins[key].g += c[1]; bins[key].b += c[2];
+    }
+    let bgRef = [255, 255, 255];
+    let best = 0;
+    for (const k in bins) {
+      if (bins[k].n > best) {
+        best = bins[k].n;
+        bgRef = [
+          Math.round(bins[k].r / bins[k].n),
+          Math.round(bins[k].g / bins[k].n),
+          Math.round(bins[k].b / bins[k].n),
+        ];
+      }
+    }
+
+    const isBgColor = (rgb) =>
+      this._colorDistRgb(rgb, bgRef) <= THRESH || this._isNearWhite(rgb);
+
+    const queue = [];
+    const markBg = (idx) => {
+      if (mask[idx]) return;
+      mask[idx] = 1;
+      queue.push(idx);
+    };
+
+    for (let x = 0; x < w; x++) {
+      for (const y of [0, h - 1]) {
+        const idx = y * w + x;
+        if (!opaque(idx) || isBgColor(rgbAt(idx))) markBg(idx);
+      }
+    }
+    for (let y = 0; y < h; y++) {
+      for (const x of [0, w - 1]) {
+        const idx = y * w + x;
+        if (!opaque(idx) || isBgColor(rgbAt(idx))) markBg(idx);
+      }
+    }
+
+    while (queue.length) {
+      const idx = queue.pop();
+      const x = idx % w;
+      const y = (idx / w) | 0;
+      const neighbors = [];
+      if (x > 0) neighbors.push(idx - 1);
+      if (x < w - 1) neighbors.push(idx + 1);
+      if (y > 0) neighbors.push(idx - w);
+      if (y < h - 1) neighbors.push(idx + w);
+      for (const ni of neighbors) {
+        if (mask[ni]) continue;
+        if (!opaque(ni)) { markBg(ni); continue; }
+        if (isBgColor(rgbAt(ni))) markBg(ni);
+      }
+    }
+    return mask;
+  }
+
+  _compactPalette(indices, w, h, palette) {
+    const used = new Set();
+    for (let i = 0; i < w * h; i++) {
+      if (indices[i] !== 255) used.add(indices[i]);
+    }
+    const order = [...used].sort((a, b) => a - b);
+    const remap = {};
+    order.forEach((old, ni) => { remap[old] = ni; });
+    const next = new Uint8Array(w * h);
+    for (let i = 0; i < w * h; i++) {
+      next[i] = indices[i] === 255 ? 255 : remap[indices[i]];
+    }
+    const nextPalette = order.map((old, ni) => {
+      const p = palette[old];
+      return Object.assign({}, p, { index: ni, label: 'Thread ' + (ni + 1) });
+    });
+    return { indices: next, palette: nextPalette };
+  }
+
+  async extractColorSeparation(imageUrl) {
+    const MAX = 512;
+    const img = await this._loadImage(imageUrl);
+    const scale = Math.min(1, MAX / Math.max(img.naturalWidth || 1, img.naturalHeight || 1));
+    const w = Math.max(1, Math.round((img.naturalWidth || MAX) * scale));
+    const h = Math.max(1, Math.round((img.naturalHeight || MAX) * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    const data = ctx.getImageData(0, 0, w, h).data;
+    const bgMask = this._detectBackgroundMask(data, w, h);
+    const points = [];
+    const pixelMap = [];
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const idx = y * w + x;
+        const i = idx * 4;
+        const a = data[i + 3];
+        if (a < 40 || bgMask[idx]) { pixelMap.push(-1); continue; }
+        const p = [data[i], data[i + 1], data[i + 2]];
+        pixelMap.push(points.length);
+        points.push(p);
+      }
+    }
+    if (!points.length) throw new Error('No artwork found after background removal.');
+    const k = Math.min(this.EMBROIDERY_MAX_COLORS, Math.max(1, points.length));
+    const km = this._kMeans(points, k, 10);
+    const indices = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const pm = pixelMap[y * w + x];
+        indices[y * w + x] = pm < 0 ? 255 : km.assign[pm];
+      }
+    }
+    let palette = km.centroids.map((c, i) => ({
+      index: i,
+      hex: this._rgbToHex(c[0], c[1], c[2]),
+      label: 'Thread ' + (i + 1),
+    }));
+    const compact = this._compactPalette(indices, w, h, palette);
+    return { w, h, indices: compact.indices, palette: compact.palette, backgroundRemoved: true };
+  }
+
+  _indicesToArray(indices) {
+    if (!indices) return null;
+    if (Array.isArray(indices)) return indices;
+    return Array.from(indices);
+  }
+
+  _arrayToIndices(arr) {
+    return new Uint8Array(arr);
+  }
+
+  _buildSolidPreview(w, h, indices, threadColors) {
+    const DISPLAY = 512;
+    const scale = Math.max(1, Math.min(DISPLAY / Math.max(w, 1), DISPLAY / Math.max(h, 1)));
+    const dw = Math.max(1, Math.round(w * scale));
+    const dh = Math.max(1, Math.round(h * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = dw; canvas.height = dh;
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    const low = ctx.createImageData(w, h);
+    for (let i = 0; i < w * h; i++) {
+      const ci = indices[i];
+      if (ci === 255) continue;
+      const tc = threadColors[ci];
+      if (!tc) continue;
+      const rgb = this._hexToRgb(tc.hex);
+      const p = i * 4;
+      low.data[p] = rgb[0]; low.data[p + 1] = rgb[1]; low.data[p + 2] = rgb[2]; low.data[p + 3] = 255;
+    }
+    const scratch = document.createElement('canvas');
+    scratch.width = w; scratch.height = h;
+    scratch.getContext('2d').putImageData(low, 0, 0);
+    ctx.drawImage(scratch, 0, 0, w, h, 0, 0, dw, dh);
+    return canvas.toDataURL('image/png');
+  }
+
+  buildEmbroiderySvg(w, h, indices, threadColors) {
+    let svg = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    svg += '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">\n';
+    svg += '<title>ReFleek embroidery colour separation</title>\n';
+    threadColors.forEach((tc, ci) => {
+      svg += '<g id="thread-' + (ci + 1) + '" data-label="' + tc.label + '" fill="' + tc.hex + '" stroke="none">\n';
+      for (let y = 0; y < h; y++) {
+        let x = 0;
+        while (x < w) {
+          if (indices[y * w + x] !== ci) { x++; continue; }
+          let x2 = x + 1;
+          while (x2 < w && indices[y * w + x2] === ci) x2++;
+          svg += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x) + '" height="1"/>\n';
+          x = x2;
+        }
+      }
+      svg += '</g>\n';
+    });
+    svg += '</svg>';
+    return svg;
+  }
+
+  _applyEmbroideryOutputs(w, h, indices, threadColors) {
+    const arr = this._indicesToArray(indices);
+    return {
+      embroiderySolidImg: this._buildSolidPreview(w, h, arr, threadColors),
+      embroiderySvg: this.buildEmbroiderySvg(w, h, arr, threadColors),
+      colourSepIndices: arr,
+    };
+  }
+
+  async runColourSeparation() {
+    if (!this.isEmbroidery() || !this.state.patternImg) return;
+    this.setState({ colourSepBusy: true, colourSepErr: '' });
+    try {
+      const sep = await this.extractColorSeparation(this.state.patternImg);
+      const threadColors = sep.palette.map((p) => ({
+        index: p.index, hex: p.hex, label: p.label, sourceHex: p.hex,
+      }));
+      const outputs = this._applyEmbroideryOutputs(sep.w, sep.h, sep.indices, threadColors);
+      this.setState(Object.assign({
+        colourSepW: sep.w, colourSepH: sep.h, threadColors, colourSepBusy: false,
+        backgroundRemoved: !!sep.backgroundRemoved,
+      }, outputs));
+    } catch (e) {
+      this.setState({ colourSepErr: String(e.message || e), colourSepBusy: false });
+    }
+  }
+
+  rerunColourSep() { this.runColourSeparation(); }
+
+  setThreadColor(index, hex) {
+    const threadColors = this.state.threadColors.map((tc, i) =>
+      i === index ? Object.assign({}, tc, { hex: hex }) : tc);
+    const indices = this._indicesToArray(this.state.colourSepIndices);
+    if (!indices || !this.state.colourSepW) {
+      this.setState({ threadColors });
+      return;
+    }
+    const outputs = this._applyEmbroideryOutputs(this.state.colourSepW, this.state.colourSepH, indices, threadColors);
+    this.setState(Object.assign({ threadColors }, outputs));
+  }
+
+  artworkForWorkflow() {
+    return (this.isEmbroidery() && this.state.embroiderySolidImg) || this.state.patternImg;
+  }
+
+  // Full-resolution source art for on-screen preview — never the downsampled separation plate.
+  artworkForPreview() {
+    return this.state.patternImg;
+  }
+
+  buildTechPackJson() {
+    const s = this.state;
+    const v = this.renderVals();
+    const pack = {
+      version: '1.0',
+      techPackId: 'TP-001',
+      exportedAt: new Date().toISOString(),
+      product: {
+        name: s.product,
+        quantity: v.techPackRows.find((r) => r.k === 'Quantity')?.v,
+        dimensions: this.effectiveDims(s),
+      },
+      material: { label: v.techPackRows.find((r) => r.k === 'Material')?.v, source: v.techPackRows.find((r) => r.k === 'Source')?.v },
+      surfaceFinish: this.surfaceMode(),
+      techniques: s.techniques,
+      pattern: s.pattern,
+      layout: {
+        repeatMode: s.repeatMode, placement: s.placement,
+        layoutScale: s.layoutScale, layoutRotate: s.layoutRotate,
+        motifScale: s.motifScale, motifRotate: s.motifRotate,
+        motifOffsetX: s.motifOffsetX, motifOffsetY: s.motifOffsetY,
+      },
+      constructionNotes: v.constructionNotes,
+      surfaceRule: v.surfaceRule,
+      producer: v.producer,
+      circularLabel: v.circularLabel,
+    };
+    if (this.isEmbroidery() && s.threadColors.length) {
+      pack.embroidery = {
+        solidFill: true,
+        backgroundRemoved: !!s.backgroundRemoved,
+        maxThreadColors: this.EMBROIDERY_MAX_COLORS,
+        viewBox: { width: s.colourSepW, height: s.colourSepH },
+        threads: s.threadColors.map((tc, i) => ({
+          order: i + 1, label: tc.label, hex: tc.hex, sourceHex: tc.sourceHex || tc.hex,
+        })),
+        files: { svg: 'ReFleek-TechPack-TP001-embroidery.svg' },
+      };
+    }
+    return pack;
+  }
+
+  downloadTextFile(filename, content, mime) {
+    const blob = new Blob([content], { type: mime || 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  async exportTechPack() {
+    if (this.isEmbroidery() && this.state.patternImg && !this.state.embroiderySvg) {
+      await this.runColourSeparation();
+    }
+    this.exportPdf();
+    if (this.isEmbroidery() && this.state.embroiderySvg) {
+      setTimeout(() => this.downloadTextFile('ReFleek-TechPack-TP001-embroidery.svg', this.state.embroiderySvg, 'image/svg+xml'), 400);
+    }
+    setTimeout(() => this.downloadTextFile('ReFleek-TechPack-TP001.json', JSON.stringify(this.buildTechPackJson(), null, 2), 'application/json'), 800);
   }
 
   async callGenerate(payload) {
@@ -1222,6 +1807,8 @@ class Component extends DCLogic {
     });
     const j = await r.json().catch(() => ({}));
     if (!r.ok || !j.image) throw new Error(j.error || ('Generation failed (HTTP ' + r.status + ')'));
+    if (j.mock && !this.state.apiMock) this.setState({ apiMock: true });
+    else if (!j.mock && this.state.apiMock) this.setState({ apiMock: false });
     return j.image;
   }
 
@@ -1239,10 +1826,13 @@ class Component extends DCLogic {
     try {
       const payload = { mode: 'pattern', prompt: this.buildPatternPrompt() };
       if (this.state.patternInputMode === 'upload' && this.state.patternUploadImg) {
-        payload.image = this.state.patternUploadImg;
+        payload.image = await this.compressImage(this.state.patternUploadImg);
       }
       const img = await this.callGenerate(payload);
-      this.setState({ patternImg: img, patternBusy: false, renderImg: null });
+      this.setState({ patternImg: img, patternBusy: false, renderImg: null,
+        embroiderySolidImg: null, embroiderySvg: null, threadColors: [], colourSepIndices: null, backgroundRemoved: false }, () => {
+        if (this.isEmbroidery()) this.runColourSeparation();
+      });
     } catch (e) {
       this.setState({ patternErr: String(e.message || e), patternBusy: false });
     }
@@ -1253,7 +1843,7 @@ class Component extends DCLogic {
     this.setState({ renderBusy: true, renderErr: '' });
     try {
       const payload = { mode: 'render', prompt: this.buildRenderPrompt() };
-      if (this.state.patternImg) payload.image = this.state.patternImg;
+      if (this.state.patternImg) payload.image = await this.compressImage(this.artworkForWorkflow() || this.state.patternImg);
       const img = await this.callGenerate(payload);
       this.setState({ renderImg: img, renderBusy: false });
     } catch (e) {
@@ -1324,9 +1914,14 @@ class Component extends DCLogic {
     };
     block('SURFACE FINISH RULE', v.surfaceRule);
     block('CONSTRUCTION NOTES', v.constructionNotes);
+    if (this.isEmbroidery() && s.threadColors.length) {
+      block('EMBROIDERY THREADS', s.threadColors.map((tc, i) =>
+        (i + 1) + '. ' + tc.label + ' — ' + tc.hex).join(' · '));
+    }
 
     const imgs = [];
-    if (s.patternImg) imgs.push(['ARTWORK', s.patternImg]);
+    const artwork = this.artworkForWorkflow();
+    if (artwork) imgs.push([this.isEmbroidery() ? 'EMBROIDERY ARTWORK' : 'ARTWORK', artwork]);
     if (s.renderImg) imgs.push(['AI RENDER', s.renderImg]);
     if (imgs.length) {
       let x = M, rowH = 0;
@@ -1391,6 +1986,7 @@ class Component extends DCLogic {
   }
 
   MATERIALS() {
+    if (this._materialsList && this._materialsList.length) return this._materialsList;
     return [
       { id: 'linen', stream: 'new', sourceLabel: 'New Deadstock · Pakistan', name: 'Natural Linen Blend',
         swBg: '#D7CBB2', swImg: 'repeating-linear-gradient(0deg,rgba(255,255,255,.4) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(120,105,80,.28) 0 1px,transparent 1px 3px)', swSize: 'auto',
@@ -1472,7 +2068,7 @@ class Component extends DCLogic {
     const isAccessory = spec.category === 'garments-accessories';
     const isUnfinished = spec.category === 'unfinished-material';
 
-    const NODES = ['Product', 'Material', 'Technique', 'Pattern', 'Layout', 'Render', 'Tech Pack', 'Producer'];
+    const NODES = ['Product', 'Material', 'Technique', 'Pattern', 'Colours', 'Layout', 'Render', 'Tech Pack', 'Producer'];
     const navItems = NODES.map((name, i) => {
       const id = i + 1, active = s.node === id;
       return {
@@ -1550,9 +2146,12 @@ class Component extends DCLogic {
     const totePatchworkCells = this.buildPatchworkCells(2, 2, activeMats, patchSeed);
     const flatPatchworkCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 7);
     const scarfPatchworkCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 13);
-    const toteOrganicPieces = this.buildOrganicPieces(activeMats, patchSeed + 21, 3, 3);
-    const flatOrganicPieces = this.buildOrganicPieces(activeMats, patchSeed + 29, 5, 5);
-    const scarfOrganicPieces = this.buildOrganicPieces(activeMats, patchSeed + 37, 3, 5);
+    const toteOrganicCells = this.buildPatchworkCells(3, 3, activeMats, patchSeed + 21);
+    const flatOrganicCells = this.buildPatchworkCells(4, 4, activeMats, patchSeed + 29);
+    const scarfOrganicCells = this.buildPatchworkCells(3, 5, activeMats, patchSeed + 37);
+    const toteOrganicSeams = this.buildSeamPaths(patchSeed + 21, 3, 3);
+    const flatOrganicSeams = this.buildSeamPaths(patchSeed + 29, 4, 4);
+    const scarfOrganicSeams = this.buildSeamPaths(patchSeed + 37, 3, 5);
     const PATCHWORK_MODES = [['grid', 'Square blocks'], ['organic', 'Organic freeform']];
     const patchworkModeTabs = PATCHWORK_MODES.map(([id, name]) => {
       const on = patchworkMode === id;
@@ -1566,7 +2165,8 @@ class Component extends DCLogic {
     const recTechIds = rec.techniques;
     const TECH = [['cut-sew', 'Cut & sew'], ['embroidery', 'Embroidery'], ['laser', 'Laser etching'],
       ['print', 'Digital print'], ['edge-finishing', 'Edge finishing'], ['applique', 'Appliqué'],
-      ['patchwork', 'Patchwork'], ['quilting', 'Quilting'], ['visible-mending', 'Visible mending']];
+      ['patchwork', 'Patchwork'], ['quilting', 'Quilting'], ['visible-mending', 'Visible mending'],
+      ['mixed-media', 'Mixed media']];
     const techList = TECH.map(([id, name]) => {
       const locked = this.SURFACE_TECH.indexOf(id) >= 0 && surfaceOk.indexOf(id) < 0;
       const on = !locked && s.techniques.indexOf(id) >= 0;
@@ -1589,12 +2189,12 @@ class Component extends DCLogic {
           : 'Upcycled reclaimed fabric — surface finishes: Embroidery · Laser etching. Digital print not supported.';
 
     const PAT = [['none', 'No pattern', 'Raw linen, hemmed'], ['tonal-logo', 'Tonal logo', 'Single corner mark'],
-      ['placement', 'Placement print', 'Centred motif'], ['embroidery', 'Embroidery motif', 'Stitched monogram']];
+      ['embroidery', 'Illustration motif', 'Flat graphic mark']];
     const patternTiles = PAT.map(([id, name, note]) => {
       const sel = s.pattern === id;
       return { id, name, note, onSelect: () => this.setState({ pattern: id }),
         selBd: sel ? ink : 'rgba(15,15,14,.14)', selShadow: sel ? '0 0 0 1px ' + ink : 'none',
-        showCorner: id === 'tonal-logo', showCenter: id === 'placement', showStitch: id === 'embroidery' };
+        showCorner: id === 'tonal-logo', showStitch: id === 'embroidery' }; // showStitch = flat filled preview icon
     });
 
     const REPEAT = [['grid', 'Grid'], ['half-drop', 'Half drop'], ['brick', 'Brick'], ['mirror', 'Mirror'], ['single', 'Single']];
@@ -1687,12 +2287,15 @@ class Component extends DCLogic {
     const previewBg = previewMode === 'tote' ? '#E7E3D9' : (previewPatchwork ? '#D7CBB2' : cur.swBg);
     const previewImg = previewMode === 'tote' || previewPatchwork ? 'none' : cur.swImg;
     const previewSize = previewMode === 'tote' || previewPatchwork ? 'auto' : cur.swSize;
-    const tilePx = Math.round(36 * s.motifScale / 100 * s.layoutScale / 100);
-    const patternOverlayShow = !!s.patternImg && !s.renderImg;
-    const patternOverlayImg = this.cssBgUrl(s.patternImg);
+    const tilePx = Math.max(80, Math.round(150 * s.motifScale / 100 * s.layoutScale / 100));
+    const previewArt = this.artworkForPreview();
+    const patternOverlayUseImg = !!previewArt && s.repeatMode === 'single';
+    const patternOverlayShow = !!previewArt;
+    const patternOverlaySrc = previewArt || '';
+    const patternOverlayImg = this.cssBgUrl(previewArt);
     const patternOverlayRepeat = s.repeatMode === 'single' ? 'no-repeat' : 'repeat';
     const patternOverlaySize = s.repeatMode === 'single'
-      ? (Math.round(34 * s.motifScale / 100) + '% auto')
+      ? (Math.round(52 * s.motifScale / 100) + '% auto')
       : (tilePx + 'px ' + (s.repeatMode === 'half-drop' ? Math.round(tilePx * 0.5) + 'px' : tilePx + 'px'));
     const patternOverlayPos = s.repeatMode === 'single'
       ? (s.placement === 'corner' ? 'right ' + (12 + s.motifOffsetX) + '% bottom ' + (12 + s.motifOffsetY) + '%'
@@ -1701,6 +2304,7 @@ class Component extends DCLogic {
       : (s.motifOffsetX + '% ' + s.motifOffsetY + '%');
     const layoutScaleFactor = s.layoutScale / 100;
     const layoutRotate = s.layoutRotate + 'deg';
+    const isEmbroidery = this.isEmbroidery();
 
     const PATTERN_TABS = [['preset', 'Preset tiles'], ['prompt', 'Text prompt'], ['upload', 'Upload image']];
     const patternInputTabs = PATTERN_TABS.map(([id, name]) => {
@@ -1712,13 +2316,21 @@ class Component extends DCLogic {
       ? (s.patternPromptText.trim() ? 'AI will generate artwork from your brief + material constraints.' : 'Describe the pattern you want — AI adapts it to your material and surface finish.')
       : s.patternInputMode === 'upload'
         ? (s.patternUploadImg ? 'AI will create a production-ready pattern inspired by your reference.' : 'Upload a sketch, photo, or swatch — AI turns it into printable/etchable artwork.')
-        : 'Pick a surface style above, or switch to text prompt / upload for custom artwork.';
+        : (this.isEmbroidery()
+          ? 'AI generates a flat vector illustration (not stitched embroidery). Max 4 solid fills — separate thread colours in the next node.'
+          : 'Pick a surface style above, or switch to text prompt / upload for custom artwork.');
+
+    const threadColorRows = (s.threadColors || []).map((tc, i) => ({
+      label: tc.label, hex: tc.hex,
+      onChange: (e) => this.setThreadColor(i, e.target.value),
+    }));
 
     return {
       accent, navItems, nodeKey: 'node-' + s.node,
-      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.layoutRotate + s.motifScale + s.motifRotate + s.motifOffsetX + s.motifOffsetY + previewMode + w + 'x' + h + patchSeed + (s.patternImg ? '|p' : ''),
+      apiMockShow: !!s.apiMock,
+      previewKey: s.product + s.material + (mixIds.join('-') || '') + patchworkMode + s.repeatMode + s.placement + s.layoutScale + s.layoutRotate + s.motifScale + s.motifRotate + s.motifOffsetX + s.motifOffsetY + previewMode + w + 'x' + h + patchSeed + (previewArt ? '|p' : ''),
       n1: s.node === 1, n2: s.node === 2, n3: s.node === 3, n4: s.node === 4,
-      n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8,
+      n5: s.node === 5, n6: s.node === 6, n7: s.node === 7, n8: s.node === 8, n9: s.node === 9,
       brief: s.brief, applyBrief: (e) => this.applyBrief(e),
       productCategories, unfinishedFabricOptions, demoPresets,
       showSizeControls: isHomeTextile,
@@ -1742,6 +2354,9 @@ class Component extends DCLogic {
       patternUploadImg: s.patternUploadImg || '',
       patternUploadHas: !!s.patternUploadImg,
       patternPromptHint,
+      patternResultNote: isEmbroidery
+        ? 'Flat illustration source art — not stitched yet. Colours node separates thread plates; Render shows it embroidered on the product.'
+        : 'Generated artwork — carried into the AI render and embedded in the tech pack PDF.',
       repeatModes, placementModes, showPlacement: s.repeatMode === 'single',
       layoutSliders, motifSliders,
       showAiBadge: s.source === 'ai',
@@ -1749,14 +2364,27 @@ class Component extends DCLogic {
       aiTechniqueCopy: rec.techniqueReason,
       aiAvoidNote: rec.avoidNote,
       applyAiPicks: () => this.applyAiPicks(),
-      exportPdf: () => this.exportPdf(),
+      exportTechPack: () => this.exportTechPack(),
+      showEmbroideryExportNote: isEmbroidery && !!s.embroiderySvg,
+      showColourSep: isEmbroidery,
+      colourSepSkip: !isEmbroidery,
+      colourSepReady: isEmbroidery && !!s.embroiderySolidImg,
+      colourSepNeedPattern: isEmbroidery && !s.patternImg,
+      colourSepBusyShow: s.colourSepBusy,
+      colourSepErr: s.colourSepErr,
+      colourSepErrShow: !!s.colourSepErr,
+      threadColorRows,
+      embroiderySolidImg: s.embroiderySolidImg || '',
+      embroideryThreadCount: (s.threadColors || []).length,
+      colourSepBgNote: s.backgroundRemoved ? ' · background removed' : '',
+      rerunColourSep: () => this.rerunColourSep(),
       constructionNotes,
       surfaceRule,
       techNote: s.techNote, techNoteShow: !!s.techNote,
       generatePattern: () => this.generatePattern(),
       patternBtnLabel: s.patternBusy ? 'Generating…' : (s.patternImg ? 'Regenerate artwork' : 'Generate artwork'),
       patternPrompt: this.buildPatternPrompt(),
-      patternImg: s.patternImg || '', patternHas: !!s.patternImg,
+      patternImg: previewArt || '', patternPreviewImg: previewArt || '', patternHas: !!previewArt,
       patternErr: s.patternErr, patternErrShow: !!s.patternErr,
       patternBusyShow: s.patternBusy,
       patternModeLabel: ({ print: 'Digital print', laser: 'Laser etching', embroidery: 'Embroidery' })[this.surfaceMode()],
@@ -1765,7 +2393,7 @@ class Component extends DCLogic {
       renderImg: s.renderImg || '', renderHas: !!s.renderImg,
       renderErr: s.renderErr, renderErrShow: !!s.renderErr,
       renderBusyShow: s.renderBusy,
-      previewHasRender: !!s.renderImg, previewNoRender: !s.renderImg,
+      previewHasRender: !!s.renderImg,
       dCorner: s.repeatMode === 'single' && s.placement === 'corner',
       dCenter: s.repeatMode === 'single' && s.placement === 'center',
       dBorder: s.repeatMode === 'single' && s.placement === 'border',
@@ -1781,9 +2409,12 @@ class Component extends DCLogic {
       previewFlatSingle: previewMode === 'flat' && !previewPatchwork,
       previewScarfSingle: previewMode === 'scarf' && !previewPatchwork,
       totePatchworkCells, flatPatchworkCells, scarfPatchworkCells,
-      toteOrganicPieces, flatOrganicPieces, scarfOrganicPieces,
+      toteOrganicCells, flatOrganicCells, scarfOrganicCells,
+      toteOrganicSeams, flatOrganicSeams, scarfOrganicSeams,
       previewAspect, previewBg, previewImg, previewSize,
-      patternOverlayShow, patternOverlayImg, patternOverlaySize, patternOverlayRepeat, patternOverlayPos,
+      patternOverlayShow, patternOverlayImgMode: patternOverlayUseImg, patternOverlayBgMode: patternOverlayShow && !patternOverlayUseImg,
+      patternOverlaySrc, patternOverlayFit: s.repeatMode === 'single' ? 'contain' : 'none',
+      patternOverlayImg, patternOverlaySize, patternOverlayRepeat, patternOverlayPos,
       layoutScaleFactor, layoutRotate,
       fabricBg: cur.swBg, fabricImg: cur.swImg, fabricSize: cur.swSize,
       previewCaption: s.product + ' · ' + dims + ' · ' + materialLabel,
@@ -1792,7 +2423,7 @@ class Component extends DCLogic {
       next: () => this.next(), back: () => this.back(),
       backColor: s.node === 1 ? 'rgba(15,15,14,.25)' : ink,
       pageNum: String(s.node).padStart(2, '0'),
-      nextLabel: s.node === 8 ? 'Restart' : (s.node === 7 ? 'Match producer' : 'Next'),
+      nextLabel: s.node === 9 ? 'Restart' : (s.node === 8 ? 'Match producer' : 'Next'),
     };
   }
 }

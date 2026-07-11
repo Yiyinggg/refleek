@@ -10,6 +10,7 @@
     "dev": "vite",
     "dev:all": "bash scripts/dev.sh",
     "build": "tsc -b && vite build",
+    "build:materials": "node scripts/build-materials.cjs",
     "lint": "eslint .",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
