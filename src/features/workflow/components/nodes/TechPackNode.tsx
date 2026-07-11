@@ -1,17 +1,40 @@
 import { effectiveDims } from "../../generation";
 import { layoutLabelFor } from "../../labels";
 import {
+  activeMaterials,
   currentMaterial,
   parseQuantity,
   patternLabel,
   productFor,
   techniqueLabels,
+  usesReclaimedStream,
 } from "../../selectors";
+import { exportTechPackPdf } from "../../techPackPdf";
 import type { NodeProps } from "../nodeProps";
 
 export function TechPackNode({ catalog, state, production }: NodeProps) {
   const product = productFor(catalog, state);
   const material = currentMaterial(catalog, state);
+  const mix = activeMaterials(catalog, state);
+  const materialName =
+    state.source === "mix" && mix.length > 1
+      ? mix.map((entry) => entry.name).join(" + ")
+      : (material?.name ?? "—");
+  const reclaimed = usesReclaimedStream(catalog, state);
+
+  async function exportPdf() {
+    await exportTechPackPdf({
+      rows,
+      surfaceRule: production?.surfaceRule ?? "",
+      constructionNotes: production?.constructionNotes ?? "",
+      producerLine: production
+        ? `${production.producer.name} — ${production.producer.location}. MOQ ${String(production.producer.minimumOrder)} · Lead ${production.producer.leadTime}. ${production.producer.reason}`
+        : "",
+      circularLabel: `${materialName} — ${reclaimed ? "reclaimed secondhand" : "new deadstock"}`,
+      patternImg: state.patternImg,
+      renderImg: state.renderImg,
+    });
+  }
 
   const rows: [string, string][] = [
     ["Product", product?.name ?? "—"],
@@ -45,14 +68,26 @@ export function TechPackNode({ catalog, state, production }: NodeProps) {
         producer.
       </p>
 
-      <button
-        type="button"
-        className="btn"
-        onClick={() => { window.print(); }}
-        style={{ marginBottom: "1.5rem" }}
-      >
-        Print / save PDF <span className="btn__diamond">◆</span>
-      </button>
+      <div className="chip-row" style={{ marginBottom: "1.5rem" }}>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => {
+            void exportPdf();
+          }}
+        >
+          Export PDF <span className="btn__diamond">◆</span>
+        </button>
+        <button
+          type="button"
+          className="btn btn--ghost"
+          onClick={() => {
+            window.print();
+          }}
+        >
+          Print
+        </button>
+      </div>
 
       <dl className="ledger">
         {rows.map(([key, value]) => (
